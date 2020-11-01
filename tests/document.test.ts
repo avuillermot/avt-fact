@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 import "mocha";
-import ServiceInvoice from "./../src/controllers/invoice.document.serv";
+import { InvoiceService } from "./../src/controllers/invoice.document.serv";
 import { IInvoice } from "./../src/models/invoice.document";
 import moment from "moment";
-//import fs from 'fs';
 import DbSettings from "./config";
 
 describe('Simple test must generate PDF', () => {
@@ -12,7 +11,7 @@ describe('Simple test must generate PDF', () => {
     db.connection();
 
     it('Should create a invoice', async () => {
-        let query: ServiceInvoice = new ServiceInvoice();
+        let query: InvoiceService = new InvoiceService();
         let invoice: IInvoice = <IInvoice>{
             providerName: "AVU Corp."
         }

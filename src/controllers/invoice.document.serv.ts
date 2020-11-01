@@ -1,42 +1,41 @@
 //import mongoose from 'mongoose';
-import PDFDocument from 'pdfkit';
-import fs from 'fs';
+import PDFDocument = require('pdfkit');
+import fs = require("fs");
 import { IInvoice } from '../models/invoice.document';
-import ServInvoiceHeader from "../controllers/invoice.document.header.serv";
-import ServInvoiceBody from '../controllers/invoice.document.body.serv';
-import ServInvoiceFooter from '../controllers/invoice.document.footer';
+import { InvoiceHeaderService } from "./invoice.document.header.serv";
+import { InvoiceBodyService } from './invoice.document.body.serv';
+import { InvoiceFooterService } from './invoice.document.footer.serv';
 import { v4 as uuid } from 'uuid';
 
-export default class DefaultInvoice {
+export class InvoiceService {
     
     document: any;
     margeX: number = 50;
     width: number = 610;
     defaultFont: string = "Helvetica";
     defaultFontBold: string = "Helvetica-Bold";
-    servDocumentHeader: ServInvoiceHeader;
-    servDocumentBody: ServInvoiceBody;
-    servDocumentFooter: ServInvoiceFooter;
+    servDocumentHeader: InvoiceHeaderService;
+    servDocumentBody: InvoiceBodyService;
+    servDocumentFooter: InvoiceFooterService;
 
     public pdfRepository: string = "";
 
     public constructor() {
-        console.log("constructor");
-        this.document = new PDFDocument();
+        this.document = new PDFDocument;
 
-        this.servDocumentHeader = new ServInvoiceHeader(this.document);
+        this.servDocumentHeader = new InvoiceHeaderService(this.document);
         this.servDocumentHeader.margeX = this.margeX;
         this.servDocumentHeader.width = this.width;
         this.servDocumentHeader.defaultFont = this.defaultFont;
         this.servDocumentHeader.defaultFontBold = this.defaultFontBold;
 
-        this.servDocumentBody = new ServInvoiceBody(this.document);
+        this.servDocumentBody = new InvoiceBodyService(this.document);
         this.servDocumentBody.margeX = this.margeX;
         this.servDocumentBody.width = this.width;
         this.servDocumentBody.defaultFont = this.defaultFont;
         this.servDocumentBody.defaultFontBold = this.defaultFontBold;
 
-        this.servDocumentFooter = new ServInvoiceFooter(this.document);
+        this.servDocumentFooter = new InvoiceFooterService(this.document);
         this.servDocumentFooter.margeX = this.margeX;
         this.servDocumentFooter.width = this.width;
         this.servDocumentFooter.defaultFont = this.defaultFont;
@@ -61,7 +60,7 @@ export default class DefaultInvoice {
         this.document.pipe(fs.createWriteStream(path));
         this.generateHeader(invoice);
 
-        /*this.document.moveTo(this.margeX, 200).lineTo(this.width - this.margeX, 200).fill('#000000');
+        this.document.moveTo(this.margeX, 200).lineTo(this.width - this.margeX, 200).fill('#000000');
 
         this.servDocumentBody.generateTitle(invoice);
         this.servDocumentBody.generateDetails(invoice);
@@ -70,7 +69,7 @@ export default class DefaultInvoice {
 
         this.servDocumentFooter.generateFooter(invoice);
 
-        this.generateFooter(invoice);*/
+        this.generateFooter(invoice);
         this.document.moveDown();
         this.document.end();
 
@@ -87,9 +86,9 @@ export default class DefaultInvoice {
 
     public async generateHeader(invoice: IInvoice): Promise<void> {
         this.servDocumentHeader.generateHeaderProviderPart(invoice);
-        /*this.servDocumentHeader.generateInvoiceAddressPart(invoice);
+        this.servDocumentHeader.generateInvoiceAddressPart(invoice);
         this.servDocumentHeader.generateCustomerAddressPart(invoice);
-        this.servDocumentHeader.generateHeaderInvoiceReference(invoice);*/
+        this.servDocumentHeader.generateHeaderInvoiceReference(invoice);
     }
 
     public async generateFooter(invoice: IInvoice):Promise<void> {

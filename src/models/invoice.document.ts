@@ -1,6 +1,6 @@
 import { Schema, Document, model } from "mongoose";
 import moment from "moment";
-import { IBase } from "../models/model-base";
+import { IBase } from "./model-base";
 
 export interface IInvoice extends IBase {
     invoiceDate: string;

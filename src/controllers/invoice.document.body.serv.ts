@@ -1,15 +1,15 @@
-//import PDFDocument from 'pdfkit';
+import PDFDocument = require('pdfkit');
 import { IInvoice } from '../models/invoice.document';
 
-export default class InvoiceBodyDefault {
+export class InvoiceBodyService {
 
-    document: any;
+    document:any;
     public margeX: number = 0;
     public width: number = 0;
     public defaultFont: string = "";
     public defaultFontBold: string = "";
 
-    public constructor(document: any) {
+    public constructor(document:any) {
         this.document = document;
     }
 

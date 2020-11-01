@@ -1,16 +1,15 @@
-//import PDFDocument from 'pdfkit';
+//import PDFDocument = require('pdfkit');
 import { IInvoice } from "../models/invoice.document";
 
-export default class InvoiceHeaderDefault {
+export class InvoiceHeaderService {
 
-    private document: any;
+    private document:any;
     public margeX: number = 0;
     public width: number = 0;
     public defaultFont: string = "";
     public defaultFontBold: string = "";
 
-    public constructor(document: any) {
-        console.log("constructor2");
+    public constructor(document:any) {
         this.document = document;
     }
 
@@ -20,7 +19,7 @@ export default class InvoiceHeaderDefault {
         let interval: number = 11;
 
         // provider part
-        /*this.document
+        this.document
             .fontSize(8)
             .text(invoice.providerName, x, y)
         y = y + interval;
@@ -53,10 +52,7 @@ export default class InvoiceHeaderDefault {
         if (invoice.providerPhone != "") {
             this.document.text(invoice.providerPhone, x, y);
             y = y + interval;
-        }*/
-        console.log(this.document);
-        this.document.text("lllllllllllllllllllllll", 100, 100);
-        console.log("fin");
+        }
     }
 
     public async generateInvoiceAddressPart(invoice: IInvoice): Promise<void> {
