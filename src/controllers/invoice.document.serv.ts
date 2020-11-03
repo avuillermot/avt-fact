@@ -58,6 +58,7 @@ export class InvoiceService {
         let filename = id + ".pdf";
         let path = this.pdfRepository + filename;
         this.document.pipe(fs.createWriteStream(path));
+
         this.generateHeader(invoice);
 
         this.document.moveTo(this.margeX, 200).lineTo(this.width - this.margeX, 200).fill('#000000');
@@ -71,7 +72,7 @@ export class InvoiceService {
 
         this.generateFooter(invoice);
         this.document.moveDown();
-        this.document.end();
+        await this.document.end();
 
         /*if (hasError) {
             fs.unlink(path, function (err) {
