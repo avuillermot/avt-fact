@@ -9,15 +9,14 @@ export class InvoiceHeaderService {
     public defaultFont: string = "";
     public defaultFontBold: string = "";
 
-    public constructor(document:any) {
-        this.document = document;
+    public constructor(pdf:any) {
+        this.document = pdf;
     }
 
     public async generateHeaderProviderPart(invoice: IInvoice): Promise<void> {
         let x: number = this.margeX;
         let y: number = 50;
         let interval: number = 11;
-
         // provider part
         this.document
             .fontSize(8)
