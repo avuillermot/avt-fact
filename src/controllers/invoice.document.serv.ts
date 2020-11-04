@@ -20,7 +20,7 @@ export class InvoiceService {
 
     public pdfRepository: string = "";
 
-    public constructor() {
+    public constructor(pdfRepository:string) {
         this.document = new PDFDocument;
 
         this.servDocumentHeader = new InvoiceHeaderService(this.document);
@@ -40,6 +40,8 @@ export class InvoiceService {
         this.servDocumentFooter.width = this.width;
         this.servDocumentFooter.defaultFont = this.defaultFont;
         this.servDocumentFooter.defaultFontBold = this.defaultFontBold;
+
+        this.pdfRepository = pdfRepository;
     }
 
     public async createAndSave(invoice: IInvoice): Promise<{ id: string, hasError: boolean, filename: string }> {
@@ -74,13 +76,15 @@ export class InvoiceService {
         this.document.moveDown();
         await this.document.end();
 
-        /*if (hasError) {
+        await new Promise(resolve => setTimeout(resolve, 2000)); // 3 sec
+
+        if (hasError) {
             fs.unlink(path, function (err) {
                 if (err) throw err;
                 // if no error, file has been deleted successfully
                 console.log('File deleted! : ' + path);
             }); 
-        }*/
+        }
         
         return { id: id, hasError: hasError, filename: filename };
     }

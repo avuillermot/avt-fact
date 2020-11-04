@@ -3,7 +3,8 @@ import "mocha";
 import { InvoiceService } from "./../src/controllers/invoice.document.serv";
 import { IInvoice } from "./../src/models/invoice.document";
 import moment from "moment";
-import DbSettings from "./config";
+import fs = require("fs");
+import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
 
 describe('Simple test must generate PDF', () => {
 
@@ -11,7 +12,7 @@ describe('Simple test must generate PDF', () => {
     db.connection();
 
     it('Should create a invoice', async () => {
-        let query: InvoiceService = new InvoiceService();
+        let query: InvoiceService = new InvoiceService(ApplicationSetting.pdfRepository);
         let invoice: IInvoice = <IInvoice>{
             providerName: "AVU Corp."
         }
@@ -50,8 +51,8 @@ describe('Simple test must generate PDF', () => {
         //query.pdfRepository = settings.pdfRepository;
         const document = await query.createAndSave(invoice);
         //const document = await query.createSigned(invoice, false);
-        //expect(fs.existsSync(settings.pdfRepository + document.filename), "PDF file won't exists").equal(true);
-        //fs.unlink(settings.pdfRepository + document.filename, function () { });
+        expect(fs.existsSync(ApplicationSetting.pdfRepository + document.filename), "PDF file won't exists").equal(true);
+        fs.unlink(ApplicationSetting.pdfRepository + document.filename, function () { });
         console.log(document);
     });
 });
