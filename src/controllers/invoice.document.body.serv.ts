@@ -1,5 +1,4 @@
-import PDFDocument = require('pdfkit');
-import { IInvoice } from '../models/invoice.document';
+import { IInvoice } from '../models/invoice';
 
 export class InvoiceBodyService {
 
@@ -32,7 +31,7 @@ export class InvoiceBodyService {
             this.document.fontSize(8).font(this.defaultFont)
                 .text(item.description.padEnd(190, " "), col1, 230 + ((i + 1) * lineHeight), { width: baseCol * 2 })
                 .text(item.price.toString().padStart(12," "), col4, 230 + ((i + 1) * lineHeight))
-                .text(item.comment, col3, 230 + ((i + 1) * lineHeight));
+                .text(item.quantity, col3, 230 + ((i + 1) * lineHeight));
         }*/
     }
 }

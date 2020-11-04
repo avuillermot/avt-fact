@@ -1,5 +1,4 @@
-import PDFDocument = require('pdfkit');
-import { IInvoice } from "../models/invoice.document";
+import { IInvoice } from "../models/invoice";
 
 export class InvoiceFooterService {
 

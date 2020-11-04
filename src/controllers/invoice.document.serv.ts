@@ -1,7 +1,7 @@
 //import mongoose from 'mongoose';
 import PDFDocument = require('pdfkit');
 import fs = require("fs");
-import { IInvoice } from '../models/invoice.document';
+import Invoice, { IInvoice } from '../models/invoice';
 import { InvoiceHeaderService } from "./invoice.document.header.serv";
 import { InvoiceBodyService } from './invoice.document.body.serv';
 import { InvoiceFooterService } from './invoice.document.footer.serv';
@@ -22,7 +22,6 @@ export class InvoiceService {
 
     public constructor(pdfRepository:string) {
         this.document = new PDFDocument;
-
         this.servDocumentHeader = new InvoiceHeaderService(this.document);
         this.servDocumentHeader.margeX = this.margeX;
         this.servDocumentHeader.width = this.width;
@@ -46,6 +45,8 @@ export class InvoiceService {
 
     public async createAndSave(invoice: IInvoice): Promise<{ id: string, hasError: boolean, filename: string }> {
         let back = await this.create(invoice);
+        let saved = await Invoice.create(invoice);
+        back.id = saved.id;
         return back;
     }
 
@@ -58,25 +59,33 @@ export class InvoiceService {
         let hasError = false;
         let id = uuid();
         let filename = id + ".pdf";
+        invoice.invoiceFileName = filename;
         let path = this.pdfRepository + filename;
         this.document.pipe(fs.createWriteStream(path));
 
-        this.generateHeader(invoice);
+        try {
+            this.generateHeader(invoice);
 
-        this.document.moveTo(this.margeX, 200).lineTo(this.width - this.margeX, 200).fill('#000000');
+            this.document.moveTo(this.margeX, 200).lineTo(this.width - this.margeX, 200).fill('#000000');
 
-        this.servDocumentBody.generateTitle(invoice);
-        this.servDocumentBody.generateDetails(invoice);
+            this.servDocumentBody.generateTitle(invoice);
+            this.servDocumentBody.generateDetails(invoice);
 
-        this.document.moveTo(this.margeX, 230).lineTo(this.width - this.margeX, 230).fill('#000000');
+            this.document.moveTo(this.margeX, 230).lineTo(this.width - this.margeX, 230).fill('#000000');
 
-        this.servDocumentFooter.generateFooter(invoice);
+            this.servDocumentFooter.generateFooter(invoice);
 
-        this.generateFooter(invoice);
-        this.document.moveDown();
-        await this.document.end();
+            this.generateFooter(invoice);
+            this.document.moveDown();
+            await this.document.end();
 
-        await new Promise(resolve => setTimeout(resolve, 2000)); // 3 sec
+            await new Promise(resolve => setTimeout(resolve, 2000)); // 3 sec
+
+        }
+        catch (ex) {
+            hasError = true;
+            console.log(ex);
+        }
 
         if (hasError) {
             fs.unlink(path, function (err) {
@@ -86,7 +95,7 @@ export class InvoiceService {
             }); 
         }
         
-        return { id: id, hasError: hasError, filename: filename };
+        return { id: "", hasError: hasError, filename: filename };
     }
 
     public async generateHeader(invoice: IInvoice): Promise<void> {
