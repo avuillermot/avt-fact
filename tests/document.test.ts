@@ -14,7 +14,7 @@ describe('Simple test must generate PDF', () => {
     db.dropCollection("invoices");
 
     it('Should create a invoice', async () => {
-        console.log(moment().utc());
+
         let query: InvoiceService = new InvoiceService(ApplicationSetting.pdfRepository);
         let invoice: IInvoice = <IInvoice>{
             providerName: "AVU Corp.",
@@ -54,14 +54,13 @@ describe('Simple test must generate PDF', () => {
         invoice.invoiceDate = moment().utc().toDate();
         invoice.deliveryDate = moment().utc().toDate();
 
-        invoice.items = <IItemInvoice>{ description: "elagage laurier xxxxxxxxxxxxxxxxxxxxxxxxxxxxx", price: 225.2, quantity: 0 };
-        //invoice.items.push(<IItemInvoice>{ description: "elagage laurier xxxxxxxxxxxxxxxxxxxxxxxxxxxxx", price: 225.2, quantity: 0 });
-        //invoice.items.push(<IItemInvoice>{ description: "elagage herablexxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", price: 125.2, quantity: 0 });
+        invoice.items = new Array<IItemInvoice>();
+        invoice.items.push(<IItemInvoice>{ description: "elagage laurier xxxxxxxxxxxxxxxxxxxxxxxxxxxxx", price: 225.2, quantity: 0 });
+        invoice.items.push(<IItemInvoice>{ description: "elagage laurier xxxxxxxxxxxxxxxxxxxxxxxxxxxxx", price: 225.2, quantity: 0 });
+        invoice.items.push(<IItemInvoice>{ description: "elagage herablexxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", price: 125.2, quantity: 0 });
 
-        //query.pdfRepository = settings.pdfRepository;
         const document = await query.createAndSave(invoice);
-        //expect(fs.existsSync(ApplicationSetting.pdfRepository + document.filename), "PDF file won't exists").equal(true);
-        //fs.unlink(ApplicationSetting.pdfRepository + document.filename, function () { });
-        console.log(document);
+        expect(fs.existsSync(ApplicationSetting.pdfRepository + document.filename), "PDF file won't exists").equal(true);
+        fs.unlink(ApplicationSetting.pdfRepository + document.filename, function () { });
     });
 });
