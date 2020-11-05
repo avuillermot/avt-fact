@@ -1,4 +1,5 @@
 import { IInvoice } from "../models/invoice";
+import moment = require("moment");
 
 export class InvoiceHeaderService {
 
@@ -121,10 +122,10 @@ export class InvoiceHeaderService {
 
         this.document.fontSize(8).font(this.defaultFontBold).text(invoice.invoiceNumber, x, y).font(this.defaultFont);
         y = y + interval;
-        this.document.text(invoice.invoiceDate, x, y);
+        this.document.text(moment(invoice.invoiceDate).format("L"), x, y);
         y = y + interval;
         if (invoice.deliveryDate != null) {
-            this.document.text(invoice.deliveryDate, x, y);
+            this.document.text(moment(invoice.invoiceDate).format("L"), x, y);
             y = y + interval;
         }
     }

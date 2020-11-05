@@ -54,7 +54,7 @@ export class InvoiceService {
         return await this.createSigned(invoice, false); 
     }
 
-    public async createSigned(invoice: IInvoice, signed: boolean): Promise<{ id: string, hasError: boolean, filename: string }> {
+    private async createSigned(invoice: IInvoice, signed: boolean): Promise<{ id: string, hasError: boolean, filename: string }> {
 
         let hasError = false;
         let id = uuid();
