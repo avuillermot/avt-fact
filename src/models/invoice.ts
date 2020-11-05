@@ -2,6 +2,7 @@ import { Schema, Document, model } from "mongoose";
 import moment = require("moment");
 import { IBase } from "./model-base";
 import { IItemInvoice, DefaultItemInvoiceSchema } from "./itemInvoice";
+//var Float = require('mongoose-float').loadType(mongoose, 4);
 
 export interface IInvoice extends IBase {
     invoiceFileName: string;

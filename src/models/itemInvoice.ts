@@ -7,7 +7,6 @@ export interface IItemInvoice extends IBase {
     productName: string;
     quantity: number;
     price: number;
-    description: string;
     total: number;
     totalFreeTax: number;
     taxAmount: number;

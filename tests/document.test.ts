@@ -55,12 +55,12 @@ describe('Simple test must generate PDF', () => {
         invoice.deliveryDate = moment().utc().toDate();
 
         invoice.items = new Array<IItemInvoice>();
-        invoice.items.push(<IItemInvoice>{ description: "elagage laurier xxxxxxxxxxxxxxxxxxxxxxxxxxxxx", price: 225.2, quantity: 1, taxPercent: 3 });
-        invoice.items.push(<IItemInvoice>{ description: "elagage laurier xxxxxxxxxxxxxxxxxxxxxxxxxxxxx", price: 225.2, quantity: 2, taxPercent: 5 });
-        invoice.items.push(<IItemInvoice>{ description: "elagage herablexxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", price: 125.2, quantity: 3, taxPercent: 7 });
+        invoice.items.push(<IItemInvoice>{ productName: "elagage laurier xxxxxxxxxxxxxxxxxxxxxxxxxxxxx", price: 225.2, quantity: 1, taxPercent: 3 });
+        invoice.items.push(<IItemInvoice>{ productName: "elagage laurier xxxxxxxxxxxxxxxxxxxxxxxxxxxxx", price: 225.2, quantity: 2, taxPercent: 5 });
+        invoice.items.push(<IItemInvoice>{ productName: "elagage herablexxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", price: 125.2, quantity: 3, taxPercent: 7 });
 
         const document = await query.createAndSave(invoice);
         expect(fs.existsSync(ApplicationSetting.pdfRepository + document.filename), "PDF file won't exists").equal(true);
-        fs.unlink(ApplicationSetting.pdfRepository + document.filename, function () { });
+        //fs.unlink(ApplicationSetting.pdfRepository + document.filename, function () { });
     });
 });

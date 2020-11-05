@@ -44,8 +44,13 @@ export class InvoiceService {
     }
 
     public async createAndSave(invoice: IInvoice): Promise<{ id: string, hasError: boolean, filename: string }> {
-        let back = await this.create(invoice);
+        let id = uuid();
+        let filename = id + ".pdf";
+        invoice.invoiceFileName = filename;
+
         let saved = await Invoice.create(invoice);
+
+        let back = await this.create(saved);
         back.id = saved.id;
         return back;
     }
@@ -57,25 +62,19 @@ export class InvoiceService {
     private async createSigned(invoice: IInvoice, signed: boolean): Promise<{ id: string, hasError: boolean, filename: string }> {
 
         let hasError = false;
-        let id = uuid();
-        let filename = id + ".pdf";
-        invoice.invoiceFileName = filename;
-        let path = this.pdfRepository + filename;
+        let path = this.pdfRepository + invoice.invoiceFileName;
         this.document.pipe(fs.createWriteStream(path));
 
         try {
             this.generateHeader(invoice);
 
-            this.document.moveTo(this.margeX, 200).lineTo(this.width - this.margeX, 200).fill('#000000');
-
+            this.document.rect(45, 200, 515, 30).lineWidth(0).stroke();
             this.servDocumentBody.generateTitle(invoice);
             this.servDocumentBody.generateDetails(invoice);
 
-            this.document.moveTo(this.margeX, 230).lineTo(this.width - this.margeX, 230).fill('#000000');
-
             this.servDocumentFooter.generateFooter(invoice);
 
-            this.generateFooter(invoice);
+            //this.generateFooter(invoice);
             this.document.moveDown();
             await this.document.end();
 
@@ -95,7 +94,7 @@ export class InvoiceService {
             }); 
         }
         
-        return { id: "", hasError: hasError, filename: filename };
+        return { id: "", hasError: hasError, filename: invoice.invoiceFileName };
     }
 
     public async generateHeader(invoice: IInvoice): Promise<void> {
@@ -105,7 +104,7 @@ export class InvoiceService {
         this.servDocumentHeader.generateHeaderInvoiceReference(invoice);
     }
 
-    public async generateFooter(invoice: IInvoice):Promise<void> {
+    /*public async generateFooter(invoice: IInvoice):Promise<void> {
         this.document
             .fontSize(10)
             .text(
@@ -114,5 +113,5 @@ export class InvoiceService {
                 700,
                 { align: "center", width: 500 }
             );
-    }
+    }*/
 }
