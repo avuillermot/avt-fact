@@ -1,6 +1,7 @@
 //import mongoose from 'mongoose';
 import PDFDocument = require('pdfkit');
 import fs = require("fs");
+import moment = require("moment");
 import Invoice, { IInvoice } from '../models/invoice';
 import { InvoiceHeaderService } from "./invoice.document.header.serv";
 import { InvoiceBodyService } from './invoice.document.body.serv';
@@ -50,16 +51,29 @@ export class InvoiceService {
 
         let saved = await Invoice.create(invoice);
 
-        let back = await this.create(saved);
+        let back = await this.createPDF(saved);
         back.id = saved.id;
+
         return back;
     }
 
-    public async create(invoice: IInvoice): Promise<{ id: string, hasError: boolean, filename:string }> {
-        return await this.createSigned(invoice, false); 
+    public async duplicatePdf(invoiceid: string): Promise<{ id: string, hasError: boolean, filename: string }> {
+        let back: { id: string, hasError: boolean, filename: string } = { id: "", hasError: false, filename: "" };
+        let current: IInvoice = <IInvoice>await Invoice.findOne({ _id: invoiceid });
+        if (current != null) {
+            current.invoiceFileName = current.invoiceFileName.replace(".pdf","").replace(".PDF","") + "-" + moment().unix() + ".pdf";
+            back = await this.createPDF(current);
+        }
+        else back.hasError = true;
+        back.id = invoiceid;
+        return back;
     }
 
-    private async createSigned(invoice: IInvoice, signed: boolean): Promise<{ id: string, hasError: boolean, filename: string }> {
+    private async createPDF(invoice: IInvoice): Promise<{ id: string, hasError: boolean, filename:string }> {
+        return await this.createSignedPDF(invoice, false); 
+    }
+
+    private async createSignedPDF(invoice: IInvoice, signed: boolean): Promise<{ id: string, hasError: boolean, filename: string }> {
 
         let hasError = false;
         let path = this.pdfRepository + invoice.invoiceFileName;

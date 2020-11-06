@@ -11,9 +11,9 @@ describe('Simple test must generate PDF', () => {
 
     let db: DbSettings = new DbSettings();
     db.connection();
-    db.dropCollection("invoices");
+    //db.dropCollection("invoices");
 
-    it('Should create a invoice', async () => {
+   /* it('Should create a invoice', async () => {
 
         let query: InvoiceService = new InvoiceService(ApplicationSetting.pdfRepository);
         let invoice: IInvoice = <IInvoice>{
@@ -61,6 +61,13 @@ describe('Simple test must generate PDF', () => {
 
         const document = await query.createAndSave(invoice);
         expect(fs.existsSync(ApplicationSetting.pdfRepository + document.filename), "PDF file won't exists").equal(true);
-        //fs.unlink(ApplicationSetting.pdfRepository + document.filename, function () { });
+        fs.unlink(ApplicationSetting.pdfRepository + document.filename, function () { });
+    });*/
+
+    it('Should generate a duplicate PDF', async () => {
+
+        let query: InvoiceService = new InvoiceService(ApplicationSetting.pdfRepository);
+        let result = await query.duplicatePdf('5fa52e198e7de919a4b18bcd');
+        console.log(result);
     });
 });
