@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+﻿import mongoose, { Schema, Document } from "mongoose";
 import moment = require("moment");
 var Float = require('mongoose-float').loadType(mongoose, 2);
 
@@ -23,9 +23,9 @@ export const DefaultStatusInvoiceSchema: Schema = new Schema(SchemaBaseStatusInv
 
 const SchemaBaseItemInvoice = {
     created: { type: Date, required: true, default: moment().utc() },
-    createdBy: { type: String, required: true, default: "create_invoice" },
+    createdBy: { type: String, required: true, default: "create_process" },
     updated: { type: Date, required: true, default: moment().utc() },
-    updatedBy: { type: String, required: true, default: "create_invoice" },
+    updatedBy: { type: String, required: true, default: "create_process" },
 
     productCode: { type: String, required: true, default: "NO_CODE" },
     productName: { type: String, required: true, default: "(?)" },
