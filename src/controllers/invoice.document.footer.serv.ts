@@ -1,4 +1,4 @@
-import { IInvoice } from "../models/invoice";
+import { IInvoice } from "../models/invoice/invoice";
 
 export class InvoiceFooterService {
 

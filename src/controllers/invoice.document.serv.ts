@@ -2,11 +2,12 @@
 import PDFDocument = require('pdfkit');
 import fs = require("fs");
 import moment = require("moment");
-import Invoice, { IInvoice } from '../models/invoice';
+import Invoice, { IInvoice } from '../models/invoice/invoice';
 import { InvoiceHeaderService } from "./invoice.document.header.serv";
 import { InvoiceBodyService } from './invoice.document.body.serv';
 import { InvoiceFooterService } from './invoice.document.footer.serv';
 import { v4 as uuid } from 'uuid';
+import { IStatusInvoice } from '../models/invoice/statusInvoice';
 
 export class InvoiceService {
     
@@ -49,9 +50,11 @@ export class InvoiceService {
         let filename = id + ".pdf";
         invoice.invoiceFileName = filename;
 
+        invoice.statusHistory = new Array<IStatusInvoice>();
+        invoice.statusHistory.push(<IStatusInvoice>{ status: "CREATE" });
         let saved = await Invoice.create(invoice);
 
-        let back = await this.createPDF(saved);
+        let back = await this.createPDF(saved, { annotation: false, annotationText: "" });
         back.id = saved.id;
 
         return back;
@@ -62,18 +65,14 @@ export class InvoiceService {
         let current: IInvoice = <IInvoice>await Invoice.findOne({ _id: invoiceid });
         if (current != null) {
             current.invoiceFileName = current.invoiceFileName.replace(".pdf","").replace(".PDF","") + "-" + moment().unix() + ".pdf";
-            back = await this.createPDF(current);
+            back = await this.createPDF(current, { annotation: true, annotationText:"Duplicata" });
         }
         else back.hasError = true;
         back.id = invoiceid;
         return back;
     }
 
-    private async createPDF(invoice: IInvoice): Promise<{ id: string, hasError: boolean, filename:string }> {
-        return await this.createSignedPDF(invoice, false); 
-    }
-
-    private async createSignedPDF(invoice: IInvoice, signed: boolean): Promise<{ id: string, hasError: boolean, filename: string }> {
+    private async createPDF(invoice: IInvoice, params:{annotation:boolean, annotationText:string }): Promise<{ id: string, hasError: boolean, filename: string }> {
 
         let hasError = false;
         let path = this.pdfRepository + invoice.invoiceFileName;
@@ -89,6 +88,10 @@ export class InvoiceService {
             this.servDocumentFooter.generateFooter(invoice);
 
             //this.generateFooter(invoice);
+
+            if (params.annotation) {
+                this.document.text("Duplicata", 200, 200);
+            }
             this.document.moveDown();
             await this.document.end();
 
