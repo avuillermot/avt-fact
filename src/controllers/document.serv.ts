@@ -1,4 +1,4 @@
-export abstract class DocumentService {
+﻿export abstract class DocumentService {
 
     public document: any;
     public margeX: number = 50;

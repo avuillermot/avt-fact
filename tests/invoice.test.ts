@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+﻿import { expect } from 'chai';
 import "mocha";
 import moment = require("moment");
 import fs = require("fs");
@@ -44,7 +44,7 @@ describe('Invoice', () => {
         invoice.invoiceCountry = "FRANCE";
 
         invoice.customerZipCode = "69380";
-        invoice.customerAddress1 = "1 rue de l'oc�an";
+        invoice.customerAddress1 = "1 rue de l'océan";
         invoice.customerAddress2 = "-";
         invoice.customerAddress3 = "-";
         invoice.customerCity = "Lissieu";

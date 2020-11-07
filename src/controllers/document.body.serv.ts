@@ -1,4 +1,4 @@
-import { IItemInvoice } from "../models/invoice/itemInvoice";
+ï»¿import { IItemInvoice } from "../models/invoice/itemInvoice";
 
 export abstract class DocumentBodyService {
 
@@ -31,7 +31,7 @@ export abstract class DocumentBodyService {
 
         this.document.fontSize(8).font(this.defaultFont)
             .text("Article", col1, 240)
-            .text("Quantité", col2, 240)
+            .text("QuantitÃ©", col2, 240)
             .text("Prix unitaire", col3, 240)
             .text("Total hors taxe", col4, 240)
             .text("Montant taxe", col5, 240)
@@ -58,7 +58,7 @@ export abstract class DocumentBodyService {
         this.document.rect(col5, 215 + ((i + line) * lineHeight), 515 - col4 - 20, lineHeight).lineWidth(0).stroke();
 
         this.document.fontSize(8).font(this.defaultFont)
-            .text("TVA €", col6, y)
+            .text("TVA â‚¬", col6, y)
             .text(params.taxAmount, col7, y);
 
         line++;
@@ -66,7 +66,7 @@ export abstract class DocumentBodyService {
         this.document.rect(col5, 215 + ((i + line) * lineHeight), 515 - col4 - 20, lineHeight).lineWidth(0).stroke();
 
         this.document.fontSize(8).font(this.defaultFont)
-            .text("TOTAL €", col6, y)
+            .text("TOTAL â‚¬", col6, y)
             .text(params.total, col7, y);
     }
 }

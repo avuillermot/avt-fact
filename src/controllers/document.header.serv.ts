@@ -1,4 +1,4 @@
-import moment = require("moment");
+ï»¿import moment = require("moment");
 
 export class ProviderPart {
     public providerName: string = "";
@@ -158,9 +158,9 @@ export abstract class DocumentHeaderService {
         let x: number = this.margeX + 140;
         let y: number = 50;
 
-        this.document.fontSize(8).font(this.defaultFontBold).text("N°: " + params.invoiceNumber, x, y).font(this.defaultFont);
+        this.document.fontSize(8).font(this.defaultFontBold).text("NÂ°: " + params.invoiceNumber, x, y).font(this.defaultFont);
         y = y + this.interval;
-        this.document.text("Edité le : " + moment(params.invoiceDate).locale("fr").format("L"), x, y);
+        this.document.text("EditÃ© le : " + moment(params.invoiceDate).locale("fr").format("L"), x, y);
         y = y + this.interval;
 
         if (additionals != null) {

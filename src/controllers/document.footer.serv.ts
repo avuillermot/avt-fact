@@ -1,4 +1,4 @@
-export abstract class DocumentFooterService {
+﻿export abstract class DocumentFooterService {
 
     document: any;
     public margeX: number = 0;
