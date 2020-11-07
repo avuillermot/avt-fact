@@ -5,7 +5,7 @@ import fs = require("fs");
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
 import { IItemInvoice } from '../src/models/invoice/itemInvoice';
 import { QuoteService } from '../src/controllers/quote.document.serv';
-import { IQuote } from '../src/models/quote/quote';
+import Quote, { IQuote } from '../src/models/quote/quote';
 
 describe('Quote', () => {
 
@@ -67,6 +67,14 @@ describe('Quote', () => {
 
         const document = await query.createAndSave(quote);
         expect(fs.existsSync(ApplicationSetting.pdfRepository + document.filename), "PDF file won't exists").equal(true);
-        //fs.unlink(ApplicationSetting.pdfRepository + document.filename, function () { });
+        fs.unlink(ApplicationSetting.pdfRepository + document.filename, function () { });
+    });
+
+    it('Should generate a duplicate PDF', async () => {
+        let input: IQuote = <IQuote>await Quote.findOne();
+        let query: QuoteService = new QuoteService(ApplicationSetting.pdfRepository);
+        let result = await query.duplicatePdf(input._id);
+        expect(fs.existsSync(ApplicationSetting.pdfRepository + result.filename), "PDF file won't exists").equal(true);
+        fs.unlink(ApplicationSetting.pdfRepository + result.filename, function () { });
     });
 });

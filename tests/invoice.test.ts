@@ -5,7 +5,7 @@ import fs = require("fs");
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
 import { IItemInvoice } from '../src/models/invoice/itemInvoice';
 import { InvoiceService } from '../src/controllers/invoice.document.serv';
-import { IInvoice } from '../src/models/invoice/invoice';
+import Invoice, { IInvoice } from '../src/models/invoice/invoice';
 
 describe('Invoice', () => {
 
@@ -68,13 +68,14 @@ describe('Invoice', () => {
 
         const document = await query.createAndSave(invoice);
         expect(fs.existsSync(ApplicationSetting.pdfRepository + document.filename), "PDF file won't exists").equal(true);
-        //fs.unlink(ApplicationSetting.pdfRepository + document.filename, function () { });
+        fs.unlink(ApplicationSetting.pdfRepository + document.filename, function () { });
     });
 
-    /*it('Should generate a duplicate PDF', async () => {
-
+    it('Should generate a duplicate PDF', async () => {
+        let input: IInvoice = <IInvoice>await Invoice.findOne();
         let query: InvoiceService = new InvoiceService(ApplicationSetting.pdfRepository);
-        let result = await query.duplicatePdf('5fa52e198e7de919a4b18bcd');
-        console.log(result);
-    });*/
+        let result = await query.duplicatePdf(input._id);
+        expect(fs.existsSync(ApplicationSetting.pdfRepository + result.filename), "PDF file won't exists").equal(true);
+        fs.unlink(ApplicationSetting.pdfRepository + result.filename, function () { });
+    });
 });
