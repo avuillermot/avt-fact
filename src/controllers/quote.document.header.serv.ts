@@ -1,5 +1,6 @@
 import { DocumentHeaderService } from "./document.header.serv";
 import { IQuote } from "../models/quote/quote";
+import moment = require("moment");
 
 export class QuoteHeaderService extends DocumentHeaderService {
 
@@ -19,7 +20,9 @@ export class QuoteHeaderService extends DocumentHeaderService {
         await super.setCustomerAddressPart(quote);
     }
 
-    public async generateHeaderInvoiceReference(quote: IQuote): Promise<void> {
-        await super.setInvoiceReferencePart(quote);
+    public async generateReference(quote: IQuote): Promise<void> {
+        let additionals: string[] = new Array<string>();
+        additionals.push("Expire le : " + moment(quote.expirationDate).locale("fr").format("L"));
+        await super.setReferencePart(quote, additionals);
     }
 }

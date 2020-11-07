@@ -1,5 +1,4 @@
 import { model } from "mongoose";
-import moment = require("moment");
 import { IBase, DefaultInvoiceSchema } from "../schema-base";
 import { IItemInvoice } from "./itemInvoice";
 import { IStatusInvoice } from "./statusInvoice";
@@ -8,7 +7,7 @@ export interface IInvoice extends IBase {
     fileName: string;
     invoiceDate: Date;
     deliveryDate: Date;
-    dueDate: Date;
+    paymentDate: Date;
     invoiceNumber: string;
     customerLabel: string;
     customerName: string;

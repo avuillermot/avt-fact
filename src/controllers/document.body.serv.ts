@@ -17,7 +17,7 @@ export abstract class DocumentBodyService {
     }
 
     public async setDetails(params: { taxAmount: string, total: string },items: IItemInvoice[]): Promise<void> {
-
+        
         let baseCol: number = this.width / 7 - 20;
         let col1: number = this.margeX;
         let col2: number = baseCol * 2;

@@ -1,7 +1,5 @@
 import { expect } from 'chai';
 import "mocha";
-import { InvoiceService } from "./../src/controllers/invoice.document.serv";
-import { IInvoice } from "./../src/models/invoice/invoice";
 import moment = require("moment");
 import fs = require("fs");
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
@@ -18,7 +16,7 @@ describe('Quote', () => {
     it('Should create a invoice & PDF', async () => {
 
         let query: QuoteService = new QuoteService(ApplicationSetting.pdfRepository);
-        let invoice: IQuote = <IQuote>{
+        let quote: IQuote = <IQuote>{
             providerName: "Green light.",
             invoiceLabel: "Adresse facturation",
             customerLabel: "Adresse client",
@@ -27,47 +25,47 @@ describe('Quote', () => {
             providerId2: "Agrement 123",
             providerId3: "pr3"
         }
-        invoice.providerZipCode = "69300";
-        invoice.providerAddress1 = "1 Chemin des aubepines";
-        invoice.providerAddress2 = "-";
-        invoice.providerAddress3 = "-"
-        invoice.providerCity = "Ecully";
-        invoice.providerCountry = "FRANCE";
-        invoice.providerEmail = "test@bob.com";
-        invoice.providerPhone = "0385421423";
+        quote.providerZipCode = "69300";
+        quote.providerAddress1 = "1 Chemin des aubepines";
+        quote.providerAddress2 = "-";
+        quote.providerAddress3 = "-"
+        quote.providerCity = "Ecully";
+        quote.providerCountry = "FRANCE";
+        quote.providerEmail = "test@bob.com";
+        quote.providerPhone = "0385421423";
 
-        invoice.customerName = "John Doe";
+        quote.customerName = "John Doe";
 
-        invoice.invoiceZipCode = "21160";
-        invoice.invoiceAddress1 = "7 impasse de la mer";
-        invoice.invoiceAddress2 = "-";
-        invoice.invoiceAddress3 = "-";
-        invoice.invoiceCity = "Dijon";
-        invoice.invoiceCountry = "FRANCE";
+        quote.invoiceZipCode = "21160";
+        quote.invoiceAddress1 = "7 impasse de la mer";
+        quote.invoiceAddress2 = "-";
+        quote.invoiceAddress3 = "-";
+        quote.invoiceCity = "Dijon";
+        quote.invoiceCountry = "FRANCE";
 
-        invoice.customerZipCode = "69380";
-        invoice.customerAddress1 = "1 rue de l'océan";
-        invoice.customerAddress2 = "-";
-        invoice.customerAddress3 = "-";
-        invoice.customerCity = "Lissieu";
-        invoice.customerCountry = "FRANCE";
+        quote.customerZipCode = "69380";
+        quote.customerAddress1 = "1 rue de l'océan";
+        quote.customerAddress2 = "-";
+        quote.customerAddress3 = "-";
+        quote.customerCity = "Lissieu";
+        quote.customerCountry = "FRANCE";
 
-        invoice.invoiceNumber = "4274175";
-        invoice.invoiceDate = moment().utc().toDate();
+        quote.invoiceNumber = "4274175";
+        quote.invoiceDate = moment().utc().toDate();
+                
+        quote.items = new Array<IItemInvoice>();
 
-        invoice.items = new Array<IItemInvoice>();
+        quote.items.push(<IItemInvoice>{ productName: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8 });
+        quote.items.push(<IItemInvoice>{ productName: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8 });
+        quote.items.push(<IItemInvoice>{ productName: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8 });
 
-        invoice.items.push(<IItemInvoice>{ productName: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8 });
-        invoice.items.push(<IItemInvoice>{ productName: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8 });
-        invoice.items.push(<IItemInvoice>{ productName: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8 });
+        quote.items.push(<IItemInvoice>{ productName: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8 });
 
-        invoice.items.push(<IItemInvoice>{ productName: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8 });
+        quote.items.push(<IItemInvoice>{ productName: "Vidange", price: 45, quantity: 1, taxPercent: 8 });
 
-        invoice.items.push(<IItemInvoice>{ productName: "Vidange", price: 45, quantity: 1, taxPercent: 8 });
+        quote.items.push(<IItemInvoice>{ productName: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8 });
 
-        invoice.items.push(<IItemInvoice>{ productName: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8 });
-
-        const document = await query.createAndSave(invoice);
+        const document = await query.createAndSave(quote);
         expect(fs.existsSync(ApplicationSetting.pdfRepository + document.filename), "PDF file won't exists").equal(true);
         //fs.unlink(ApplicationSetting.pdfRepository + document.filename, function () { });
     });

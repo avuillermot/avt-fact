@@ -1,7 +1,5 @@
 import { expect } from 'chai';
 import "mocha";
-import { QuoteService } from "./../src/controllers/quote.document.serv";
-import { IQuote } from "./../src/models/quote/quote";
 import moment = require("moment");
 import fs = require("fs");
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
@@ -55,8 +53,7 @@ describe('Invoice', () => {
         invoice.invoiceNumber = "4274175";
         invoice.invoiceDate = moment().utc().toDate();
         invoice.deliveryDate = moment().utc().toDate();
-        invoice.dueDate = moment().utc().toDate();
-
+        
         invoice.items = new Array<IItemInvoice>();
 
         invoice.items.push(<IItemInvoice>{ productName: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8 });

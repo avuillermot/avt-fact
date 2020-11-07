@@ -6,6 +6,7 @@ import { IStatusInvoice } from "../invoice/statusInvoice";
 export interface IQuote extends IBase {
     fileName: string;
     invoiceDate: Date;
+    expirationDate: Date;
     invoiceNumber: string;
     customerLabel: string;
     customerName: string;

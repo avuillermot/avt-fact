@@ -20,22 +20,11 @@ export class InvoiceHeaderService extends DocumentHeaderService {
         await super.setCustomerAddressPart(invoice);
     }
 
-    public async generateHeaderInvoiceReference(invoice: IInvoice): Promise<void> {
-        let back: { x: number, y: number, interval: number } = await super.setInvoiceReferencePart(invoice);
-        this.document.text("bbbb", 50, 50);
-        console.log(back);
-        console.log("set deliveryDate");
-        if (invoice.deliveryDate != null) {
-            console.log(invoice.deliveryDate);
-            await super.setText(moment(invoice.deliveryDate).format("L"), back.x, back.y);
-            back.y = back.y + back.interval;
-        }
+    public async generateReference(invoice: IInvoice): Promise<void> {
+        let additionals: string[] = new Array<string>();
+        additionals.push("Livraison : " + moment(invoice.deliveryDate).locale("fr").format("L"));
+        additionals.push("Paiement : " + moment(invoice.paymentDate).locale("fr").format("L"));
 
-        console.log("set due");
-        if (invoice.dueDate != null) {
-            console.log(invoice.dueDate);
-            await super.setText(moment(invoice.deliveryDate).format("L"), back.x, back.y);
-            back.y = back.y + back.interval;
-        }
+        await super.setReferencePart(invoice, additionals);
     }
 }

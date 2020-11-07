@@ -112,6 +112,6 @@ export class InvoiceService extends DocumentService implements IDocumentService<
         this.servDocumentHeader.generateHeaderProviderPart(invoice);
         this.servDocumentHeader.generateInvoiceAddressPart(invoice);
         this.servDocumentHeader.generateCustomerAddressPart(invoice);
-        this.servDocumentHeader.generateHeaderInvoiceReference(invoice);
+        this.servDocumentHeader.generateReference(invoice);
     }
 }

@@ -153,25 +153,21 @@ export abstract class DocumentHeaderService {
         }
     }
 
-    public async setInvoiceReferencePart(params: InvoiceReferencePart): Promise<{ x: number, y: number, interval: number }> {
+    public async setReferencePart(params: InvoiceReferencePart, additionals: string[]): Promise<void> {
 
-        let x: number = this.margeX + 170;
+        let x: number = this.margeX + 140;
         let y: number = 50;
 
-        this.document.fontSize(8).font(this.defaultFontBold).text(params.invoiceNumber, x, y).font(this.defaultFont);
+        this.document.fontSize(8).font(this.defaultFontBold).text("N°: " + params.invoiceNumber, x, y).font(this.defaultFont);
         y = y + this.interval;
-        this.document.text(moment(params.invoiceDate).format("L"), x, y);
+        this.document.text("Edité le : " + moment(params.invoiceDate).locale("fr").format("L"), x, y);
         y = y + this.interval;
 
-        return { x: x, y: y, interval: this.interval };
-    }
-
-    public async setText(text: string, x: number, y: number) {
-        console.log("settext");
-        console.log(text);
-        console.log(x);
-        console.log(y);
-        this.document.text(text, x, y);
-        this.document.save();
+        if (additionals != null) {
+            for (var i = 0; i < additionals.length; i++) {
+                this.document.text(additionals[i], x, y);
+                y = y + this.interval;
+            }
+        }
     }
 }

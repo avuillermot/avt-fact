@@ -42,9 +42,10 @@ export class QuoteService extends DocumentService implements IDocumentService<IQ
         let id = uuid();
         let filename = id + ".pdf";
         quote.fileName = filename;
-
+        
         quote.statusHistory = new Array<IStatusInvoice>();
         quote.statusHistory.push(<IStatusInvoice>{ status: "CREATE" });
+        
         let saved = await Quote.create(quote);
 
         let back = await this.createPDF(saved, { annotation: false, annotationText: "" });
@@ -66,11 +67,11 @@ export class QuoteService extends DocumentService implements IDocumentService<IQ
     }
 
     private async createPDF(quote: IQuote, params: { annotation: boolean, annotationText: string }): Promise<{ id: string, hasError: boolean, filename: string }> {
-
+        
         let hasError = false;
         let path = this.pdfRepository + quote.fileName;
         this.document.pipe(fs.createWriteStream(path));
-
+        
         try {
             this.generateHeader(quote);
 
@@ -111,6 +112,6 @@ export class QuoteService extends DocumentService implements IDocumentService<IQ
         this.servDocumentHeader.generateHeaderProviderPart(quote);
         this.servDocumentHeader.generateInvoiceAddressPart(quote);
         this.servDocumentHeader.generateCustomerAddressPart(quote);
-        this.servDocumentHeader.generateHeaderInvoiceReference(quote);
+        this.servDocumentHeader.generateReference(quote);
     }
 }
