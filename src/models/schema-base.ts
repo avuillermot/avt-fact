@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, model } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 import moment = require("moment");
 var Float = require('mongoose-float').loadType(mongoose, 2);
 
@@ -51,16 +51,15 @@ DefaultItemInvoiceSchema.pre("save", function (next) {
     next();
 });
 
-const SchemaBaseInvoice = {
+const SchemaBaseDocument = {
     created: { type: Date, required: true, default: moment().utc() },
     createdBy: { type: String, required: true, default: "create_invoice" },
     updated: { type: Date, required: true, default: moment().utc() },
     updatedBy: { type: String, required: true, default: "create_invoice" },
 
     invoiceDate: { type: Date, required: true },
-    invoiceFileName: { type: String, required: true },
+    fileName: { type: String, required: true },
     invoiceNumber: { type: String, required: true },
-    deliveryDate: { type: Date, required: true },
 
     customerLabel: { type: String, required: true },
     customerName: { type: String, required: true },
@@ -99,15 +98,17 @@ const SchemaBaseInvoice = {
     items: { type: [DefaultItemInvoiceSchema] },
     total: { type: Float, required: true, default: 0 },
     totalFreeTax: { type: Float, required: true, default: 0 },
-    taxAmount: { type: Float, required: true, default: 0 },
-
-    quoteId: { type: String, required: false, default: null },
-    purchaseOrderId: { type: String, required: false, default: null },
+    taxAmount: { type: Float, required: true, default: 0 }    
 };
 
-export const DefaultInvoiceSchema: Schema = new Schema(SchemaBaseInvoice);
-DefaultInvoiceSchema.pre("save", function (next) {
-    console.log("jljljlkjljljlj");
+const _DefaultInvoiceSchema: Schema = new Schema(SchemaBaseDocument);
+_DefaultInvoiceSchema.add({
+    quoteId: { type: String, required: false, default: null },
+    purchaseOrderId: { type: String, required: false, default: null },
+    deliveryDate: { type: Date, required: true },
+    dueDate: { type: Date, required: true }
+})
+_DefaultInvoiceSchema.pre("save", function (next) {
     let taxPercent = 1 + (this.get("taxPercent") / 100);
     let total = this.get("quantity") * this.get("price") * taxPercent;
     let taxAmount = total - (this.get("quantity") * this.get("price"));
@@ -120,4 +121,20 @@ DefaultInvoiceSchema.pre("save", function (next) {
 
     next();
 });
+export const DefaultInvoiceSchema = _DefaultInvoiceSchema
 
+const _DefaultQuoteSchema: Schema = new Schema(SchemaBaseDocument);
+_DefaultQuoteSchema.pre("save", function (next) {
+    let taxPercent = 1 + (this.get("taxPercent") / 100);
+    let total = this.get("quantity") * this.get("price") * taxPercent;
+    let taxAmount = total - (this.get("quantity") * this.get("price"));
+
+    this.set("created", moment().utc().toDate());
+    this.set("updated", moment().utc().toDate())
+    this.set("total", total);
+    this.set("totalFreeTax", total - taxAmount);
+    this.set("taxAmount", taxAmount);
+
+    next();
+});
+export const DefaultQuoteSchema = _DefaultQuoteSchema

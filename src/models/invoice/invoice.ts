@@ -5,10 +5,11 @@ import { IItemInvoice } from "./itemInvoice";
 import { IStatusInvoice } from "./statusInvoice";
 
 export interface IInvoice extends IBase {
-    invoiceFileName: string;
+    fileName: string;
     invoiceDate: Date;
-    invoiceNumber: string;
     deliveryDate: Date;
+    dueDate: Date;
+    invoiceNumber: string;
     customerLabel: string;
     customerName: string;
     customerAddress1: string;
@@ -43,21 +44,5 @@ export interface IInvoice extends IBase {
     totalFreeTax: number;
     taxAmount: number;
 }
-
-DefaultInvoiceSchema.pre("save", function (next) {
-    this.set("created", moment().utc().toDate());
-    this.set("updated", moment().utc().toDate())
-
-    var total = 0
-    var taxAmount = 0;
-    for (var i = 0; i < this.get("items").length; i++) {
-        total = total + this.get("items")[i].get("total");
-        taxAmount = taxAmount + this.get("items")[i].get("taxAmount");
-    }
-    this.set("total", total);
-    this.set("taxAmount", taxAmount);
-    this.set("totalFreeTax", total - taxAmount);
-    next();
-});
 
 export default model<IInvoice>('Invoice', DefaultInvoiceSchema);

@@ -1,36 +1,35 @@
 import PDFDocument = require('pdfkit');
 import fs = require("fs");
 import moment = require("moment");
+import Quote, { IQuote } from '../models/quote/quote';
+import { IStatusInvoice } from "../models/invoice/statusInvoice";
 import { DocumentService, IDocumentService } from "./document.serv";
-import Invoice, { IInvoice } from '../models/invoice/invoice';
-import { InvoiceHeaderService } from "./invoice.document.header.serv";
-import { InvoiceBodyService } from './invoice.document.body.serv';
-import { InvoiceFooterService } from './invoice.document.footer.serv';
+import { QuoteHeaderService } from "./quote.document.header.serv";
+import { QuoteBodyService } from './quote.document.body.serv';
+import { QuoteFooterService } from './quote.document.footer.serv';
 import { v4 as uuid } from 'uuid';
-import { IStatusInvoice } from '../models/invoice/statusInvoice';
 
-export class InvoiceService extends DocumentService implements IDocumentService<IInvoice> {
-    
-    servDocumentHeader: InvoiceHeaderService;
-    servDocumentBody: InvoiceBodyService;
-    servDocumentFooter: InvoiceFooterService;
+export class QuoteService extends DocumentService implements IDocumentService<IQuote> {
+    servDocumentHeader: QuoteHeaderService;
+    servDocumentBody: QuoteBodyService;
+    servDocumentFooter: QuoteFooterService;
 
     public constructor(pdfRepository: string) {
         super();
         this.document = new PDFDocument;
-        this.servDocumentHeader = new InvoiceHeaderService(this.document);
+        this.servDocumentHeader = new QuoteHeaderService(this.document);
         this.servDocumentHeader.margeX = this.margeX;
         this.servDocumentHeader.width = this.width;
         this.servDocumentHeader.defaultFont = this.defaultFont;
         this.servDocumentHeader.defaultFontBold = this.defaultFontBold;
 
-        this.servDocumentBody = new InvoiceBodyService(this.document);
+        this.servDocumentBody = new QuoteBodyService(this.document);
         this.servDocumentBody.margeX = this.margeX;
         this.servDocumentBody.width = this.width;
         this.servDocumentBody.defaultFont = this.defaultFont;
         this.servDocumentBody.defaultFontBold = this.defaultFontBold;
 
-        this.servDocumentFooter = new InvoiceFooterService(this.document);
+        this.servDocumentFooter = new QuoteFooterService(this.document);
         this.servDocumentFooter.margeX = this.margeX;
         this.servDocumentFooter.width = this.width;
         this.servDocumentFooter.defaultFont = this.defaultFont;
@@ -39,14 +38,14 @@ export class InvoiceService extends DocumentService implements IDocumentService<
         this.pdfRepository = pdfRepository;
     }
 
-    public async createAndSave(invoice: IInvoice): Promise<{ id: string, hasError: boolean, filename: string }> {
+    public async createAndSave(quote: IQuote): Promise<{ id: string, hasError: boolean, filename: string }> {
         let id = uuid();
         let filename = id + ".pdf";
-        invoice.fileName = filename;
+        quote.fileName = filename;
 
-        invoice.statusHistory = new Array<IStatusInvoice>();
-        invoice.statusHistory.push(<IStatusInvoice>{ status: "CREATE" });
-        let saved = await Invoice.create(invoice);
+        quote.statusHistory = new Array<IStatusInvoice>();
+        quote.statusHistory.push(<IStatusInvoice>{ status: "CREATE" });
+        let saved = await Quote.create(quote);
 
         let back = await this.createPDF(saved, { annotation: false, annotationText: "" });
         back.id = saved.id;
@@ -56,30 +55,30 @@ export class InvoiceService extends DocumentService implements IDocumentService<
 
     public async duplicatePdf(invoiceid: string): Promise<{ id: string, hasError: boolean, filename: string }> {
         let back: { id: string, hasError: boolean, filename: string } = { id: "", hasError: false, filename: "" };
-        let current: IInvoice = <IInvoice>await Invoice.findOne({ _id: invoiceid });
+        let current: IQuote = <IQuote>await Quote.findOne({ _id: invoiceid });
         if (current != null) {
-            current.fileName = current.fileName.replace(".pdf","").replace(".PDF","") + "-" + moment().unix() + ".pdf";
-            back = await this.createPDF(current, { annotation: true, annotationText:"Duplicata" });
+            current.fileName = current.fileName.replace(".pdf", "").replace(".PDF", "") + "-" + moment().unix() + ".pdf";
+            back = await this.createPDF(current, { annotation: true, annotationText: "Duplicata" });
         }
         else back.hasError = true;
         back.id = invoiceid;
         return back;
     }
 
-    private async createPDF(invoice: IInvoice, params:{annotation:boolean, annotationText:string }): Promise<{ id: string, hasError: boolean, filename: string }> {
+    private async createPDF(quote: IQuote, params: { annotation: boolean, annotationText: string }): Promise<{ id: string, hasError: boolean, filename: string }> {
 
         let hasError = false;
-        let path = this.pdfRepository + invoice.fileName;
+        let path = this.pdfRepository + quote.fileName;
         this.document.pipe(fs.createWriteStream(path));
 
         try {
-            this.generateHeader(invoice);
+            this.generateHeader(quote);
 
             this.document.rect(45, 200, 515, 30).lineWidth(0).stroke();
-            this.servDocumentBody.generateTitle(invoice);
-            this.servDocumentBody.generateDetails(invoice);
+            this.servDocumentBody.generateTitle(quote);
+            this.servDocumentBody.generateDetails(quote);
 
-            this.servDocumentFooter.generateFooter(invoice);
+            this.servDocumentFooter.generateFooter(quote);
 
             //this.generateFooter(invoice);
 
@@ -102,16 +101,16 @@ export class InvoiceService extends DocumentService implements IDocumentService<
                 if (err) throw err;
                 // if no error, file has been deleted successfully
                 console.log('File deleted! : ' + path);
-            }); 
+            });
         }
-        
-        return { id: "", hasError: hasError, filename: invoice.fileName };
+
+        return { id: "", hasError: hasError, filename: quote.fileName };
     }
 
-    private async generateHeader(invoice: IInvoice): Promise<void> {
-        this.servDocumentHeader.generateHeaderProviderPart(invoice);
-        this.servDocumentHeader.generateInvoiceAddressPart(invoice);
-        this.servDocumentHeader.generateCustomerAddressPart(invoice);
-        this.servDocumentHeader.generateHeaderInvoiceReference(invoice);
+    private async generateHeader(quote: IQuote): Promise<void> {
+        this.servDocumentHeader.generateHeaderProviderPart(quote);
+        this.servDocumentHeader.generateInvoiceAddressPart(quote);
+        this.servDocumentHeader.generateCustomerAddressPart(quote);
+        this.servDocumentHeader.generateHeaderInvoiceReference(quote);
     }
 }
