@@ -1,15 +1,15 @@
 import { model } from "mongoose";
-import { DefaultQuoteSchema, IBase } from "../schema.document.base";
+import { DefaultPurchaseOrderSchema, IBase } from "../schema.document.base";
 import { IItemInvoice } from "../invoice/itemInvoice";
 import { IStatusInvoice } from "../invoice/statusInvoice";
 
-export interface IQuote extends IBase {
+export interface IPurchaseOrder extends IBase {
     fileName: string;
     invoiceDate: Date;
     expirationDate: Date;
     invoiceNumber: string;
-    customerLabel: string;
     customerId: string;
+    customerLabel: string;
     customerName: string;
     customerAddress1: string;
     customerAddress2: string;
@@ -44,4 +44,4 @@ export interface IQuote extends IBase {
     taxAmount: number;
 }
 
-export default model<IQuote>('Quote', DefaultQuoteSchema);
+export default model<IPurchaseOrder>('PurchaseOrder', DefaultPurchaseOrderSchema);

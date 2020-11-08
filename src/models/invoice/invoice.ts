@@ -1,5 +1,5 @@
 import { model } from "mongoose";
-import { IBase, DefaultInvoiceSchema } from "../schema-base";
+import { IBase, DefaultInvoiceSchema } from "../schema.document.base";
 import { IItemInvoice } from "./itemInvoice";
 import { IStatusInvoice } from "./statusInvoice";
 
@@ -10,6 +10,7 @@ export interface IInvoice extends IBase {
     paymentDate: Date;
     invoiceNumber: string;
     customerLabel: string;
+    customerId: string;
     customerName: string;
     customerAddress1: string;
     customerAddress2: string;

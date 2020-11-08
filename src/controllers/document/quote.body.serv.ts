@@ -1,5 +1,5 @@
-import { DocumentBodyService } from "./document.body.serv"
-import { IQuote } from '../models/quote/quote';
+import { DocumentBodyService } from "./body.serv"
+import { IQuote } from '../../models/quote/quote';
 
 export class QuoteBodyService extends DocumentBodyService {
 

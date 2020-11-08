@@ -61,6 +61,7 @@ const SchemaBaseDocument = {
     fileName: { type: String, required: true },
     invoiceNumber: { type: String, required: true },
 
+    customerId: { type: String, required: true },
     customerLabel: { type: String, required: true },
     customerName: { type: String, required: true },
     customerAddress1: { type: String, required: true },
@@ -139,3 +140,22 @@ _DefaultQuoteSchema.pre("save", function (next) {
     next();
 });
 export const DefaultQuoteSchema = _DefaultQuoteSchema
+
+
+const _DefaultPurchaseOrderSchema: Schema = new Schema(SchemaBaseDocument);
+_DefaultPurchaseOrderSchema.pre("save", function (next) {
+    this.set("created", moment().utc().toDate());
+    this.set("updated", moment().utc().toDate())
+
+    var total = 0
+    var taxAmount = 0;
+    for (var i = 0; i < this.get("items").length; i++) {
+        total = total + this.get("items")[i].get("total");
+        taxAmount = taxAmount + this.get("items")[i].get("taxAmount");
+    }
+    this.set("total", total);
+    this.set("taxAmount", taxAmount);
+    this.set("totalFreeTax", total - taxAmount);
+    next();
+});
+export const DefaultPurchaseOrderSchema = _DefaultPurchaseOrderSchema

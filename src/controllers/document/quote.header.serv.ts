@@ -1,5 +1,5 @@
-import { DocumentHeaderService } from "./document.header.serv";
-import { IQuote } from "../models/quote/quote";
+import { DocumentHeaderService } from "./header.serv";
+import { IQuote } from "../../models/quote/quote";
 import moment = require("moment");
 
 export class QuoteHeaderService extends DocumentHeaderService {

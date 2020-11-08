@@ -1,5 +1,5 @@
-import { DocumentHeaderService } from "./document.header.serv";
-import { IInvoice } from "../models/invoice/invoice";
+import { DocumentHeaderService } from "./header.serv";
+import { IInvoice } from "../../models/invoice/invoice";
 import moment = require("moment");
 
 export class InvoiceHeaderService extends DocumentHeaderService {

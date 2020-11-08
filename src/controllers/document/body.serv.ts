@@ -1,4 +1,4 @@
-﻿import { IItemInvoice } from "../models/invoice/itemInvoice";
+﻿import { IItemInvoice } from "../../models/invoice/itemInvoice";
 
 export abstract class DocumentBodyService {
 

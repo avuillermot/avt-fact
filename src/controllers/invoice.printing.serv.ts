@@ -1,11 +1,11 @@
 import PDFDocument = require('pdfkit');
 import fs = require("fs");
 import moment = require("moment");
-import { DocumentService, IDocumentService } from "./document.serv";
+import { DocumentService, IDocumentService } from "./document/document.serv";
 import Invoice, { IInvoice } from '../models/invoice/invoice';
-import { InvoiceHeaderService } from "./invoice.document.header.serv";
-import { InvoiceBodyService } from './invoice.document.body.serv';
-import { InvoiceFooterService } from './invoice.document.footer.serv';
+import { InvoiceHeaderService } from "./document/invoice.header.serv";
+import { InvoiceBodyService } from './document/invoice.body.serv';
+import { InvoiceFooterService } from './document/invoice.footer.serv';
 import { v4 as uuid } from 'uuid';
 import { IStatusInvoice } from '../models/invoice/statusInvoice';
 
@@ -40,18 +40,27 @@ export class InvoiceService extends DocumentService implements IDocumentService<
     }
 
     public async createAndSave(invoice: IInvoice): Promise<{ id: string, hasError: boolean, filename: string }> {
+        console.log("222222");
         let id = uuid();
         let filename = id + ".pdf";
         invoice.fileName = filename;
 
         invoice.statusHistory = new Array<IStatusInvoice>();
         invoice.statusHistory.push(<IStatusInvoice>{ status: "CREATE" });
-        let saved = await Invoice.create(invoice);
+        console.log("33333333");
 
-        let back = await this.createPDF(saved, { annotation: false, annotationText: "" });
-        back.id = saved.id;
+        try {
+            let saved = await Invoice.create(invoice);
+            console.log("creation");
+            let back = await this.createPDF(saved, { annotation: false, annotationText: "" });
+            back.id = saved.id;
+            return back;
+        }
+        catch (ex) {
+            console.log(ex);
+        }
 
-        return back;
+        return { id: "string", hasError: true, filename: "string" };
     }
 
     public async duplicatePdf(invoiceid: string): Promise<{ id: string, hasError: boolean, filename: string }> {
@@ -80,8 +89,6 @@ export class InvoiceService extends DocumentService implements IDocumentService<
             this.servDocumentBody.generateDetails(invoice);
 
             this.servDocumentFooter.generateFooter(invoice);
-
-            //this.generateFooter(invoice);
 
             if (params.annotation) {
                 this.document.text("Duplicata", 200, 200);

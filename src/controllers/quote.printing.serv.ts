@@ -3,11 +3,13 @@ import fs = require("fs");
 import moment = require("moment");
 import Quote, { IQuote } from '../models/quote/quote';
 import { IStatusInvoice } from "../models/invoice/statusInvoice";
-import { DocumentService, IDocumentService } from "./document.serv";
-import { QuoteHeaderService } from "./quote.document.header.serv";
-import { QuoteBodyService } from './quote.document.body.serv';
-import { QuoteFooterService } from './quote.document.footer.serv';
+import { DocumentService, IDocumentService } from "./document/document.serv";
+import { QuoteHeaderService } from "./document/quote.header.serv";
+import { QuoteBodyService } from './document/quote.body.serv';
+import { QuoteFooterService } from './document/quote.footer.serv';
+import { InvoiceService } from "./invoice.printing.serv";
 import { v4 as uuid } from 'uuid';
+import { IInvoice } from '../models/invoice/invoice';
 
 export class QuoteService extends DocumentService implements IDocumentService<IQuote> {
     servDocumentHeader: QuoteHeaderService;
@@ -81,8 +83,6 @@ export class QuoteService extends DocumentService implements IDocumentService<IQ
 
             this.servDocumentFooter.generateFooter(quote);
 
-            //this.generateFooter(invoice);
-
             if (params.annotation) {
                 this.document.text("Duplicata", 200, 200);
             }
@@ -113,5 +113,13 @@ export class QuoteService extends DocumentService implements IDocumentService<IQ
         this.servDocumentHeader.generateInvoiceAddressPart(quote);
         this.servDocumentHeader.generateCustomerAddressPart(quote);
         this.servDocumentHeader.generateReference(quote);
+    }
+
+    public async createInvoice(quote: IQuote): Promise<void> {
+        let srv: InvoiceService = new InvoiceService(this.pdfRepository);
+        let invoice: IInvoice = <IInvoice><any>quote;
+        console.log(invoice);
+        //console.log("111111");
+        //srv.createAndSave(invoice);
     }
 }

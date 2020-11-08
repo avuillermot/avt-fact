@@ -1,6 +1,6 @@
 import { model } from "mongoose";
 import moment = require("moment");
-import { IBase, DefaultItemInvoiceSchema } from "../schema-base";
+import { IBase, DefaultItemInvoiceSchema } from "../schema.document.base";
 
 export interface IItemInvoice extends IBase {
     productCode: string;

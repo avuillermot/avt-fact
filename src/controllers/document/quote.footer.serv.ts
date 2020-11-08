@@ -1,5 +1,5 @@
-import { DocumentFooterService } from "./document.footer.serv"
-import { IQuote } from "../models/quote/quote";
+import { DocumentFooterService } from "./footer.serv"
+import { IQuote } from "../../models/quote/quote";
 
 export class QuoteFooterService extends DocumentFooterService {
 

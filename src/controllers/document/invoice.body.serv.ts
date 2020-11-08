@@ -1,5 +1,5 @@
-import { DocumentBodyService } from "./document.body.serv"
-import { IInvoice } from '../models/invoice/invoice';
+import { DocumentBodyService } from "./body.serv"
+import { IInvoice } from '../../models/invoice/invoice';
 
 export class InvoiceBodyService extends DocumentBodyService {
 

@@ -1,5 +1,5 @@
-import { DocumentFooterService } from "./document.footer.serv"
-import { IInvoice } from "../models/invoice/invoice";
+import { DocumentFooterService } from "./footer.serv"
+import { IInvoice } from "../../models/invoice/invoice";
 
 export class InvoiceFooterService extends DocumentFooterService {
 
