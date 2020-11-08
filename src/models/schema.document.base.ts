@@ -103,6 +103,9 @@ const SchemaBaseDocument = {
 };
 
 const _DefaultInvoiceSchema: Schema = new Schema(SchemaBaseDocument);
+_DefaultInvoiceSchema.add({
+    quoteId: { type: String, required: false}
+});
 _DefaultInvoiceSchema.pre("save", function (next) {
     this.set("created", moment().utc().toDate());
     this.set("updated", moment().utc().toDate())
@@ -122,8 +125,8 @@ export const DefaultInvoiceSchema = _DefaultInvoiceSchema
 
 const _DefaultQuoteSchema: Schema = new Schema(SchemaBaseDocument);
 _DefaultQuoteSchema.add({
-    expirationDate: { type: Date, required: true, default: moment().utc().add(30,"days").toDate() }
-})
+    expirationDate: { type: Date, required: true, default: moment().utc().add(30, "days").toDate() }
+});
 _DefaultQuoteSchema.pre("save", function (next) {
     this.set("created", moment().utc().toDate());
     this.set("updated", moment().utc().toDate())

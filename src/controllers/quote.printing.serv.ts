@@ -114,12 +114,4 @@ export class QuoteService extends DocumentService implements IDocumentService<IQ
         this.servDocumentHeader.generateCustomerAddressPart(quote);
         this.servDocumentHeader.generateReference(quote);
     }
-
-    public async createInvoice(quote: IQuote): Promise<void> {
-        let srv: InvoiceService = new InvoiceService(this.pdfRepository);
-        let invoice: IInvoice = <IInvoice><any>quote;
-        console.log(invoice);
-        //console.log("111111");
-        //srv.createAndSave(invoice);
-    }
 }

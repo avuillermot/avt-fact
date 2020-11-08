@@ -43,6 +43,7 @@ export interface IInvoice extends IBase {
     total: number;
     totalFreeTax: number;
     taxAmount: number;
+    quoteId: string;
 }
 
 export default model<IInvoice>('Invoice', DefaultInvoiceSchema);

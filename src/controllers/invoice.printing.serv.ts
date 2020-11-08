@@ -40,18 +40,16 @@ export class InvoiceService extends DocumentService implements IDocumentService<
     }
 
     public async createAndSave(invoice: IInvoice): Promise<{ id: string, hasError: boolean, filename: string }> {
-        console.log("222222");
+        
         let id = uuid();
         let filename = id + ".pdf";
         invoice.fileName = filename;
 
         invoice.statusHistory = new Array<IStatusInvoice>();
         invoice.statusHistory.push(<IStatusInvoice>{ status: "CREATE" });
-        console.log("33333333");
-
+        
         try {
             let saved = await Invoice.create(invoice);
-            console.log("creation");
             let back = await this.createPDF(saved, { annotation: false, annotationText: "" });
             back.id = saved.id;
             return back;

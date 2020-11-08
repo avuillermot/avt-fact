@@ -10,6 +10,9 @@ export class ProviderPart {
     public providerCountry: string = "";
     public providerEmail: string = "";
     public providerPhone: string = "";
+    public providerId1: string = "";
+    public providerId2: string = "";
+    public providerId3: string = "";
 };
 export class InvoiceAddressPart {
     public invoiceLabel: string = "";
@@ -44,7 +47,7 @@ export abstract class DocumentHeaderService {
     public defaultFont: string = "";
     public defaultFontBold: string = "";
     public interval: number = 11;
-    public headerHeight: number = 120;
+    public headerHeight: number = 150;
 
     public constructor(document: any) {
         this.document = document;
@@ -62,32 +65,45 @@ export abstract class DocumentHeaderService {
             .text(params.providerName, x, y).font(this.defaultFont);
         y = y + this.interval;
 
+        this.document.text(params.providerId1, x, y);
+        y = y + this.interval;
+        
+        if (params.providerId2 != "" && params.providerId2 != undefined && params.providerId2 != null) {
+            this.document.text(params.providerId2, x, y);
+            y = y + this.interval;
+        }
+        if (params.providerId3 != "" && params.providerId3 != undefined && params.providerId3 != null) {
+            this.document.text(params.providerId3, x, y);
+            y = y + this.interval;
+        }
+        y = y + this.interval;
+
         this.document.text(params.providerAddress1, x, y);
         y = y + this.interval;
 
-        if (params.providerAddress2 != "") {
+        if (params.providerAddress2 != "" && params.providerAddress2 != undefined && params.providerAddress2 != null) {
             this.document.text(params.providerAddress2, x, y);
             y = y + this.interval;
         }
-        if (params.providerAddress3 != "") {
+        if (params.providerAddress3 != "" && params.providerAddress3 != undefined && params.providerAddress3 != null) {
             this.document.text(params.providerAddress3, x, y);
             y = y + this.interval;
         }
         this.document.text(params.providerZipCode + ", " + params.providerCity, x, y);
         y = y + this.interval;
-        if (params.providerCountry != "") {
+        if (params.providerCountry != "" && params.providerCountry != undefined && params.providerCountry != null) {
             this.document.text(params.providerCountry, x, y);
             y = y + this.interval;
         }
 
         y = y + this.interval;
 
-        if (params.providerEmail != "") {
+        if (params.providerEmail != "" && params.providerEmail != undefined && params.providerEmail != null) {
             this.document.text(params.providerEmail, x, y);
             y = y + this.interval;
         }
 
-        if (params.providerPhone != "") {
+        if (params.providerPhone != "" && params.providerPhone != undefined && params.providerPhone != null) {
             this.document.text(params.providerPhone, x, y);
             y = y + this.interval;
         }
@@ -107,17 +123,17 @@ export abstract class DocumentHeaderService {
         this.document.text(params.invoiceAddress1, x, y);
         y = y + this.interval;
 
-        if (params.invoiceAddress2 != "") {
+        if (params.invoiceAddress2 != "" && params.invoiceAddress2 != undefined && params.invoiceAddress2 != null) {
             this.document.text(params.invoiceAddress2, x, y);
             y = y + this.interval;
         }
-        if (params.invoiceAddress3 != "") {
+        if (params.invoiceAddress3 != "" && params.invoiceAddress3 != undefined && params.invoiceAddress3 != null) {
             this.document.text(params.invoiceAddress3, x, y);
             y = y + this.interval;
         }
         this.document.text(params.invoiceZipCode + ", " + params.invoiceCity, x, y);
         y = y + this.interval;
-        if (params.invoiceCountry != "") {
+        if (params.invoiceCountry != "" && params.invoiceCountry != undefined && params.invoiceCountry != null) {
             this.document.text(params.invoiceCountry, x, y);
             y = y + this.interval;
         }
@@ -137,17 +153,17 @@ export abstract class DocumentHeaderService {
         this.document.text(params.customerAddress1, x, y);
         y = y + this.interval;
 
-        if (params.customerAddress2 != "") {
+        if (params.customerAddress2 != "" && params.customerAddress2 != undefined && params.customerAddress2 != null) {
             this.document.text(params.customerAddress2, x, y);
             y = y + this.interval;
         }
-        if (params.customerAddress3 != "") {
+        if (params.customerAddress3 != "" && params.customerAddress3 != undefined && params.customerAddress3 != null) {
             this.document.text(params.customerAddress3, x, y);
             y = y + this.interval;
         }
         this.document.text(params.customerZipCode + ", " + params.customerCity, x, y);
         y = y + this.interval;
-        if (params.customerCountry != "") {
+        if (params.customerCountry != "" && params.customerCountry != undefined && params.customerCountry != null) {
             this.document.text(params.customerCountry, x, y);
             y = y + this.interval;
         }

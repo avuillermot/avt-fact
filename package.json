@@ -4,7 +4,8 @@
   "description": "Module de facturation",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --timeout 5000 --exit -r ts-node/register tests/**/*.test.ts"
+    "test": "mocha --timeout 5000 --exit -r ts-node/register tests/**/*.test.ts",
+    "testone": "mocha --timeout 5000 --exit -r ts-node/register tests/**/billing.workflow.test.ts"
   },
   "repository": {
     "type": "git",

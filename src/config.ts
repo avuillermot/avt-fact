@@ -21,7 +21,12 @@ export class ApplicationDbSettings {
     }
 
     public dropCollection(collection: string): void {
-        connection.dropCollection(collection);
+        try {
+            connection.dropCollection(collection);
+        }
+        catch (ex) {
+            console.log("Collection " + collection + " not exists, dropCollection impossible.");
+        }
     }
 }
 
