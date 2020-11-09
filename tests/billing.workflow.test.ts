@@ -21,6 +21,9 @@ describe('Billing workflow', () => {
         let quote: IQuote = QuoteExample;
         
         const quoteResult = await query.createAndSave(quote);
+        expect(fs.existsSync(ApplicationSetting.pdfRepository + quoteResult.filename), "PDF file won't exists").equal(true);
+        fs.unlink(ApplicationSetting.pdfRepository + quoteResult.filename, function () { });
+
         const saleResult = await workflow.createInvoiceFromQuote(quoteResult.id, moment().utc().add(10,"days").toDate());
         expect(fs.existsSync(ApplicationSetting.pdfRepository + saleResult.filename), "PDF file won't exists").equal(true);
         fs.unlink(ApplicationSetting.pdfRepository + saleResult.filename, function () { });
