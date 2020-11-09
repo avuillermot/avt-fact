@@ -4,6 +4,7 @@ import { IItemInvoice } from "../invoice/itemInvoice";
 import { IStatusInvoice } from "../invoice/statusInvoice";
 
 export interface IQuote extends IBase {
+    entity: string,
     fileName: string;
     invoiceDate: Date;
     expirationDate: Date;

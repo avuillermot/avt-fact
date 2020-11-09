@@ -52,6 +52,7 @@ DefaultItemInvoiceSchema.pre("save", function (next) {
 });
 
 const SchemaBaseDocument = {
+    entity: { type:String, required: true},
     created: { type: Date, required: true, default: moment().utc() },
     createdBy: { type: String, required: true, default: "create_process" },
     updated: { type: Date, required: true, default: moment().utc() },

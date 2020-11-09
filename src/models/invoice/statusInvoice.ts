@@ -1,5 +1,5 @@
 import { model } from "mongoose";
-import { IBase, DefaultStatusInvoiceSchema } from "../schema-base";
+import { IBase, DefaultStatusInvoiceSchema } from "../schema.document.base";
 
 export interface IStatusInvoice extends IBase {
     status: string;

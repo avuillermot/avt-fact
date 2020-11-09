@@ -4,6 +4,7 @@ import { IItemInvoice } from "./itemInvoice";
 import { IStatusInvoice } from "./statusInvoice";
 
 export interface IInvoice extends IBase {
+    entity: string;
     fileName: string;
     invoiceDate: Date;
     deliveryDate: Date;
