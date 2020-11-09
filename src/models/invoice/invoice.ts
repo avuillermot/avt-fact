@@ -1,10 +1,11 @@
 import { model } from "mongoose";
-import { IBase, DefaultInvoiceSchema } from "../schema.document.base";
+import { IBase } from "./../interface.base";
+import { DefaultInvoiceSchema } from "../schema.document.base";
 import { IItemInvoice } from "./itemInvoice";
 import { IStatusInvoice } from "./statusInvoice";
 
 export interface IInvoice extends IBase {
-    entity: string;
+    entityId: string;
     fileName: string;
     invoiceDate: Date;
     deliveryDate: Date;

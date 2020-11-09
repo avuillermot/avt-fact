@@ -4,7 +4,7 @@ import { IInvoice } from '../src/models/invoice/invoice';
 import { IItemInvoice } from '../src/models/invoice/itemInvoice';
 
 export const QuoteExample: IQuote = <IQuote>{
-    entity: "ENTTEST",
+    entityId: "ENTTEST",
     providerName: "Green light.",
     invoiceLabel: "Adresse devis",
     customerLabel: "Adresse client",
@@ -52,7 +52,7 @@ export const QuoteExample: IQuote = <IQuote>{
 }
 
 export const InvoiceExample: IInvoice = <IInvoice>{
-    entity: "ENTTEST",
+    entityId: "ENTTEST",
     providerName: "Green light.",
     invoiceLabel: "Adresse facturation",
     customerLabel: "Adresse client",

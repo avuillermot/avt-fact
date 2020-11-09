@@ -2,14 +2,6 @@
 import moment = require("moment");
 var Float = require('mongoose-float').loadType(mongoose, 2);
 
-export interface IBase extends Document {
-    id: string,
-    createdBy: string,
-    created: Date,
-    updated: Date,
-    updatedBy: string
-}
-
 const SchemaBaseStatusInvoice: Schema = new Schema({
     created: { type: Date, required: true, default: moment().utc() },
     createdBy: { type: String, required: true, default: "system" },
@@ -52,7 +44,6 @@ DefaultItemInvoiceSchema.pre("save", function (next) {
 });
 
 const SchemaBaseDocument = {
-    entity: { type:String, required: true},
     created: { type: Date, required: true, default: moment().utc() },
     createdBy: { type: String, required: true, default: "create_process" },
     updated: { type: Date, required: true, default: moment().utc() },
@@ -105,6 +96,7 @@ const SchemaBaseDocument = {
 
 const _DefaultInvoiceSchema: Schema = new Schema(SchemaBaseDocument);
 _DefaultInvoiceSchema.add({
+    entityId: { type: String, required: true },
     quoteId: { type: String, required: false}
 });
 _DefaultInvoiceSchema.pre("save", function (next) {
@@ -126,6 +118,7 @@ export const DefaultInvoiceSchema = _DefaultInvoiceSchema
 
 const _DefaultQuoteSchema: Schema = new Schema(SchemaBaseDocument);
 _DefaultQuoteSchema.add({
+    entityId: { type: String, required: true },
     expirationDate: { type: Date, required: true, default: moment().utc().add(30, "days").toDate() }
 });
 _DefaultQuoteSchema.pre("save", function (next) {
@@ -147,6 +140,10 @@ export const DefaultQuoteSchema = _DefaultQuoteSchema
 
 
 const _DefaultPurchaseOrderSchema: Schema = new Schema(SchemaBaseDocument);
+_DefaultPurchaseOrderSchema.add({
+    entityId: { type: String, required: true },
+    expirationDate: { type: Date, required: true, default: moment().utc().add(30, "days").toDate() }
+});
 _DefaultPurchaseOrderSchema.pre("save", function (next) {
     this.set("created", moment().utc().toDate());
     this.set("updated", moment().utc().toDate())

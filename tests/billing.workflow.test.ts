@@ -36,7 +36,7 @@ describe('Billing workflow', () => {
         expect(myQuote.taxAmount, "Tax amount are not equal").equal(mySale.taxAmount);
         expect(myQuote._id.toString(), "Link between quote and sale is broken").equal(mySale.quoteId);
         expect(myQuote.customerId, "CustomerId are not equal").equal(mySale.customerId);
-        expect(myQuote.entity, "Entity are not equal").equal(mySale.entity);
+        expect(myQuote.entityId, "Entity are not equal").equal(mySale.entityId);
     });
 
 });

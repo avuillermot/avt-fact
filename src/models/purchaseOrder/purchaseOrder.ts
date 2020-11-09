@@ -1,9 +1,11 @@
 import { model } from "mongoose";
-import { DefaultPurchaseOrderSchema, IBase } from "../schema.document.base";
+import { IBase } from "./../interface.base";
+import { DefaultPurchaseOrderSchema } from "../schema.document.base";
 import { IItemInvoice } from "../invoice/itemInvoice";
 import { IStatusInvoice } from "../invoice/statusInvoice";
 
 export interface IPurchaseOrder extends IBase {
+    entityId: string;
     fileName: string;
     invoiceDate: Date;
     expirationDate: Date;
