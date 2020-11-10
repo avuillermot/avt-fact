@@ -9,7 +9,7 @@ export class InvoiceHeaderService extends DocumentHeaderService {
     }
 
     public async generateHeaderProviderPart(invoice: IInvoice): Promise<void> {
-        await super.setProviderPart(invoice);
+        await super.setProviderPart(invoice.seller);
     }
 
     public async generateInvoiceAddressPart(invoice: IInvoice): Promise<void> {

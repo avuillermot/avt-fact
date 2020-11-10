@@ -1,5 +1,6 @@
 ﻿import mongoose, { Schema, Document } from "mongoose";
 import moment = require("moment");
+import { DefaultEntitySchema } from "./schema.entity";
 var Float = require('mongoose-float').loadType(mongoose, 2);
 
 const SchemaBaseStatusInvoice: Schema = new Schema({
@@ -71,19 +72,7 @@ const SchemaBaseDocument = {
     invoiceCity: { type: String, required: true },
     invoiceCountry: { type: String, required: true },
 
-    providerId1: { type: String, required: true },
-    providerId2: { type: String, required: false },
-    providerId3: { type: String, required: false },
-
-    providerName: { type: String, required: true },
-    providerAddress1: { type: String, required: true },
-    providerAddress2: { type: String, required: false },
-    providerAddress3: { type: String, required: false },
-    providerZipCode: { type: String, required: true },
-    providerCity: { type: String, required: true },
-    providerCountry: { type: String, required: true },
-    providerEmail: { type: String, required: true },
-    providerPhone: { type: String, required: true },
+    seller: { type: DefaultEntitySchema, required: true },
 
     status: { type: String, required: true, default: "CREATE" },
     statusHistory: { type: [DefaultStatusInvoiceSchema] },

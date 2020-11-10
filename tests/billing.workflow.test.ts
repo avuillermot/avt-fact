@@ -20,7 +20,7 @@ describe('Billing workflow', () => {
         let workflow: BillingWorkflowService = new BillingWorkflowService();
         let quote: IQuote = QuoteExample;
         
-        const quoteResult = await query.createAndSave(quote);
+        const quoteResult = await query.createAndSave(quote, "5faab4a0e178fb3abc146554");
         expect(fs.existsSync(ApplicationSetting.pdfRepository + quoteResult.filename), "PDF file won't exists").equal(true);
         fs.unlink(ApplicationSetting.pdfRepository + quoteResult.filename, function () { });
 

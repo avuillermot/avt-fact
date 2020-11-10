@@ -12,7 +12,7 @@ export class BillingWorkflowService {
         let quote:IQuote = <IQuote>await Quote.findOne({ _id: id });
         
         let invoice: IInvoice = <IInvoice>{
-            entityId: quote.entityId,
+            entityId: quote.entityId/*,
             providerName: quote.providerName,
             invoiceLabel: "Adresse facturation",
             customerLabel: "Adresse client",
@@ -52,7 +52,7 @@ export class BillingWorkflowService {
 
             items: quote.items,
 
-            quoteId: quote._id
+            quoteId: quote._id*/
         };
 
         return await servInvoice.createAndSave(invoice);

@@ -17,7 +17,7 @@ describe('Quote', async() => {
         let query: QuoteService = new QuoteService(ApplicationSetting.pdfRepository);
         let quote: IQuote = QuoteExample;
 
-        const document = await query.createAndSave(quote);
+        const document = await query.createAndSave(quote, "5faab4a0e178fb3abc146554");
         expect(fs.existsSync(ApplicationSetting.pdfRepository + document.filename), "PDF file won't exists").equal(true);
         fs.unlink(ApplicationSetting.pdfRepository + document.filename, function () { });
     });

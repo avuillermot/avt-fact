@@ -2,26 +2,26 @@
 import { IQuote } from '../src/models/quote/quote';
 import { IInvoice } from '../src/models/invoice/invoice';
 import { IItemInvoice } from '../src/models/invoice/itemInvoice';
+import { IEntity } from '../src/models/entity/entity';
 
 export const QuoteExample: IQuote = <IQuote>{
     entityId: "ENTTEST",
-    providerName: "Green light.",
     invoiceLabel: "Adresse devis",
     customerLabel: "Adresse client",
-
-    providerId1: "SIREN : 34345646",
-    providerId2: "Agrement 123",
-    providerId3: "pr3",
-
-    providerZipCode : "69300",
-    providerAddress1 : "1 Chemin des aubepines",
-    providerAddress2 : "-",
-    providerAddress3 : "-",
-    providerCity : "Ecully",
-    providerCountry : "FRANCE",
-    providerEmail : "test@bob.com",
-    providerPhone : "0385421423",
-
+    seller: <IEntity>{
+        name: "Green light.",
+        id1: "SIREN : 34345646",
+        id2: "Agrement 123",
+        id3: "pr3",
+        zipCode: "69300",
+        address1: "1 Chemin des aubepines",
+        address2: "-",
+        address3: "-",
+        city: "Ecully",
+        country: "FRANCE",
+        email: "test@bob.com",
+        phone: "0385421423",
+    },
     customerId : "TIERS0001",
     customerName : "John Doe",
     invoiceZipCode : "21160",
@@ -53,23 +53,23 @@ export const QuoteExample: IQuote = <IQuote>{
 
 export const InvoiceExample: IInvoice = <IInvoice>{
     entityId: "ENTTEST",
-    providerName: "Green light.",
     invoiceLabel: "Adresse facturation",
     customerLabel: "Adresse client",
-
-    providerId1: "SIREN : 34345646",
-    providerId2: "Agrement 123",
-    providerId3: "pr3",
-
-    providerZipCode: "69300",
-    providerAddress1: "1 Chemin des aubepines",
-    providerAddress2: "-",
-    providerAddress3: "-",
-    providerCity: "Ecully",
-    providerCountry: "FRANCE",
-    providerEmail: "test@bob.com",
-    providerPhone: "0385421423",
-
+    seller: <IEntity>{
+        id: "",
+        id1: "SIREN : 34345646",
+        id2: "Agrement 123",
+        id3: "pr3",
+        name: "Green Light",
+        zipCode: "69300",
+        address1: "1 Chemin des aubepines",
+        address2: "-",
+        address3: "-",
+        city: "Ecully",
+        country: "FRANCE",
+        email: "test@bob.com",
+        phone: "0385421423"
+    },
     customerId: "TIERS0002",
     customerName: "John Doe",
     invoiceZipCode: "21160",

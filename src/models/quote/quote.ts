@@ -3,6 +3,7 @@ import { IBase } from "./../interface.base";
 import { DefaultQuoteSchema } from "../schema.document.base";
 import { IItemInvoice } from "../invoice/itemInvoice";
 import { IStatusInvoice } from "../invoice/statusInvoice";
+import { IEntity } from "../entity/entity"
 
 export interface IQuote extends IBase {
     entityId: string,
@@ -26,18 +27,7 @@ export interface IQuote extends IBase {
     invoiceZipCode: string;
     invoiceCity: string;
     invoiceCountry: string;
-    providerId1: string;
-    providerId2: string;
-    providerId3: string;
-    providerName: string;
-    providerAddress1: string;
-    providerAddress2: string;
-    providerAddress3: string;
-    providerZipCode: string;
-    providerCity: string;
-    providerCountry: string;
-    providerEmail: string;
-    providerPhone: string;
+    seller: IEntity;
     items: IItemInvoice[];
     status: string;
     statusHistory: IStatusInvoice[];

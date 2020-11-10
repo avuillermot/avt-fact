@@ -10,6 +10,6 @@
 }
 
 export interface IDocumentService<T> {
-    createAndSave(invoice: T): Promise<{ id: string, hasError: boolean, filename: string }>;
-    duplicatePdf(invoiceid: string): Promise<{ id: string, hasError: boolean, filename: string }>;
+    createAndSave(document: T, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string }>;
+    duplicatePdf(documentId: string): Promise<{ id: string, hasError: boolean, filename: string }>;
 }

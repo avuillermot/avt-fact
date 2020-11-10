@@ -1,6 +1,7 @@
 import PDFDocument = require('pdfkit');
 import fs = require("fs");
 import moment = require("moment");
+import Entity, { IEntity } from "./../models/entity/entity";
 import { DocumentService, IDocumentService } from "./document/document.serv";
 import Invoice, { IInvoice } from '../models/invoice/invoice';
 import { InvoiceHeaderService } from "./document/invoice.header.serv";
@@ -39,26 +40,26 @@ export class InvoiceService extends DocumentService implements IDocumentService<
         this.pdfRepository = pdfRepository;
     }
 
-    public async createAndSave(invoice: IInvoice): Promise<{ id: string, hasError: boolean, filename: string }> {
-        
+    public async createAndSave(invoice: IInvoice, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string }> {
+        let back: { id: string, hasError: boolean, filename: string } = { id: "", hasError: false, filename: "" };
         let id = uuid();
         let filename = id + ".pdf";
         invoice.fileName = filename;
 
-        invoice.statusHistory = new Array<IStatusInvoice>();
-        invoice.statusHistory.push(<IStatusInvoice>{ status: "CREATE" });
-        
-        try {
+        let seller: IEntity = <IEntity>await Entity.findOne({ _id: sellerId });
+        if (seller != null && seller != undefined) {
+            invoice.statusHistory = new Array<IStatusInvoice>();
+            invoice.statusHistory.push(<IStatusInvoice>{ status: "CREATE" });
+            invoice.seller = seller;
             let saved = await Invoice.create(invoice);
-            let back = await this.createPDF(saved, { annotation: false, annotationText: "" });
-            back.id = saved.id;
-            return back;
-        }
-        catch (ex) {
-            console.log(ex);
-        }
 
-        return { id: "string", hasError: true, filename: "string" };
+            let back = await this.createPDF(saved, { annotation: false, annotationText: "" });
+            saved.id = back.id;
+        }
+        else {
+            back.hasError = true;
+        }
+        return back;
     }
 
     public async duplicatePdf(invoiceid: string): Promise<{ id: string, hasError: boolean, filename: string }> {

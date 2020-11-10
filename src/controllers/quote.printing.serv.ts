@@ -1,6 +1,7 @@
 import PDFDocument = require('pdfkit');
 import fs = require("fs");
 import moment = require("moment");
+import Entity, { IEntity } from "./../models/entity/entity";
 import Quote, { IQuote } from '../models/quote/quote';
 import { IStatusInvoice } from "../models/invoice/statusInvoice";
 import { DocumentService, IDocumentService } from "./document/document.serv";
@@ -9,7 +10,6 @@ import { QuoteBodyService } from './document/quote.body.serv';
 import { QuoteFooterService } from './document/quote.footer.serv';
 import { InvoiceService } from "./invoice.printing.serv";
 import { v4 as uuid } from 'uuid';
-import { IInvoice } from '../models/invoice/invoice';
 
 export class QuoteService extends DocumentService implements IDocumentService<IQuote> {
     servDocumentHeader: QuoteHeaderService;
@@ -40,31 +40,37 @@ export class QuoteService extends DocumentService implements IDocumentService<IQ
         this.pdfRepository = pdfRepository;
     }
 
-    public async createAndSave(quote: IQuote): Promise<{ id: string, hasError: boolean, filename: string }> {
+    public async createAndSave(quote: IQuote, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string }> {
+        let back: { id: string, hasError: boolean, filename: string } = { id: "", hasError: false, filename: "" };
         let id = uuid();
         let filename = id + ".pdf";
         quote.fileName = filename;
-        
-        quote.statusHistory = new Array<IStatusInvoice>();
-        quote.statusHistory.push(<IStatusInvoice>{ status: "CREATE" });
-        
-        let saved = await Quote.create(quote);
 
-        let back = await this.createPDF(saved, { annotation: false, annotationText: "" });
-        back.id = saved.id;
+        let seller: IEntity = <IEntity>await Entity.findOne({ _id: sellerId });
+        if (seller != null && seller != undefined) {
+            quote.statusHistory = new Array<IStatusInvoice>();
+            quote.statusHistory.push(<IStatusInvoice>{ status: "CREATE" });
+            quote.seller = seller;
+            let saved = await Quote.create(quote);
 
+            back = await this.createPDF(saved, { annotation: false, annotationText: "" });
+            back.id = saved.id;
+        }
+        else {
+            back.hasError = true;
+        }
         return back;
     }
 
-    public async duplicatePdf(invoiceid: string): Promise<{ id: string, hasError: boolean, filename: string }> {
+    public async duplicatePdf(quoteid: string): Promise<{ id: string, hasError: boolean, filename: string }> {
         let back: { id: string, hasError: boolean, filename: string } = { id: "", hasError: false, filename: "" };
-        let current: IQuote = <IQuote>await Quote.findOne({ _id: invoiceid });
+        let current: IQuote = <IQuote>await Quote.findOne({ _id: quoteid });
         if (current != null) {
             current.fileName = current.fileName.replace(".pdf", "").replace(".PDF", "") + "-" + moment().unix() + ".pdf";
             back = await this.createPDF(current, { annotation: true, annotationText: "Duplicata" });
         }
         else back.hasError = true;
-        back.id = invoiceid;
+        back.id = quoteid;
         return back;
     }
 

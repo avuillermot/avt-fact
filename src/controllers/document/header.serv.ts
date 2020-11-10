@@ -1,18 +1,18 @@
 ﻿import moment = require("moment");
 
-export class ProviderPart {
-    public providerName: string = "";
-    public providerAddress1: string = "";
-    public providerAddress2: string = "";
-    public providerAddress3: string = "";
-    public providerZipCode: string = "";
-    public providerCity: string = "";
-    public providerCountry: string = "";
-    public providerEmail: string = "";
-    public providerPhone: string = "";
-    public providerId1: string = "";
-    public providerId2: string = "";
-    public providerId3: string = "";
+export class SellerPart {
+    public name: string = "";
+    public address1: string = "";
+    public address2: string = "";
+    public address3: string = "";
+    public zipCode: string = "";
+    public city: string = "";
+    public country: string = "";
+    public email: string = "";
+    public phone: string = "";
+    public id1: string = "";
+    public id2: string = "";
+    public id3: string = "";
 };
 export class InvoiceAddressPart {
     public invoiceLabel: string = "";
@@ -53,7 +53,7 @@ export abstract class DocumentHeaderService {
         this.document = document;
     }
 
-    public async setProviderPart(params: ProviderPart): Promise<void> {
+    public async setProviderPart(params: SellerPart): Promise<void> {
 
         let x: number = this.margeX;
         let y: number = 50;
@@ -62,49 +62,49 @@ export abstract class DocumentHeaderService {
         // provider part
         this.document.font(this.defaultFontBold)
             .fontSize(8)
-            .text(params.providerName, x, y).font(this.defaultFont);
+            .text(params.name, x, y).font(this.defaultFont);
         y = y + this.interval;
 
-        this.document.text(params.providerId1, x, y);
+        this.document.text(params.id1, x, y);
         y = y + this.interval;
         
-        if (params.providerId2 != "" && params.providerId2 != undefined && params.providerId2 != null) {
-            this.document.text(params.providerId2, x, y);
+        if (params.id2 != "" && params.id2 != undefined && params.id2 != null) {
+            this.document.text(params.id2, x, y);
             y = y + this.interval;
         }
-        if (params.providerId3 != "" && params.providerId3 != undefined && params.providerId3 != null) {
-            this.document.text(params.providerId3, x, y);
+        if (params.id3 != "" && params.id3 != undefined && params.id3 != null) {
+            this.document.text(params.id3, x, y);
             y = y + this.interval;
         }
         y = y + this.interval;
 
-        this.document.text(params.providerAddress1, x, y);
+        this.document.text(params.address1, x, y);
         y = y + this.interval;
 
-        if (params.providerAddress2 != "" && params.providerAddress2 != undefined && params.providerAddress2 != null) {
-            this.document.text(params.providerAddress2, x, y);
+        if (params.address2 != "" && params.address2 != undefined && params.address2 != null) {
+            this.document.text(params.address2, x, y);
             y = y + this.interval;
         }
-        if (params.providerAddress3 != "" && params.providerAddress3 != undefined && params.providerAddress3 != null) {
-            this.document.text(params.providerAddress3, x, y);
+        if (params.address3 != "" && params.address3 != undefined && params.address3 != null) {
+            this.document.text(params.address3, x, y);
             y = y + this.interval;
         }
-        this.document.text(params.providerZipCode + ", " + params.providerCity, x, y);
+        this.document.text(params.zipCode + ", " + params.city, x, y);
         y = y + this.interval;
-        if (params.providerCountry != "" && params.providerCountry != undefined && params.providerCountry != null) {
-            this.document.text(params.providerCountry, x, y);
+        if (params.country != "" && params.country != undefined && params.country != null) {
+            this.document.text(params.country, x, y);
             y = y + this.interval;
         }
 
         y = y + this.interval;
 
-        if (params.providerEmail != "" && params.providerEmail != undefined && params.providerEmail != null) {
-            this.document.text(params.providerEmail, x, y);
+        if (params.email != "" && params.email != undefined && params.email != null) {
+            this.document.text(params.email, x, y);
             y = y + this.interval;
         }
 
-        if (params.providerPhone != "" && params.providerPhone != undefined && params.providerPhone != null) {
-            this.document.text(params.providerPhone, x, y);
+        if (params.phone != "" && params.phone != undefined && params.phone != null) {
+            this.document.text(params.phone, x, y);
             y = y + this.interval;
         }
     }

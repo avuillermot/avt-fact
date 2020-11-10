@@ -17,7 +17,7 @@ describe('Invoice', () => {
         let query: InvoiceService = new InvoiceService(ApplicationSetting.pdfRepository);
         let invoice: IInvoice = InvoiceExample;
 
-        const document = await query.createAndSave(invoice);
+        const document = await query.createAndSave(invoice, "5faab4a0e178fb3abc146554");
         expect(fs.existsSync(ApplicationSetting.pdfRepository + document.filename), "PDF file won't exists").equal(true);
         fs.unlink(ApplicationSetting.pdfRepository + document.filename, function () { });
     });

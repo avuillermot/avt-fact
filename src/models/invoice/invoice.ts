@@ -3,6 +3,7 @@ import { IBase } from "./../interface.base";
 import { DefaultInvoiceSchema } from "../schema.document.base";
 import { IItemInvoice } from "./itemInvoice";
 import { IStatusInvoice } from "./statusInvoice";
+import { IEntity } from "../entity/entity";
 
 export interface IInvoice extends IBase {
     entityId: string;
@@ -27,18 +28,7 @@ export interface IInvoice extends IBase {
     invoiceZipCode: string;
     invoiceCity: string;
     invoiceCountry: string;
-    providerId1: string;
-    providerId2: string;
-    providerId3: string;
-    providerName: string;
-    providerAddress1: string;
-    providerAddress2: string;
-    providerAddress3: string;
-    providerZipCode: string;
-    providerCity: string;
-    providerCountry: string;
-    providerEmail: string;
-    providerPhone: string;
+    seller: IEntity;
     items: IItemInvoice[];
     status: string;
     statusHistory: IStatusInvoice[];
