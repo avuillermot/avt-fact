@@ -14,7 +14,7 @@ describe('Billing workflow', () => {
     let db: DbSettings = new DbSettings();
     db.connection();
 
-    it('Should create a quote & invoice', async () => {
+    it('Should create a quote from invoice', async () => {
 
         let query: QuoteService = new QuoteService(ApplicationSetting.pdfRepository);
         let workflow: BillingWorkflowService = new BillingWorkflowService();
@@ -34,9 +34,11 @@ describe('Billing workflow', () => {
         expect(myQuote.total, "Total are not equal").equal(mySale.total);
         expect(myQuote.totalFreeTax, "Total tax free are not equal").equal(mySale.totalFreeTax);
         expect(myQuote.taxAmount, "Tax amount are not equal").equal(mySale.taxAmount);
-        expect(myQuote._id.toString(), "Link between quote and sale is broken").equal(mySale.quoteId);
+        expect(myQuote.id, "Link between quote and sale is broken").equal(mySale.quoteId);
         expect(myQuote.customerId, "CustomerId are not equal").equal(mySale.customerId);
         expect(myQuote.entityId, "Entity are not equal").equal(mySale.entityId);
+        expect(myQuote.fileName, "Quote - file & id are different").equal(myQuote.id + ".pdf");
+        expect(mySale.fileName, "Quote - file & id are different").equal(mySale.id + ".pdf");
     });
 
 });

@@ -10,25 +10,13 @@ export class BillingWorkflowService {
         let servInvoice: InvoiceService = new InvoiceService(ApplicationSetting.pdfRepository);
 
         let quote:IQuote = <IQuote>await Quote.findOne({ _id: id });
-        
+
         let invoice: IInvoice = <IInvoice>{
-            entityId: quote.entityId/*,
-            providerName: quote.providerName,
+            entityId: quote.entityId,
             invoiceLabel: "Adresse facturation",
             customerLabel: "Adresse client",
 
-            providerId1: quote.providerId1,
-            providerId2: quote.providerId2,
-            providerId3: quote.providerId3,
-
-            providerZipCode: quote.providerZipCode,
-            providerAddress1: quote.providerAddress1,
-            providerAddress2: quote.providerAddress2,
-            providerAddress3: quote.providerAddress3,
-            providerCity: quote.providerCity,
-            providerCountry: quote.providerCountry,
-            providerEmail: quote.providerEmail,
-            providerPhone: quote.providerPhone,
+            seller: quote.seller,
 
             customerId: quote.customerId,
             customerName: quote.customerName,
@@ -52,10 +40,9 @@ export class BillingWorkflowService {
 
             items: quote.items,
 
-            quoteId: quote._id*/
+            quoteId: quote.id
         };
-
-        return await servInvoice.createAndSave(invoice);
+        return await servInvoice.createAndSave(invoice, invoice.seller.id);
     }
     
 }

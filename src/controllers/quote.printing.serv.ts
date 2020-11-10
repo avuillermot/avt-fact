@@ -8,8 +8,6 @@ import { DocumentService, IDocumentService } from "./document/document.serv";
 import { QuoteHeaderService } from "./document/quote.header.serv";
 import { QuoteBodyService } from './document/quote.body.serv';
 import { QuoteFooterService } from './document/quote.footer.serv';
-import { InvoiceService } from "./invoice.printing.serv";
-import { v4 as uuid } from 'uuid';
 
 export class QuoteService extends DocumentService implements IDocumentService<IQuote> {
     servDocumentHeader: QuoteHeaderService;
@@ -42,16 +40,16 @@ export class QuoteService extends DocumentService implements IDocumentService<IQ
 
     public async createAndSave(quote: IQuote, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string }> {
         let back: { id: string, hasError: boolean, filename: string } = { id: "", hasError: false, filename: "" };
-        let id = uuid();
-        let filename = id + ".pdf";
-        quote.fileName = filename;
 
         let seller: IEntity = <IEntity>await Entity.findOne({ _id: sellerId });
         if (seller != null && seller != undefined) {
             quote.statusHistory = new Array<IStatusInvoice>();
             quote.statusHistory.push(<IStatusInvoice>{ status: "CREATE" });
             quote.seller = seller;
+
             let saved = await Quote.create(quote);
+            let result = await Quote.updateOne({ _id: saved.id }, { fileName: saved.id + ".pdf" });
+            saved.fileName = saved.id + ".pdf";
 
             back = await this.createPDF(saved, { annotation: false, annotationText: "" });
             back.id = saved.id;
@@ -111,7 +109,7 @@ export class QuoteService extends DocumentService implements IDocumentService<IQ
             });
         }
 
-        return { id: "", hasError: hasError, filename: quote.fileName };
+        return { id: quote.id, hasError: hasError, filename: quote.fileName };
     }
 
     private async generateHeader(quote: IQuote): Promise<void> {

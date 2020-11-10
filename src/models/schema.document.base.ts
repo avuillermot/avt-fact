@@ -51,7 +51,7 @@ const SchemaBaseDocument = {
     updatedBy: { type: String, required: true, default: "create_process" },
 
     invoiceDate: { type: Date, required: true },
-    fileName: { type: String, required: true },
+    fileName: { type: String, required: false },
     invoiceNumber: { type: String, required: true },
 
     customerId: { type: String, required: true },

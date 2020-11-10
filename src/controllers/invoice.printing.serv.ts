@@ -7,7 +7,6 @@ import Invoice, { IInvoice } from '../models/invoice/invoice';
 import { InvoiceHeaderService } from "./document/invoice.header.serv";
 import { InvoiceBodyService } from './document/invoice.body.serv';
 import { InvoiceFooterService } from './document/invoice.footer.serv';
-import { v4 as uuid } from 'uuid';
 import { IStatusInvoice } from '../models/invoice/statusInvoice';
 
 export class InvoiceService extends DocumentService implements IDocumentService<IInvoice> {
@@ -42,19 +41,18 @@ export class InvoiceService extends DocumentService implements IDocumentService<
 
     public async createAndSave(invoice: IInvoice, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string }> {
         let back: { id: string, hasError: boolean, filename: string } = { id: "", hasError: false, filename: "" };
-        let id = uuid();
-        let filename = id + ".pdf";
-        invoice.fileName = filename;
 
         let seller: IEntity = <IEntity>await Entity.findOne({ _id: sellerId });
         if (seller != null && seller != undefined) {
             invoice.statusHistory = new Array<IStatusInvoice>();
             invoice.statusHistory.push(<IStatusInvoice>{ status: "CREATE" });
             invoice.seller = seller;
-            let saved = await Invoice.create(invoice);
 
-            let back = await this.createPDF(saved, { annotation: false, annotationText: "" });
-            saved.id = back.id;
+            let saved = await Invoice.create(invoice);
+            let result = await Invoice.updateOne({ _id: saved.id }, { fileName: saved.id + ".pdf" });
+            saved.fileName = saved.id + ".pdf";
+         
+            back = await this.createPDF(saved, { annotation: false, annotationText: "" });
         }
         else {
             back.hasError = true;
@@ -111,7 +109,7 @@ export class InvoiceService extends DocumentService implements IDocumentService<
             }); 
         }
         
-        return { id: "", hasError: hasError, filename: invoice.fileName };
+        return { id: invoice.id, hasError: hasError, filename: invoice.fileName };
     }
 
     private async generateHeader(invoice: IInvoice): Promise<void> {
