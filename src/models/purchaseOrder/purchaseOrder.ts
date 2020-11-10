@@ -11,7 +11,6 @@ export interface IPurchaseOrder extends IBase {
     expirationDate: Date;
     invoiceNumber: string;
     customerId: string;
-    customerLabel: string;
     customerName: string;
     customerAddress1: string;
     customerAddress2: string;
@@ -19,7 +18,6 @@ export interface IPurchaseOrder extends IBase {
     customerZipCode: string;
     customerCity: string;
     customerCountry: string;
-    invoiceLabel: string;
     invoiceAddress1: string;
     invoiceAddress2: string;
     invoiceAddress3: string;

@@ -9,8 +9,7 @@ describe('Entity', () => {
 
     let db: DbSettings = new DbSettings();
     db.connection();
-    db.dropCollection("entities");
-
+    
     it('Should create an entity', async () => {
 
         let params: IEntity = <IEntity>{

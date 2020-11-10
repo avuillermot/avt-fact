@@ -4,6 +4,7 @@ import { DefaultInvoiceSchema } from "../schema.document.base";
 import { IItemInvoice } from "./itemInvoice";
 import { IStatusInvoice } from "./statusInvoice";
 import { IEntity } from "../entity/entity";
+import { ICustomer } from "../entity/customer";
 
 export interface IInvoice extends IBase {
     entityId: string;
@@ -12,16 +13,7 @@ export interface IInvoice extends IBase {
     deliveryDate: Date;
     paymentDate: Date;
     invoiceNumber: string;
-    customerLabel: string;
-    customerId: string;
-    customerName: string;
-    customerAddress1: string;
-    customerAddress2: string;
-    customerAddress3: string;
-    customerZipCode: string;
-    customerCity: string;
-    customerCountry: string;
-    invoiceLabel: string;
+    customer: ICustomer;
     invoiceAddress1: string;
     invoiceAddress2: string;
     invoiceAddress3: string;

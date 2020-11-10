@@ -3,11 +3,10 @@ import { IQuote } from '../src/models/quote/quote';
 import { IInvoice } from '../src/models/invoice/invoice';
 import { IItemInvoice } from '../src/models/invoice/itemInvoice';
 import { IEntity } from '../src/models/entity/entity';
+import { ICustomer } from '../src/models/entity/customer';
 
 export const QuoteExample: IQuote = <IQuote>{
     entityId: "ENTTEST",
-    invoiceLabel: "Adresse devis",
-    customerLabel: "Adresse client",
     seller: <IEntity>{
         name: "Green light.",
         id1: "SIREN : 34345646",
@@ -22,8 +21,20 @@ export const QuoteExample: IQuote = <IQuote>{
         email: "test@bob.com",
         phone: "0385421423",
     },
-    customerId : "TIERS0001",
-    customerName : "John Doe",
+    customer: <ICustomer>{
+        entityId: "ENTTEST",
+        id: "TIERS0001",
+        lastName: "Doe",
+        firstName: "John",
+        zipCode: "69380",
+        address1: "1 rue de l'océan",
+        address2: "-",
+        address3: "-",
+        city: "Lissieu",
+        country: "FRANCE",
+        email: "clustomer@quote.com",
+        phone: "03487502770"
+    },
     invoiceZipCode : "21160",
     invoiceAddress1 : "7 impasse de la mer",
     invoiceAddress2 : "-",
@@ -31,30 +42,21 @@ export const QuoteExample: IQuote = <IQuote>{
     invoiceCity : "Dijon",
     invoiceCountry : "FRANCE",
 
-    customerZipCode : "69380",
-    customerAddress1 : "1 rue de l'océan",
-    customerAddress2 : "-",
-    customerAddress3 : "-",
-    customerCity : "Lissieu",
-    customerCountry : "FRANCE",
-
     invoiceNumber : "4274175",
     invoiceDate : moment().utc().toDate(),
 
     items : [
-        <IItemInvoice>{ productName: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8 },
-        <IItemInvoice>{ productName: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8 },
-        <IItemInvoice>{ productName: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8 },
-        <IItemInvoice>{ productName: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8 },
-        <IItemInvoice>{ productName: "Vidange", price: 45, quantity: 1, taxPercent: 8 },
-        <IItemInvoice>{ productName: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8 }
+        <IItemInvoice>{ productName: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId:"ENTTEST" },
+        <IItemInvoice>{ productName: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemInvoice>{ productName: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemInvoice>{ productName: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemInvoice>{ productName: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemInvoice>{ productName: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: "ENTTEST" }
     ]
 }
 
 export const InvoiceExample: IInvoice = <IInvoice>{
     entityId: "ENTTEST",
-    invoiceLabel: "Adresse facturation",
-    customerLabel: "Adresse client",
     seller: <IEntity>{
         id: "",
         id1: "SIREN : 34345646",
@@ -70,8 +72,20 @@ export const InvoiceExample: IInvoice = <IInvoice>{
         email: "test@bob.com",
         phone: "0385421423"
     },
-    customerId: "TIERS0002",
-    customerName: "John Doe",
+    customer: {
+        entityId: "ENTTEST",
+        id: "TIERS0001",
+        lastName: "Doe",
+        firstName: "Jane",
+        zipCode: "69380",
+        address1: "1 rue de la mer",
+        address2: "-",
+        address3: "-",
+        city: "Lissieu",
+        country: "FRANCE",
+        email: "clustomer@invoice.com",
+        phone: "03487502560"
+    },
     invoiceZipCode: "21160",
     invoiceAddress1: "7 impasse de la mer",
     invoiceAddress2: "-",
@@ -79,23 +93,16 @@ export const InvoiceExample: IInvoice = <IInvoice>{
     invoiceCity: "Dijon",
     invoiceCountry: "FRANCE",
 
-    customerZipCode: "69380",
-    customerAddress1: "1 rue de l'océan",
-    customerAddress2: "-",
-    customerAddress3: "-",
-    customerCity: "Lissieu",
-    customerCountry: "FRANCE",
-
     invoiceNumber: "4274175",
     invoiceDate: moment().utc().toDate(),
     deliveryDate: moment().utc().toDate(),
 
     items: [
-        <IItemInvoice>{ productName: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8 },
-        <IItemInvoice>{ productName: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8 },
-        <IItemInvoice>{ productName: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8 },
-        <IItemInvoice>{ productName: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8 },
-        <IItemInvoice>{ productName: "Vidange", price: 45, quantity: 1, taxPercent: 8 },
-        <IItemInvoice>{ productName: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8 }
+        <IItemInvoice>{ productName: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemInvoice>{ productName: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemInvoice>{ productName: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemInvoice>{ productName: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemInvoice>{ productName: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemInvoice>{ productName: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: "ENTTEST" }
     ]
 }

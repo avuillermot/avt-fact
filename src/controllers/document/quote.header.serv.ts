@@ -13,11 +13,11 @@ export class QuoteHeaderService extends DocumentHeaderService {
     }
 
     public async generateInvoiceAddressPart(quote: IQuote): Promise<void> {
-        await super.setAddressPart(quote);
+        await super.setAddressPart(quote.customer);
     }
 
     public async generateCustomerAddressPart(quote: IQuote): Promise<void> {
-        await super.setCustomerAddressPart(quote);
+        await super.setCustomerAddressPart(quote.customer);
     }
 
     public async generateReference(quote: IQuote): Promise<void> {

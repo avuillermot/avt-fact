@@ -4,6 +4,7 @@ import { DefaultQuoteSchema } from "../schema.document.base";
 import { IItemInvoice } from "../invoice/itemInvoice";
 import { IStatusInvoice } from "../invoice/statusInvoice";
 import { IEntity } from "../entity/entity"
+import { ICustomer } from "../entity/customer"
 
 export interface IQuote extends IBase {
     entityId: string,
@@ -11,16 +12,7 @@ export interface IQuote extends IBase {
     invoiceDate: Date;
     expirationDate: Date;
     invoiceNumber: string;
-    customerLabel: string;
-    customerId: string;
-    customerName: string;
-    customerAddress1: string;
-    customerAddress2: string;
-    customerAddress3: string;
-    customerZipCode: string;
-    customerCity: string;
-    customerCountry: string;
-    invoiceLabel: string;
+    customer: ICustomer;
     invoiceAddress1: string;
     invoiceAddress2: string;
     invoiceAddress3: string;

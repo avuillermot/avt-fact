@@ -13,11 +13,11 @@ export class InvoiceHeaderService extends DocumentHeaderService {
     }
 
     public async generateInvoiceAddressPart(invoice: IInvoice): Promise<void> {
-        await super.setAddressPart(invoice);
+        await super.setAddressPart(invoice.customer);
     }
 
     public async generateCustomerAddressPart(invoice: IInvoice): Promise<void> {
-        await super.setCustomerAddressPart(invoice);
+        await super.setCustomerAddressPart(invoice.customer);
     }
 
     public async generateReference(invoice: IInvoice): Promise<void> {

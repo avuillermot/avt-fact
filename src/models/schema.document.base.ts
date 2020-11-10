@@ -1,6 +1,7 @@
 ﻿import mongoose, { Schema, Document } from "mongoose";
 import moment = require("moment");
 import { DefaultEntitySchema } from "./schema.entity";
+import { DefaultCustomerSchema } from "./schema.entity";
 var Float = require('mongoose-float').loadType(mongoose, 2);
 
 const SchemaBaseStatusInvoice: Schema = new Schema({
@@ -20,6 +21,7 @@ const SchemaBaseItemInvoice = {
     updated: { type: Date, required: true, default: moment().utc() },
     updatedBy: { type: String, required: true, default: "create_process" },
 
+    entityId: { type: String, required: true },
     productCode: { type: String, required: true, default: "NO_CODE" },
     productName: { type: String, required: true, default: "(?)" },
     quantity: { type: Number, required: true, default: 0 },
@@ -54,17 +56,8 @@ const SchemaBaseDocument = {
     fileName: { type: String, required: false },
     invoiceNumber: { type: String, required: true },
 
-    customerId: { type: String, required: true },
-    customerLabel: { type: String, required: true },
-    customerName: { type: String, required: true },
-    customerAddress1: { type: String, required: true },
-    customerAddress2: { type: String, required: false },
-    customerAddress3: { type: String, required: false },
-    customerZipCode: { type: String, required: true },
-    customerCity: { type: String, required: true },
-    customerCountry: { type: String, required: true },
+    customer: { type: DefaultCustomerSchema, required: true },
 
-    invoiceLabel: { type: String, required: true },
     invoiceAddress1: { type: String, required: true },
     invoiceAddress2: { type: String, required: false },
     invoiceAddress3: { type: String, required: false },

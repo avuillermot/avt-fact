@@ -3,7 +3,7 @@ import "mocha";
 import fs = require("fs");
 import { QuoteExample } from "./utils";
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
-import { QuoteService } from '../src/controllers/quote.printing.serv';
+import { QuoteService } from '../src/controllers/quote.document.serv';
 import Quote, { IQuote } from '../src/models/quote/quote';
 
 describe('Quote', async() => {

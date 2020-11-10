@@ -3,7 +3,7 @@ import "mocha";
 import fs = require("fs");
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
 import { InvoiceExample } from "./utils";
-import { InvoiceService } from '../src/controllers/invoice.printing.serv';
+import { InvoiceService } from '../src/controllers/invoice.document.serv';
 import Invoice, { IInvoice } from '../src/models/invoice/invoice';
 
 describe('Invoice', () => {

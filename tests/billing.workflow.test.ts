@@ -5,7 +5,7 @@ import fs = require("fs");
 import { QuoteExample } from "./utils";
 import Quote, { IQuote } from '../src/models/quote/quote';
 import Invoice, { IInvoice } from '../src/models/invoice/invoice';
-import { QuoteService } from '../src/controllers/quote.printing.serv';
+import { QuoteService } from '../src/controllers/quote.document.serv';
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
 import { BillingWorkflowService } from "./../src/controllers/billing.workflow.serv";
 
@@ -35,7 +35,7 @@ describe('Billing workflow', () => {
         expect(myQuote.totalFreeTax, "Total tax free are not equal").equal(mySale.totalFreeTax);
         expect(myQuote.taxAmount, "Tax amount are not equal").equal(mySale.taxAmount);
         expect(myQuote.id, "Link between quote and sale is broken").equal(mySale.quoteId);
-        expect(myQuote.customerId, "CustomerId are not equal").equal(mySale.customerId);
+        expect(myQuote.customer.id, "CustomerId are not equal").equal(mySale.customer.id);
         expect(myQuote.entityId, "Entity are not equal").equal(mySale.entityId);
         expect(myQuote.fileName, "Quote - file & id are different").equal(myQuote.id + ".pdf");
         expect(mySale.fileName, "Quote - file & id are different").equal(mySale.id + ".pdf");

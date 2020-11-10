@@ -15,24 +15,24 @@ export class SellerPart {
     public id3: string = "";
 };
 export class InvoiceAddressPart {
-    public invoiceLabel: string = "";
-    public customerName: string = "";
-    public invoiceAddress1: string = "";
-    public invoiceAddress2: string = "";
-    public invoiceAddress3: string = "";
-    public invoiceZipCode: string = "";
-    public invoiceCity: string = "";
-    public invoiceCountry: string = "";
+    public firstName: string = "";
+    public lastName: string = "";
+    public address1: string = "";
+    public address2: string = "";
+    public address3: string = "";
+    public zipCode: string = "";
+    public city: string = "";
+    public country: string = "";
 };
 export class CustomerAddressPart {
-    public customerLabel: string = "";
-    public customerName: string = "";
-    public customerAddress1: string = "";
-    public customerAddress2: string = "";
-    public customerAddress3: string = "";
-    public customerZipCode: string = "";
-    public customerCity: string = "";
-    public customerCountry: string = "";
+    public firstName: string = "";
+    public lastName: string = "";
+    public address1: string = "";
+    public address2: string = "";
+    public address3: string = "";
+    public zipCode: string = "";
+    public city: string = "";
+    public country: string = "";
 };
 export class InvoiceReferencePart {
     public invoiceNumber: string = "";
@@ -114,27 +114,24 @@ export abstract class DocumentHeaderService {
         let y: number = 50;
         this.document.rect(295, 45, 130, this.headerHeight);
 
-        this.document.fontSize(8).text(params.invoiceLabel, x, y, { underline: true });
+        this.document.text(params.firstName + " " + params.lastName, x, y)
         y = y + this.interval;
 
-        this.document.text(params.customerName, x, y)
+        this.document.text(params.address1, x, y);
         y = y + this.interval;
 
-        this.document.text(params.invoiceAddress1, x, y);
-        y = y + this.interval;
-
-        if (params.invoiceAddress2 != "" && params.invoiceAddress2 != undefined && params.invoiceAddress2 != null) {
-            this.document.text(params.invoiceAddress2, x, y);
+        if (params.address2 != "" && params.address2 != undefined && params.address2 != null) {
+            this.document.text(params.address2, x, y);
             y = y + this.interval;
         }
-        if (params.invoiceAddress3 != "" && params.invoiceAddress3 != undefined && params.invoiceAddress3 != null) {
-            this.document.text(params.invoiceAddress3, x, y);
+        if (params.address3 != "" && params.address3 != undefined && params.address3 != null) {
+            this.document.text(params.address3, x, y);
             y = y + this.interval;
         }
-        this.document.text(params.invoiceZipCode + ", " + params.invoiceCity, x, y);
+        this.document.text(params.zipCode + ", " + params.city, x, y);
         y = y + this.interval;
-        if (params.invoiceCountry != "" && params.invoiceCountry != undefined && params.invoiceCountry != null) {
-            this.document.text(params.invoiceCountry, x, y);
+        if (params.country != "" && params.country != undefined && params.country != null) {
+            this.document.text(params.country, x, y);
             y = y + this.interval;
         }
     }
@@ -143,28 +140,25 @@ export abstract class DocumentHeaderService {
         let x: number = this.margeX + 380;
         let y: number = 50;
         this.document.rect(425, 45, 135, this.headerHeight);
-
-        this.document.fontSize(8).text(params.customerLabel, x, y, { underline: true });
+        
+        this.document.text(params.firstName + " " + params.lastName, x, y)
         y = y + this.interval;
 
-        this.document.text(params.customerName, x, y)
+        this.document.text(params.address1, x, y);
         y = y + this.interval;
 
-        this.document.text(params.customerAddress1, x, y);
-        y = y + this.interval;
-
-        if (params.customerAddress2 != "" && params.customerAddress2 != undefined && params.customerAddress2 != null) {
-            this.document.text(params.customerAddress2, x, y);
+        if (params.address2 != "" && params.address2 != undefined && params.address2 != null) {
+            this.document.text(params.address2, x, y);
             y = y + this.interval;
         }
-        if (params.customerAddress3 != "" && params.customerAddress3 != undefined && params.customerAddress3 != null) {
-            this.document.text(params.customerAddress3, x, y);
+        if (params.address3 != "" && params.address3 != undefined && params.address3 != null) {
+            this.document.text(params.address3, x, y);
             y = y + this.interval;
         }
-        this.document.text(params.customerZipCode + ", " + params.customerCity, x, y);
+        this.document.text(params.zipCode + ", " + params.city, x, y);
         y = y + this.interval;
-        if (params.customerCountry != "" && params.customerCountry != undefined && params.customerCountry != null) {
-            this.document.text(params.customerCountry, x, y);
+        if (params.country != "" && params.country != undefined && params.country != null) {
+            this.document.text(params.country, x, y);
             y = y + this.interval;
         }
     }
