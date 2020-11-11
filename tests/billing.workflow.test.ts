@@ -63,7 +63,7 @@ describe('Billing workflow', () => {
         expect(myPO.total, "Total are not equal").equal(mySale.total);
         expect(myPO.totalFreeTax, "Total tax free are not equal").equal(mySale.totalFreeTax);
         expect(myPO.taxAmount, "Tax amount are not equal").equal(mySale.taxAmount);
-        expect(myPO.id, "Link between quote and sale is broken").equal(mySale.quoteId);
+        expect(myPO.id, "Link between purchase order and sale is broken").equal(mySale.purchaseOrderId);
         expect(myPO.customer.id, "CustomerId are not equal").equal(mySale.customer.id);
         expect(myPO.entityId, "Entity are not equal").equal(mySale.entityId);
         expect(myPO.fileName, "PurchaseOrder - file & id are different").equal(myPO.id + ".pdf");
