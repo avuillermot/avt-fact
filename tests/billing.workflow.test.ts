@@ -41,6 +41,8 @@ describe('Billing workflow', () => {
         expect(myQuote.entityId, "Entity are not equal").equal(mySale.entityId);
         expect(myQuote.fileName, "Quote - file & id are different").equal(myQuote.id + ".pdf");
         expect(mySale.fileName, "Quote - file & id are different").equal(mySale.id + ".pdf");
+        // test close status
+        expect(myQuote.status, "Quote - status is close").equal("CLOSE");
     });
 
     it('Should create a sales receipt from a purchase order', async () => {
@@ -68,6 +70,8 @@ describe('Billing workflow', () => {
         expect(myPO.entityId, "Entity are not equal").equal(mySale.entityId);
         expect(myPO.fileName, "PurchaseOrder - file & id are different").equal(myPO.id + ".pdf");
         expect(mySale.fileName, "PurchaseOrder - file & id are different").equal(mySale.id + ".pdf");
+        // test close status
+        expect(myPO.status, "PurchaseOrder - status is close").equal("CLOSE");
     });
 
 });

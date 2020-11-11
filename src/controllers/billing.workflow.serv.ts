@@ -12,7 +12,11 @@ export class BillingWorkflowService {
         let servSR: SalesReceiptService = new SalesReceiptService(ApplicationSetting.pdfRepository);
 
         let quote: IQuote = <IQuote>await Quote.findOne({ _id: id });
-        quote.statusHistory.push(<IStatus>{ status: "CLOSE" })
+        quote.status = "CLOSE";
+        quote.statusHistory.push(<IStatus>{ status: "CLOSE", createdBy: "billing_workflow", updatedBy:"billing_workflow" });
+        quote.updated = moment().utc().toDate();
+        quote.updatedBy = "billing_workflow";
+
         await Quote.updateOne({ _id: quote.id }, quote);
 
         let sales: ISalesReceipt = <ISalesReceipt>{
@@ -41,7 +45,10 @@ export class BillingWorkflowService {
         let servSR: SalesReceiptService = new SalesReceiptService(ApplicationSetting.pdfRepository);
 
         let po: IPurchaseOrder = <IPurchaseOrder>await PurchaseOrder.findOne({ _id: id });
-        po.statusHistory.push(<IStatus>{ status: "CLOSE" })
+        po.statusHistory.push(<IStatus>{ status: "CLOSE", createdBy: "billing_workflow", updatedBy: "billing_workflow" });
+        po.status = "CLOSE";
+        po.updated = moment().utc().toDate();
+        po.updatedBy = "billing_workflow";
         await PurchaseOrder.updateOne({ _id: po.id }, po);
 
         let sales: ISalesReceipt = <ISalesReceipt>{
