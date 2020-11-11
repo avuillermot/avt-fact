@@ -4,13 +4,16 @@ import PurchaseOrder, { IPurchaseOrder } from "./../models/document/purchaseOrde
 import { ISalesReceipt } from "./../models/document/salesReceipt";
 import { SalesReceiptService } from './salesReceipt.document.serv';
 import { ApplicationSetting } from "./../config";
+import { IStatus } from "../models/document/status";
 
 export class BillingWorkflowService {
 
     public async createSalesReceiptFromQuote(id: string) {
         let servSR: SalesReceiptService = new SalesReceiptService(ApplicationSetting.pdfRepository);
 
-        let quote:IQuote = <IQuote>await Quote.findOne({ _id: id });
+        let quote: IQuote = <IQuote>await Quote.findOne({ _id: id });
+        quote.statusHistory.push(<IStatus>{ status: "CLOSE" })
+        await Quote.updateOne({ _id: quote.id }, quote);
 
         let sales: ISalesReceipt = <ISalesReceipt>{
             entityId: quote.entityId,
@@ -38,6 +41,8 @@ export class BillingWorkflowService {
         let servSR: SalesReceiptService = new SalesReceiptService(ApplicationSetting.pdfRepository);
 
         let po: IPurchaseOrder = <IPurchaseOrder>await PurchaseOrder.findOne({ _id: id });
+        po.statusHistory.push(<IStatus>{ status: "CLOSE" })
+        await PurchaseOrder.updateOne({ _id: po.id }, po);
 
         let sales: ISalesReceipt = <ISalesReceipt>{
             entityId: po.entityId,
