@@ -127,7 +127,10 @@ export abstract class DocumentHeaderService {
         let y: number = 50;
         this.document.rect(295, 45, 130, this.headerHeight);
 
-        this.document.text(params.firstName + " " + params.lastName, x, y)
+        this.document.font(this.defaultFontBold).fontSize(8).text("Adresse de facturation :", x, y)
+        y = y + this.interval;
+
+        this.document.font(this.defaultFont).fontSize(8).text(params.firstName + " " + params.lastName, x, y)
         y = y + this.interval;
 
         this.document.text(params.address1, x, y);
@@ -153,8 +156,11 @@ export abstract class DocumentHeaderService {
         let x: number = this.margeX + 380;
         let y: number = 50;
         this.document.rect(425, 45, 135, this.headerHeight);
-        
-        this.document.text(params.firstName + " " + params.lastName, x, y)
+
+        this.document.font(this.defaultFontBold).fontSize(8).text("Client :", x, y)
+        y = y + this.interval;
+
+        this.document.font(this.defaultFont).fontSize(8).text(params.firstName + " " + params.lastName, x, y)
         y = y + this.interval;
 
         this.document.text(params.address1, x, y);

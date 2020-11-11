@@ -1,47 +1,32 @@
 import { model } from "mongoose";
 import { IBase } from "./../interface.base";
+import { IEntity } from "../entity/entity"
 import { DefaultPurchaseOrderSchema } from "../schema.document.base";
 import { IProduct } from "../entity/product";
 import { IStatus } from "../document/status";
+import { ICustomer } from "../entity/customer"
 
 export interface IPurchaseOrder extends IBase {
     entityId: string;
     fileName: string;
     date: Date;
-    expirationDate: Date;
+    deliveryDate: Date;
     number: string;
-    customerId: string;
-    customerName: string;
-    customerAddress1: string;
-    customerAddress2: string;
-    customerAddress3: string;
-    customerZipCode: string;
-    customerCity: string;
-    customerCountry: string;
+    customer: ICustomer;
     address1: string;
     address2: string;
     address3: string;
     zipCode: string;
     city: string;
     country: string;
-    providerId1: string;
-    providerId2: string;
-    providerId3: string;
-    providerName: string;
-    providerAddress1: string;
-    providerAddress2: string;
-    providerAddress3: string;
-    providerZipCode: string;
-    providerCity: string;
-    providerCountry: string;
-    providerEmail: string;
-    providerPhone: string;
+    seller: IEntity;
     items: IProduct[];
     status: string;
     statusHistory: IStatus[];
     total: number;
     totalFreeTax: number;
     taxAmount: number;
+    quoteId: string;
 }
 
 export default model<IPurchaseOrder>('PurchaseOrder', DefaultPurchaseOrderSchema);

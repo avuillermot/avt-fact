@@ -7,7 +7,7 @@ export class SalesReceiptFooterService extends DocumentFooterService {
         super(document);
     }
 
-    public async generateFooter(sales: ISalesReceipt) {
-
+    public async generate(sales: ISalesReceipt): Promise<void> {
+        return super.generateFooter([]);
     }
 }

@@ -2,34 +2,34 @@ import PDFDocument = require('pdfkit');
 import fs = require("fs");
 import moment = require("moment");
 import Entity, { IEntity } from "./../models/entity/entity";
-import Quote, { IQuote } from '../models/document/quote';
+import PurchaseOrder, { IPurchaseOrder } from '../models/document/purchaseOrder';
 import { IStatus } from "../models/document/status";
 import { DocumentService, IDocumentService } from "./document/document.serv";
-import { QuoteHeaderService } from "./document/quote.header.serv";
-import { QuoteBodyService } from './document/quote.body.serv';
-import { QuoteFooterService } from './document/quote.footer.serv';
+import { PurchaseOrderHeaderService } from "./document/purchaseOrder.header.serv";
+import { PurchaseOrderBodyService } from './document/purchaseOrder.body.serv';
+import { PurchaseOrderFooterService } from './document/purchaseOrder.footer.serv';
 
-export class QuoteService extends DocumentService implements IDocumentService<IQuote> {
-    servDocumentHeader: QuoteHeaderService;
-    servDocumentBody: QuoteBodyService;
-    servDocumentFooter: QuoteFooterService;
+export class PurchaseOrderService extends DocumentService implements IDocumentService<IPurchaseOrder> {
+    servDocumentHeader: PurchaseOrderHeaderService;
+    servDocumentBody: PurchaseOrderBodyService;
+    servDocumentFooter: PurchaseOrderFooterService;
 
     public constructor(pdfRepository: string) {
         super();
         this.document = new PDFDocument;
-        this.servDocumentHeader = new QuoteHeaderService(this.document);
+        this.servDocumentHeader = new PurchaseOrderHeaderService(this.document);
         this.servDocumentHeader.margeX = this.margeX;
         this.servDocumentHeader.width = this.width;
         this.servDocumentHeader.defaultFont = this.defaultFont;
         this.servDocumentHeader.defaultFontBold = this.defaultFontBold;
 
-        this.servDocumentBody = new QuoteBodyService(this.document);
+        this.servDocumentBody = new PurchaseOrderBodyService(this.document);
         this.servDocumentBody.margeX = this.margeX;
         this.servDocumentBody.width = this.width;
         this.servDocumentBody.defaultFont = this.defaultFont;
         this.servDocumentBody.defaultFontBold = this.defaultFontBold;
 
-        this.servDocumentFooter = new QuoteFooterService(this.document);
+        this.servDocumentFooter = new PurchaseOrderFooterService(this.document);
         this.servDocumentFooter.margeX = this.margeX;
         this.servDocumentFooter.width = this.width;
         this.servDocumentFooter.defaultFont = this.defaultFont;
@@ -38,18 +38,18 @@ export class QuoteService extends DocumentService implements IDocumentService<IQ
         this.pdfRepository = pdfRepository;
     }
 
-    public async createAndSave(quote: IQuote, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string }> {
+    public async createAndSave(po: IPurchaseOrder, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string }> {
         let back: { id: string, hasError: boolean, filename: string } = { id: "", hasError: false, filename: "" };
 
         let seller: IEntity = <IEntity>await Entity.findOne({ _id: sellerId });
         if (seller != null && seller != undefined) {
-            quote.statusHistory = new Array<IStatus>();
-            quote.statusHistory.push(<IStatus>{ status: "CREATE" });
-            quote.seller = seller;
-            quote.number = this.getNumDocument();
+            po.statusHistory = new Array<IStatus>();
+            po.statusHistory.push(<IStatus>{ status: "CREATE" });
+            po.seller = seller;
+            po.number = this.getNumDocument();
 
-            let saved = await Quote.create(quote);
-            let result = await Quote.updateOne({ _id: saved.id }, { fileName: saved.id + ".pdf" });
+            let saved = await PurchaseOrder.create(po);
+            let result = await PurchaseOrder.updateOne({ _id: saved.id }, { fileName: saved.id + ".pdf" });
             saved.fileName = saved.id + ".pdf";
 
             back = await this.createPDF(saved, { annotation: false, annotationText: "DUPLICATA" });
@@ -61,35 +61,35 @@ export class QuoteService extends DocumentService implements IDocumentService<IQ
         return back;
     }
 
-    public async duplicatePdf(quoteid: string): Promise<{ id: string, hasError: boolean, filename: string }> {
+    public async duplicatePdf(poid: string): Promise<{ id: string, hasError: boolean, filename: string }> {
         let back: { id: string, hasError: boolean, filename: string } = { id: "", hasError: false, filename: "" };
-        let current: IQuote = <IQuote>await Quote.findOne({ _id: quoteid });
+        let current: IPurchaseOrder = <IPurchaseOrder>await PurchaseOrder.findOne({ _id: poid });
         if (current != null) {
             current.fileName = current.fileName.replace(".pdf", "").replace(".PDF", "") + "-" + moment().unix() + ".pdf";
             back = await this.createPDF(current, { annotation: true, annotationText: "DUPLICATA" });
         }
         else back.hasError = true;
-        back.id = quoteid;
+        back.id = poid;
         return back;
     }
 
-    private async createPDF(quote: IQuote, params: { annotation: boolean, annotationText: string }): Promise<{ id: string, hasError: boolean, filename: string }> {
+    private async createPDF(po: IPurchaseOrder, params: { annotation: boolean, annotationText: string }): Promise<{ id: string, hasError: boolean, filename: string }> {
         
         let hasError = false;
-        let path = this.pdfRepository + quote.fileName;
+        let path = this.pdfRepository + po.fileName;
         this.document.pipe(fs.createWriteStream(path));
         
         try {
             if (params.annotation) {
                 this.document.text(params.annotationText, 10, 10);
             }
-            this.generateHeader(quote);
+            this.generateHeader(po);
 
             this.document.rect(45, 200, 515, 30).lineWidth(0).stroke();
-            this.servDocumentBody.generateTitle(quote);
-            this.servDocumentBody.generate(quote);
+            this.servDocumentBody.generateTitle(po);
+            this.servDocumentBody.generate(po);
 
-            this.servDocumentFooter.generate(quote);
+            this.servDocumentFooter.generate(po);
 
             this.document.moveDown();
             await this.document.end();
@@ -110,13 +110,13 @@ export class QuoteService extends DocumentService implements IDocumentService<IQ
             });
         }
 
-        return { id: quote.id, hasError: hasError, filename: quote.fileName };
+        return { id: po.id, hasError: hasError, filename: po.fileName };
     }
 
-    private async generateHeader(quote: IQuote): Promise<void> {
-        this.servDocumentHeader.generateHeaderProviderPart(quote);
-        this.servDocumentHeader.generateQuoteAddressPart(quote);
-        this.servDocumentHeader.generateCustomerAddressPart(quote);
-        this.servDocumentHeader.generateReference(quote);
+    private async generateHeader(po: IPurchaseOrder): Promise<void> {
+        this.servDocumentHeader.generateHeaderProviderPart(po);
+        this.servDocumentHeader.generateQuoteAddressPart(po);
+        this.servDocumentHeader.generateCustomerAddressPart(po);
+        this.servDocumentHeader.generateReference(po);
     }
 }

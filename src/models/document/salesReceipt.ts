@@ -10,7 +10,6 @@ export interface ISalesReceipt extends IBase {
     entityId: string;
     fileName: string;
     date: Date;
-    deliveryDate: Date;
     paymentDate: Date;
     number: string;
     customer: ICustomer;
@@ -28,6 +27,7 @@ export interface ISalesReceipt extends IBase {
     totalFreeTax: number;
     taxAmount: number;
     quoteId: string;
+    purchaseOrderId: string;
 }
 
 export default model<ISalesReceipt>('SalesReceipt', DefaultSalesReceiptSchema);

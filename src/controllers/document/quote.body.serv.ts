@@ -1,5 +1,5 @@
 import { DocumentBodyService } from "./body.serv"
-import { IQuote } from '../../models/quote/quote';
+import { IQuote } from '../../models/document/quote';
 
 export class QuoteBodyService extends DocumentBodyService {
 
@@ -11,7 +11,7 @@ export class QuoteBodyService extends DocumentBodyService {
         await super.setTitle("DEVIS");
     }
 
-    public async generateDetails(quote: IQuote): Promise<void> {
+    public async generate(quote: IQuote): Promise<void> {
         await this.setDetails({ taxAmount: quote.taxAmount.toString(), total: quote.total.toString() }, quote.items);
     }
 }

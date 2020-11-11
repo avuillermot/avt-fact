@@ -11,7 +11,7 @@ export class SalesReceiptBodyService extends DocumentBodyService {
         await super.setTitle("FACTURE");
     }
 
-    public async generateDetails(sales: ISalesReceipt): Promise<void> {
+    public async generate(sales: ISalesReceipt): Promise<void> {
         await this.setDetails({ taxAmount: sales.taxAmount.toString(), total: sales.total.toString() }, sales.items);
     }
 }

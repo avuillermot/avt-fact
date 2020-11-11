@@ -7,6 +7,10 @@
     public defaultFontBold: string = "Helvetica-Bold";
 
     public pdfRepository: string = "";
+
+    public getNumDocument(): string {
+        return "test num";
+    }
 }
 
 export interface IDocumentService<T> {

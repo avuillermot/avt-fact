@@ -1,5 +1,5 @@
 import { DocumentFooterService } from "./footer.serv"
-import { IQuote } from "../../models/quote/quote";
+import { IQuote } from "../../models/document/quote";
 
 export class QuoteFooterService extends DocumentFooterService {
 
@@ -7,7 +7,7 @@ export class QuoteFooterService extends DocumentFooterService {
         super(document);
     }
 
-    public async generateFooter(quote: IQuote) {
-
+    public async generate(quote: IQuote): Promise<void> {
+        return super.generateFooter([]);
     }
 }

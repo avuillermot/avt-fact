@@ -22,7 +22,6 @@ export class SalesReceiptHeaderService extends DocumentHeaderService {
 
     public async generateReference(sales: ISalesReceipt): Promise<void> {
         let additionals: string[] = new Array<string>();
-        additionals.push("Livraison : " + moment(sales.deliveryDate).locale("fr").format("L"));
         additionals.push("Paiement : " + moment(sales.paymentDate).locale("fr").format("L"));
 
         await super.setReferencePart(sales, additionals);

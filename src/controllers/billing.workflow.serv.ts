@@ -1,12 +1,13 @@
 import moment = require("moment");
-import Quote, { IQuote } from "./../models/quote/quote";
+import Quote, { IQuote } from "./../models/document/quote";
+import PurchaseOrder, { IPurchaseOrder } from "./../models/document/purchaseOrder";
 import { ISalesReceipt } from "./../models/document/salesReceipt";
 import { SalesReceiptService } from './salesReceipt.document.serv';
 import { ApplicationSetting } from "./../config";
 
 export class BillingWorkflowService {
 
-    public async createSalesReceiptFromQuote(id: string, deliveryDate:Date) {
+    public async createSalesReceiptFromQuote(id: string) {
         let servSR: SalesReceiptService = new SalesReceiptService(ApplicationSetting.pdfRepository);
 
         let quote:IQuote = <IQuote>await Quote.findOne({ _id: id });
@@ -24,13 +25,39 @@ export class BillingWorkflowService {
             city: quote.city,
             country: quote.country,
 
-            number: "new billing num",
+            number: "",
             date: moment().utc().toDate(),
-            deliveryDate: deliveryDate,
-
             items: quote.items,
 
             quoteId: quote.id
+        };
+        return await servSR.createAndSave(sales, sales.seller.id);
+    }
+
+    public async createSalesReceiptFromPurchaseOrder(id: string) {
+        let servSR: SalesReceiptService = new SalesReceiptService(ApplicationSetting.pdfRepository);
+
+        let po: IPurchaseOrder = <IPurchaseOrder>await PurchaseOrder.findOne({ _id: id });
+
+        let sales: ISalesReceipt = <ISalesReceipt>{
+            entityId: po.entityId,
+
+            customer: po.customer,
+            seller: po.seller,
+
+            zipCode: po.zipCode,
+            address1: po.address1,
+            address2: po.address2,
+            address3: po.address3,
+            city: po.city,
+            country: po.country,
+            
+            number: "",
+            date: moment().utc().toDate(),
+            items: po.items,
+
+            quoteId: po.quoteId,
+            purchaseOrderId: po.id
         };
         return await servSR.createAndSave(sales, sales.seller.id);
     }

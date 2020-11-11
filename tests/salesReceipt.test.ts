@@ -19,7 +19,7 @@ describe('SalesReceipt', () => {
 
         const document = await query.createAndSave(sales, "5fabc76ed0c4b12444fa45ca");
         expect(fs.existsSync(ApplicationSetting.pdfRepository + document.filename), "PDF file won't exists").equal(true);
-        fs.unlink(ApplicationSetting.pdfRepository + document.filename, function () { });
+        //fs.unlink(ApplicationSetting.pdfRepository + document.filename, function () { });
     });
 
     it('Should generate a duplicate PDF', async () => {
@@ -27,6 +27,6 @@ describe('SalesReceipt', () => {
         let query: SalesReceiptService = new SalesReceiptService(ApplicationSetting.pdfRepository);
         let result = await query.duplicatePdf(input._id);
         expect(fs.existsSync(ApplicationSetting.pdfRepository + result.filename), "PDF file won't exists").equal(true);
-        fs.unlink(ApplicationSetting.pdfRepository + result.filename, function () { });
+        //fs.unlink(ApplicationSetting.pdfRepository + result.filename, function () { });
     });
 });

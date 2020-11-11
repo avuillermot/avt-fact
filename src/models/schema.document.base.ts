@@ -49,7 +49,8 @@ const SchemaBaseDocument = {
 const _DefaultSalesReceiptSchema: Schema = new Schema(SchemaBaseDocument);
 _DefaultSalesReceiptSchema.add({
     entityId: { type: String, required: true },
-    quoteId: { type: String, required: false}
+    quoteId: { type: String, required: false },
+    purchaseOrderId: { type: String, required: false }
 });
 _DefaultSalesReceiptSchema.pre("save", function (next) {
     this.set("created", moment().utc().toDate());
@@ -94,7 +95,8 @@ export const DefaultQuoteSchema = _DefaultQuoteSchema
 const _DefaultPurchaseOrderSchema: Schema = new Schema(SchemaBaseDocument);
 _DefaultPurchaseOrderSchema.add({
     entityId: { type: String, required: true },
-    expirationDate: { type: Date, required: true, default: moment().utc().add(30, "days").toDate() }
+    quoteId: { type: String, required: false },
+    deliveryDate: { type: Date, required: true, default: moment().utc().add(30, "days").toDate() }
 });
 _DefaultPurchaseOrderSchema.pre("save", function (next) {
     this.set("created", moment().utc().toDate());
