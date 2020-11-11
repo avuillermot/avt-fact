@@ -3,9 +3,6 @@ import { DefaultEntitySchema } from "../schema.entity";
 import { IBase } from "../interface.base";
 
 export interface IEntity extends IBase {
-    id1: string;
-    id2: string;
-    id3: string;
     name: string;
     address1: string;
     address2: string;
@@ -15,6 +12,12 @@ export interface IEntity extends IBase {
     country: string;
     email: string;
     phone: string;
+    siren: string;
+    siret: string;
+    codeAPE: string;
+    codeTVA: string;
+    legalType: string;
+    capital: number;
 }
 
 export default model<IEntity>('Entity', DefaultEntitySchema);

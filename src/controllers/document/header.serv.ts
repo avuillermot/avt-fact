@@ -10,11 +10,14 @@ export class SellerPart {
     public country: string = "";
     public email: string = "";
     public phone: string = "";
-    public id1: string = "";
-    public id2: string = "";
-    public id3: string = "";
+    public siren: string = "";
+    public siret: string = "";
+    public codeAPE: string = "";
+    public codeTVA: string = "";
+    public legalType: string = "";
+    public capital: number = 0;
 };
-export class InvoiceAddressPart {
+export class BillingAddressPart {
     public firstName: string = "";
     public lastName: string = "";
     public address1: string = "";
@@ -34,9 +37,9 @@ export class CustomerAddressPart {
     public city: string = "";
     public country: string = "";
 };
-export class InvoiceReferencePart {
-    public invoiceNumber: string = "";
-    public invoiceDate: Date = new Date();
+export class BillingReferencePart {
+    public number: string = "";
+    public date: Date = new Date();
 };
 
 export abstract class DocumentHeaderService {
@@ -65,20 +68,30 @@ export abstract class DocumentHeaderService {
             .text(params.name, x, y).font(this.defaultFont);
         y = y + this.interval;
 
-        this.document.text(params.id1, x, y);
-        y = y + this.interval;
-        
-        if (params.id2 != "" && params.id2 != undefined && params.id2 != null) {
-            this.document.text(params.id2, x, y);
-            y = y + this.interval;
+        this.document.fontSize(6).text("Siret: " + params.siret, x, y);
+        y = y + (this.interval - 4);
+
+        if (params.siren != "" && params.siren != undefined && params.siren != null) {
+            this.document.fontSize(6).text("Siren: " + params.siren, x, y);
+            y = y + (this.interval - 4);
         }
-        if (params.id3 != "" && params.id3 != undefined && params.id3 != null) {
-            this.document.text(params.id3, x, y);
-            y = y + this.interval;
+
+        if (params.legalType != "" && params.legalType != undefined && params.legalType != null) {
+            this.document.fontSize(6).text(params.legalType + " au capital de " + params.capital.toString() + "€");
+            y = y + (this.interval - 4);
+        }
+        
+        if (params.codeAPE != "" && params.codeAPE != undefined && params.codeAPE != null) {
+            this.document.fontSize(6).text("Code APE: " + params.codeAPE, x, y);
+            y = y + (this.interval - 4);
+        }
+        if (params.codeTVA != "" && params.codeTVA != undefined && params.codeTVA != null) {
+            this.document.fontSize(6).text("Code TVA: " + params.codeTVA, x, y);
+            y = y + (this.interval - 4);
         }
         y = y + this.interval;
 
-        this.document.text(params.address1, x, y);
+        this.document.fontSize(8).text(params.address1, x, y);
         y = y + this.interval;
 
         if (params.address2 != "" && params.address2 != undefined && params.address2 != null) {
@@ -109,7 +122,7 @@ export abstract class DocumentHeaderService {
         }
     }
 
-    public async setAddressPart(params: InvoiceAddressPart): Promise<void> {
+    public async setAddressPart(params: BillingAddressPart): Promise<void> {
         let x: number = this.margeX + 250;
         let y: number = 50;
         this.document.rect(295, 45, 130, this.headerHeight);
@@ -163,14 +176,14 @@ export abstract class DocumentHeaderService {
         }
     }
 
-    public async setReferencePart(params: InvoiceReferencePart, additionals: string[]): Promise<void> {
+    public async setReferencePart(params: BillingReferencePart, additionals: string[]): Promise<void> {
 
         let x: number = this.margeX + 140;
         let y: number = 50;
 
-        this.document.fontSize(8).font(this.defaultFontBold).text("N°: " + params.invoiceNumber, x, y).font(this.defaultFont);
+        this.document.fontSize(8).font(this.defaultFontBold).text("N°: " + params.number, x, y).font(this.defaultFont);
         y = y + this.interval;
-        this.document.text("Edité le : " + moment(params.invoiceDate).locale("fr").format("L"), x, y);
+        this.document.text("Edité le : " + moment(params.date).locale("fr").format("L"), x, y);
         y = y + this.interval;
 
         if (additionals != null) {

@@ -1,11 +1,10 @@
 ﻿import { expect } from 'chai';
 import "mocha";
-import fs = require("fs");
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
 import { CustomerService } from '../src/controllers/customer.serv';
 import { ICustomer } from '../src/models/entity/customer';
 
-describe('Entity', () => {
+describe('Customer', () => {
 
     let db: DbSettings = new DbSettings();
     db.connection();

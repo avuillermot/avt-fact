@@ -1,15 +1,15 @@
 import { model } from "mongoose";
 import { IBase } from "./../interface.base";
 import { DefaultPurchaseOrderSchema } from "../schema.document.base";
-import { IItemInvoice } from "../invoice/itemInvoice";
-import { IStatusInvoice } from "../invoice/statusInvoice";
+import { IProduct } from "../entity/product";
+import { IStatus } from "../document/status";
 
 export interface IPurchaseOrder extends IBase {
     entityId: string;
     fileName: string;
-    invoiceDate: Date;
+    date: Date;
     expirationDate: Date;
-    invoiceNumber: string;
+    number: string;
     customerId: string;
     customerName: string;
     customerAddress1: string;
@@ -18,12 +18,12 @@ export interface IPurchaseOrder extends IBase {
     customerZipCode: string;
     customerCity: string;
     customerCountry: string;
-    invoiceAddress1: string;
-    invoiceAddress2: string;
-    invoiceAddress3: string;
-    invoiceZipCode: string;
-    invoiceCity: string;
-    invoiceCountry: string;
+    address1: string;
+    address2: string;
+    address3: string;
+    zipCode: string;
+    city: string;
+    country: string;
     providerId1: string;
     providerId2: string;
     providerId3: string;
@@ -36,9 +36,9 @@ export interface IPurchaseOrder extends IBase {
     providerCountry: string;
     providerEmail: string;
     providerPhone: string;
-    items: IItemInvoice[];
+    items: IProduct[];
     status: string;
-    statusHistory: IStatusInvoice[];
+    statusHistory: IStatus[];
     total: number;
     totalFreeTax: number;
     taxAmount: number;

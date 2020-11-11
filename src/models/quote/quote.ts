@@ -1,28 +1,29 @@
 import { model } from "mongoose";
 import { IBase } from "./../interface.base";
 import { DefaultQuoteSchema } from "../schema.document.base";
-import { IItemInvoice } from "../invoice/itemInvoice";
-import { IStatusInvoice } from "../invoice/statusInvoice";
+import { ISalesReceipt } from "../document/salesReceipt";
+import { IStatus } from "../document/status";
 import { IEntity } from "../entity/entity"
 import { ICustomer } from "../entity/customer"
+import { IProduct } from "../entity/product";
 
 export interface IQuote extends IBase {
     entityId: string,
     fileName: string;
-    invoiceDate: Date;
+    date: Date;
     expirationDate: Date;
-    invoiceNumber: string;
+    number: string;
     customer: ICustomer;
-    invoiceAddress1: string;
-    invoiceAddress2: string;
-    invoiceAddress3: string;
-    invoiceZipCode: string;
-    invoiceCity: string;
-    invoiceCountry: string;
+    address1: string;
+    address2: string;
+    address3: string;
+    zipCode: string;
+    city: string;
+    country: string;
     seller: IEntity;
-    items: IItemInvoice[];
+    items: IProduct[];
     status: string;
-    statusHistory: IStatusInvoice[];
+    statusHistory: IStatus[];
     total: number;
     totalFreeTax: number;
     taxAmount: number;

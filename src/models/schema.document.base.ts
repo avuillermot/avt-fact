@@ -2,9 +2,10 @@
 import moment = require("moment");
 import { DefaultEntitySchema } from "./schema.entity";
 import { DefaultCustomerSchema } from "./schema.entity";
+import { DefaultProductSchema } from "./schema.product";
 var Float = require('mongoose-float').loadType(mongoose, 2);
 
-const SchemaBaseStatusInvoice: Schema = new Schema({
+const SchemaBaseStatus: Schema = new Schema({
     created: { type: Date, required: true, default: moment().utc() },
     createdBy: { type: String, required: true, default: "system" },
     updated: { type: Date, required: true, default: moment().utc() },
@@ -13,38 +14,7 @@ const SchemaBaseStatusInvoice: Schema = new Schema({
     status: { type: String, required: true },
 
 });
-export const DefaultStatusInvoiceSchema: Schema = new Schema(SchemaBaseStatusInvoice);
-
-const SchemaBaseItemInvoice = {
-    created: { type: Date, required: true, default: moment().utc() },
-    createdBy: { type: String, required: true, default: "create_process" },
-    updated: { type: Date, required: true, default: moment().utc() },
-    updatedBy: { type: String, required: true, default: "create_process" },
-
-    entityId: { type: String, required: true },
-    productCode: { type: String, required: true, default: "NO_CODE" },
-    productName: { type: String, required: true, default: "(?)" },
-    quantity: { type: Number, required: true, default: 0 },
-    price: { type: Float, required: true, default: 0 },
-    total: { type: Float, required: true, default: 0 },
-    totalFreeTax: { type: Number, required: true, default: 0 },
-    taxAmount: { type: Float, required: true, default: 0 },
-    taxPercent: { type: Float, required: true, default: 0 }
-}
-export const DefaultItemInvoiceSchema: Schema = new Schema(SchemaBaseItemInvoice);
-DefaultItemInvoiceSchema.pre("save", function (next) {
-    let taxPercent = 1 + (this.get("taxPercent") / 100);
-    let total = this.get("quantity") * this.get("price") * taxPercent;
-    let taxAmount = total - (this.get("quantity") * this.get("price"));
-
-    this.set("created", moment().utc().toDate());
-    this.set("updated", moment().utc().toDate())
-    this.set("total", total);
-    this.set("totalFreeTax", total - taxAmount);
-    this.set("taxAmount", taxAmount);
-
-    next();
-});
+export const DefaultStatusSchema: Schema = new Schema(SchemaBaseStatus);
 
 const SchemaBaseDocument = {
     created: { type: Date, required: true, default: moment().utc() },
@@ -52,36 +22,36 @@ const SchemaBaseDocument = {
     updated: { type: Date, required: true, default: moment().utc() },
     updatedBy: { type: String, required: true, default: "create_process" },
 
-    invoiceDate: { type: Date, required: true },
+    date: { type: Date, required: true },
     fileName: { type: String, required: false },
-    invoiceNumber: { type: String, required: true },
+    number: { type: String, required: true },
 
     customer: { type: DefaultCustomerSchema, required: true },
 
-    invoiceAddress1: { type: String, required: true },
-    invoiceAddress2: { type: String, required: false },
-    invoiceAddress3: { type: String, required: false },
-    invoiceZipCode: { type: String, required: true },
-    invoiceCity: { type: String, required: true },
-    invoiceCountry: { type: String, required: true },
+    address1: { type: String, required: true },
+    address2: { type: String, required: false },
+    address3: { type: String, required: false },
+    zipCode: { type: String, required: true },
+    city: { type: String, required: true },
+    country: { type: String, required: true },
 
     seller: { type: DefaultEntitySchema, required: true },
 
     status: { type: String, required: true, default: "CREATE" },
-    statusHistory: { type: [DefaultStatusInvoiceSchema] },
+    statusHistory: { type: [DefaultStatusSchema] },
 
-    items: { type: [DefaultItemInvoiceSchema] },
+    items: { type: [DefaultProductSchema] },
     total: { type: Float, required: true, default: 0 },
     totalFreeTax: { type: Float, required: true, default: 0 },
     taxAmount: { type: Float, required: true, default: 0 }    
 };
 
-const _DefaultInvoiceSchema: Schema = new Schema(SchemaBaseDocument);
-_DefaultInvoiceSchema.add({
+const _DefaultSalesReceiptSchema: Schema = new Schema(SchemaBaseDocument);
+_DefaultSalesReceiptSchema.add({
     entityId: { type: String, required: true },
     quoteId: { type: String, required: false}
 });
-_DefaultInvoiceSchema.pre("save", function (next) {
+_DefaultSalesReceiptSchema.pre("save", function (next) {
     this.set("created", moment().utc().toDate());
     this.set("updated", moment().utc().toDate())
 
@@ -96,7 +66,7 @@ _DefaultInvoiceSchema.pre("save", function (next) {
     this.set("totalFreeTax", total - taxAmount);
     next();
 });
-export const DefaultInvoiceSchema = _DefaultInvoiceSchema
+export const DefaultSalesReceiptSchema = _DefaultSalesReceiptSchema
 
 const _DefaultQuoteSchema: Schema = new Schema(SchemaBaseDocument);
 _DefaultQuoteSchema.add({

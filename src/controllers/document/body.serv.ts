@@ -1,4 +1,4 @@
-﻿import { IItemInvoice } from "../../models/invoice/itemInvoice";
+﻿import { IProduct } from "../../models/entity/product";
 
 export abstract class DocumentBodyService {
 
@@ -7,7 +7,7 @@ export abstract class DocumentBodyService {
     public width: number = 0;
     public defaultFont: string = "";
     public defaultFontBold: string = "";
-    private startBodyY: number = 240;
+    private startBodyY: number = 210;
 
     public constructor(document: any) {
         this.document = document;
@@ -17,7 +17,7 @@ export abstract class DocumentBodyService {
         this.document.fontSize(8).font(this.defaultFont).text(title, (this.width / 2) - 30, this.startBodyY);
     }
 
-    public async setDetails(params: { taxAmount: string, total: string },items: IItemInvoice[]): Promise<void> {
+    public async setDetails(params: { taxAmount: string, total: string },items: IProduct[]): Promise<void> {
         
         let baseCol: number = this.width / 7 - 20;
         let col1: number = this.margeX;
@@ -31,13 +31,13 @@ export abstract class DocumentBodyService {
         let lineHeight: number = 35;
 
         this.document.fontSize(8).font(this.defaultFont)
-            .text("Article", col1, this.startBodyY + 30)
-            .text("Quantité", col2, this.startBodyY + 30)
-            .text("Prix unitaire", col3, this.startBodyY + 30)
-            .text("Total hors taxe", col4, this.startBodyY + 30)
-            .text("Montant taxe", col5, this.startBodyY + 30)
-            .text("% TVA", col6, this.startBodyY + 30)
-            .text("Total", col7, this.startBodyY + 30);
+            .text("Article", col1, this.startBodyY + 25)
+            .text("Quantité", col2, this.startBodyY + 25)
+            .text("Prix unitaire", col3, this.startBodyY + 25)
+            .text("Total hors taxe", col4, this.startBodyY + 25)
+            .text("Montant taxe", col5, this.startBodyY + 25)
+            .text("% TVA", col6, this.startBodyY + 25)
+            .text("Total", col7, this.startBodyY + 25);
 
         for (var i = 0; i < items.length; i++) {
             let item = items[i];
@@ -56,18 +56,18 @@ export abstract class DocumentBodyService {
 
         let line: number = 2;
         let y = (this.startBodyY + 20) + ((items.length + line) * lineHeight);
-        this.document.rect(col5, (this.startBodyY -15)  + ((i + line) * lineHeight), 515 - col4 - 20, lineHeight).lineWidth(0).stroke();
-
-        this.document.fontSize(8).font(this.defaultFont)
-            .text("TVA €", col6, y)
-            .text(params.taxAmount, col7, y);
-
-        line++;
-        y = (this.startBodyY + 20) + ((items.length + line) * lineHeight);
         this.document.rect(col5, (this.startBodyY - 15)  + ((i + line) * lineHeight), 515 - col4 - 20, lineHeight).lineWidth(0).stroke();
 
         this.document.fontSize(8).font(this.defaultFont)
-            .text("TOTAL €", col6, y)
-            .text(params.total, col7, y);
+            .text("TVA €", col6, y - 20)
+            .text(params.taxAmount, col7, y - 20);
+
+        line++;
+        y = (this.startBodyY + 20) + ((items.length + line) * lineHeight);
+        this.document.rect(col5, (this.startBodyY - 20)  + ((i + line) * lineHeight), 515 - col4 - 20, lineHeight).lineWidth(0).stroke();
+
+        this.document.fontSize(8).font(this.defaultFont)
+            .text("TOTAL €", col6, y - 20)
+            .text(params.total, col7, y - 20);
     }
 }

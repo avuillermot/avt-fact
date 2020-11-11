@@ -1,38 +1,38 @@
 import moment = require("moment");
 import Quote, { IQuote } from "./../models/quote/quote";
-import { IInvoice } from "./../models/invoice/invoice";
-import { InvoiceService } from './invoice.document.serv';
+import { ISalesReceipt } from "./../models/document/salesReceipt";
+import { SalesReceiptService } from './salesReceipt.document.serv';
 import { ApplicationSetting } from "./../config";
 
 export class BillingWorkflowService {
 
-    public async createInvoiceFromQuote(id: string, deliveryDate:Date) {
-        let servInvoice: InvoiceService = new InvoiceService(ApplicationSetting.pdfRepository);
+    public async createSalesReceiptFromQuote(id: string, deliveryDate:Date) {
+        let servSR: SalesReceiptService = new SalesReceiptService(ApplicationSetting.pdfRepository);
 
         let quote:IQuote = <IQuote>await Quote.findOne({ _id: id });
 
-        let invoice: IInvoice = <IInvoice>{
+        let sales: ISalesReceipt = <ISalesReceipt>{
             entityId: quote.entityId,
 
             customer: quote.customer,
             seller: quote.seller,
 
-            invoiceZipCode: quote.invoiceZipCode,
-            invoiceAddress1: quote.invoiceZipCode,
-            invoiceAddress2: quote.invoiceAddress2,
-            invoiceAddress3: quote.invoiceAddress3,
-            invoiceCity: quote.invoiceCity,
-            invoiceCountry: quote.invoiceCountry,
+            zipCode: quote.zipCode,
+            address1: quote.address1,
+            address2: quote.address2,
+            address3: quote.address3,
+            city: quote.city,
+            country: quote.country,
 
-            invoiceNumber: "new invoice num",
-            invoiceDate: moment().utc().toDate(),
+            number: "new billing num",
+            date: moment().utc().toDate(),
             deliveryDate: deliveryDate,
 
             items: quote.items,
 
             quoteId: quote.id
         };
-        return await servInvoice.createAndSave(invoice, invoice.seller.id);
+        return await servSR.createAndSave(sales, sales.seller.id);
     }
     
 }

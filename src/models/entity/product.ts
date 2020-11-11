@@ -1,8 +1,8 @@
 import { model } from "mongoose";
 import { IBase } from "./../interface.base";
-import { DefaultItemInvoiceSchema } from "../schema.document.base";
+import { DefaultProductSchema } from "../schema.product";
 
-export interface IItemInvoice extends IBase {
+export interface IProduct extends IBase {
     entityId: string;
     productCode: string;
     productName: string;
@@ -14,4 +14,4 @@ export interface IItemInvoice extends IBase {
     taxPercent: number;
 }
 
-export default model<IItemInvoice>('ItemInvoice', DefaultItemInvoiceSchema);
+export default model<IProduct>('Product', DefaultProductSchema);

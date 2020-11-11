@@ -8,9 +8,12 @@ const SchemaEntity: Schema = new Schema({
     updatedBy: { type: String, required: true, default: "system" },
 
     name: { type: String, required: true },
-    id1: { type: String, required: true },
-    id2: { type: String, required: false },
-    id3: { type: String, required: false },
+    siren: { type: String, required: true },
+    siret: { type: String, required: true },
+    codeAPE: { type: String, required: true },
+    codeTVA: { type: String, required: true },
+    legalType: { type: String, required: true },
+    capital: { type: String, required: true },
     address1: { type: String, required: true },
     address2: { type: String, required: false },
     address3: { type: String, required: false },
@@ -18,8 +21,7 @@ const SchemaEntity: Schema = new Schema({
     city: { type: String, required: true },
     country: { type: String, required: true },
     email: { type: String, required: true },
-    phone: { type: String, required: true }
-
+    phone: { type: String, required: true },
 });
 export const DefaultEntitySchema: Schema = new Schema(SchemaEntity);
 
