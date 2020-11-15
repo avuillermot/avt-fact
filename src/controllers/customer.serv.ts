@@ -5,4 +5,9 @@ export class CustomerService {
         let back: ICustomer = await Customer.create(customer);
         return back;
     }
+
+    public async get(entity: string): Promise<ICustomer[]> {
+        let customers = await Customer.find({ entityId: entity });
+        return customers;
+    }
 }
