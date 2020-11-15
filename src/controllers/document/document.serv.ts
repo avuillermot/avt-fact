@@ -17,7 +17,7 @@ export abstract class DocumentService {
     }
 
     public getNumDocument(type:string): string {
-        return type + moment().utc().format("YY") + moment().utc().format("MM") + moment().utc().format("DD")  + this.getRandomIntInclusive(1000,9999);
+        return type + moment().utc().format("YY") + moment().utc().format("MM") + moment().utc().format("DD") + "-"  + this.getRandomIntInclusive(1000,9999);
     }
 }
 
