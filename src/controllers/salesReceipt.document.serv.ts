@@ -47,7 +47,7 @@ export class SalesReceiptService extends DocumentService implements IDocumentSer
             sales.statusHistory = new Array<IStatus>();
             sales.statusHistory.push(<IStatus>{ status: "CREATE" });
             sales.seller = seller;
-            sales.number = this.getNumDocument();
+            sales.number = this.getNumDocument("FV");
 
             let saved = await SalesReceipt.create(sales);
             let result = await SalesReceipt.updateOne({ _id: saved.id }, { fileName: saved.id + ".pdf" });

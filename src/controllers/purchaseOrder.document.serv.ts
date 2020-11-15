@@ -46,7 +46,7 @@ export class PurchaseOrderService extends DocumentService implements IDocumentSe
             po.statusHistory = new Array<IStatus>();
             po.statusHistory.push(<IStatus>{ status: "CREATE" });
             po.seller = seller;
-            po.number = this.getNumDocument();
+            po.number = this.getNumDocument("BC");
 
             let saved = await PurchaseOrder.create(po);
             let result = await PurchaseOrder.updateOne({ _id: saved.id }, { fileName: saved.id + ".pdf" });

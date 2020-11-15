@@ -1,4 +1,6 @@
-﻿export abstract class DocumentService {
+﻿import moment from "moment";
+
+export abstract class DocumentService {
 
     public document: any;
     public margeX: number = 50;
@@ -8,8 +10,14 @@
 
     public pdfRepository: string = "";
 
-    public getNumDocument(): string {
-        return "test num";
+    public getRandomIntInclusive(min:number, max:number) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    public getNumDocument(type:string): string {
+        return type + moment().utc().format("YY") + moment().utc().format("MM") + moment().utc().format("DD")  + this.getRandomIntInclusive(1000,9999);
     }
 }
 

@@ -24,7 +24,7 @@ const SchemaBaseDocument = {
 
     date: { type: Date, required: true },
     fileName: { type: String, required: false },
-    number: { type: String, required: true },
+    number: { type: String, required: true, unique: true },
 
     customer: { type: DefaultCustomerSchema, required: true },
 

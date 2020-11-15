@@ -6,11 +6,11 @@ import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./.
 import { PurchaseOrderService } from '../src/controllers/purchaseOrder.document.serv';
 import PurchaseOrder, { IPurchaseOrder } from '../src/models/document/purchaseOrder';
 
-describe('Quote', async () => {
+describe('Purchase Order', async () => {
 
     let db: DbSettings = new DbSettings();
     db.connection();
-    //db.dropCollection("quotes");
+    db.dropCollection("purchaseorders");
 
     it('Should create a purchase order & PDF', async () => {
 

@@ -46,7 +46,7 @@ export class QuoteService extends DocumentService implements IDocumentService<IQ
             quote.statusHistory = new Array<IStatus>();
             quote.statusHistory.push(<IStatus>{ status: "CREATE" });
             quote.seller = seller;
-            quote.number = this.getNumDocument();
+            quote.number = this.getNumDocument("DE");
 
             let saved = await Quote.create(quote);
             let result = await Quote.updateOne({ _id: saved.id }, { fileName: saved.id + ".pdf" });
