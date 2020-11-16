@@ -1,7 +1,7 @@
 import { model } from "mongoose";
 import { IBase } from "./../interface.base";
 import { DefaultSalesReceiptSchema } from "../schema.document.base";
-import { IProduct } from "./../entity/product";
+import { IItemLine } from "./itemLine";
 import { IStatus } from "./status";
 import { IEntity } from "../entity/entity";
 import { ICustomer } from "../entity/customer";
@@ -20,7 +20,7 @@ export interface ISalesReceipt extends IBase {
     city: string;
     country: string;
     seller: IEntity;
-    items: IProduct[];
+    items: IItemLine[];
     status: string;
     statusHistory: IStatus[];
     total: number;

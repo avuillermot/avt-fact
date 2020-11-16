@@ -1,10 +1,12 @@
 ﻿import moment = require("moment");
 import { IQuote } from '../src/models/document/quote';
 import { ISalesReceipt } from '../src/models/document/salesReceipt';
-import { IProduct } from '../src/models/entity/product';
+import { IItemLine } from '../src/models/document/itemLine';
 import { IEntity } from '../src/models/entity/entity';
 import { ICustomer } from '../src/models/entity/customer';
 import { IPurchaseOrder } from "../src/models/document/purchaseOrder";
+
+export const EntityId: string = "5fb2d568aa307646f0bae2c0";
 
 export const QuoteExample: IQuote = <IQuote>{
     entityId: "ENTTEST",
@@ -51,12 +53,12 @@ export const QuoteExample: IQuote = <IQuote>{
     date : moment().utc().toDate(),
 
     items : [
-        <IProduct>{ productName: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId:"ENTTEST" },
-        <IProduct>{ productName: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IProduct>{ productName: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
-        <IProduct>{ productName: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
-        <IProduct>{ productName: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IProduct>{ productName: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: "ENTTEST" }
+        <IItemLine>{ productName: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId:"ENTTEST" },
+        <IItemLine>{ productName: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ productName: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ productName: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ productName: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ productName: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: "ENTTEST" }
     ]
 }
 
@@ -105,12 +107,12 @@ export const SalesReceiptExample: ISalesReceipt = <ISalesReceipt>{
     quoteId: "",
     purchaseOrderId: "",
     items: [
-        <IProduct>{ productName: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IProduct>{ productName: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IProduct>{ productName: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
-        <IProduct>{ productName: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
-        <IProduct>{ productName: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IProduct>{ productName: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: "ENTTEST" }
+        <IItemLine>{ productName: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ productName: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ productName: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ productName: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ productName: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ productName: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: "ENTTEST" }
     ]
 }
 
@@ -158,11 +160,11 @@ export const PurchaseOrderExample: IPurchaseOrder = <IPurchaseOrder>{
     date: moment().utc().toDate(),
     quoteId: "",
     items: [
-        <IProduct>{ productName: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IProduct>{ productName: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IProduct>{ productName: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
-        <IProduct>{ productName: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
-        <IProduct>{ productName: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IProduct>{ productName: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: "ENTTEST" }
+        <IItemLine>{ productName: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ productName: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ productName: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ productName: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ productName: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ productName: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: "ENTTEST" }
     ]
 }

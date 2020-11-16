@@ -1,7 +1,7 @@
 ﻿import { expect } from 'chai';
 import "mocha";
 import fs = require("fs");
-import { QuoteExample } from "./utils";
+import { QuoteExample, EntityId } from "./utils";
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
 import { QuoteService } from '../src/controllers/quote.document.serv';
 import Quote, { IQuote } from '../src/models/document/quote';
@@ -17,7 +17,7 @@ describe('Quote', async() => {
         let query: QuoteService = new QuoteService(ApplicationSetting.pdfRepository);
         let quote: IQuote = QuoteExample;
 
-        const document = await query.createAndSave(quote, "5fabc76ed0c4b12444fa45ca");
+        const document = await query.createAndSave(quote, EntityId);
         expect(fs.existsSync(ApplicationSetting.pdfRepository + document.filename), "PDF file won't exists").equal(true);
         //fs.unlink(ApplicationSetting.pdfRepository + document.filename, function () { });
     });

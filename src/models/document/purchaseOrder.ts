@@ -2,7 +2,7 @@ import { model } from "mongoose";
 import { IBase } from "./../interface.base";
 import { IEntity } from "../entity/entity"
 import { DefaultPurchaseOrderSchema } from "../schema.document.base";
-import { IProduct } from "../entity/product";
+import { IItemLine } from "./itemLine";
 import { IStatus } from "../document/status";
 import { ICustomer } from "../entity/customer"
 
@@ -20,7 +20,7 @@ export interface IPurchaseOrder extends IBase {
     city: string;
     country: string;
     seller: IEntity;
-    items: IProduct[];
+    items: IItemLine[];
     status: string;
     statusHistory: IStatus[];
     total: number;

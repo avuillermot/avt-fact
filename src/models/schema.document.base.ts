@@ -2,7 +2,7 @@
 import moment = require("moment");
 import { DefaultEntitySchema } from "./schema.entity";
 import { DefaultCustomerSchema } from "./schema.entity";
-import { DefaultProductSchema } from "./schema.product";
+import { DefaultItemLineSchema } from "./schema.itemLine";
 var Float = require('mongoose-float').loadType(mongoose, 2);
 
 const SchemaBaseStatus: Schema = new Schema({
@@ -40,7 +40,7 @@ const SchemaBaseDocument = {
     status: { type: String, required: true, default: "CREATE" },
     statusHistory: { type: [DefaultStatusSchema] },
 
-    items: { type: [DefaultProductSchema] },
+    items: { type: [DefaultItemLineSchema] },
     total: { type: Float, required: true, default: 0 },
     totalFreeTax: { type: Float, required: true, default: 0 },
     taxAmount: { type: Float, required: true, default: 0 }    

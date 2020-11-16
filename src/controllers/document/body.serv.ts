@@ -1,4 +1,4 @@
-﻿import { IProduct } from "../../models/entity/product";
+﻿import { IItemLine } from "../../models/document/itemLine";
 
 export abstract class DocumentBodyService {
 
@@ -17,7 +17,7 @@ export abstract class DocumentBodyService {
         this.document.fontSize(8).font(this.defaultFont).text(title, (this.width / 2) - 30, this.startBodyY);
     }
 
-    public async setDetails(params: { taxAmount: string, total: string },items: IProduct[]): Promise<void> {
+    public async setDetails(params: { taxAmount: string, total: string },items: IItemLine[]): Promise<void> {
         
         let baseCol: number = this.width / 7 - 20;
         let col1: number = this.margeX;
@@ -40,6 +40,7 @@ export abstract class DocumentBodyService {
             .text("Total", col7, this.startBodyY + 25);
 
         for (var i = 0; i < items.length; i++) {
+
             let item = items[i];
             let y = (this.startBodyY + 20) + ((i + 1) * lineHeight);
             this.document.rect(45, (this.startBodyY)  + ((i + 1) * lineHeight), 515, lineHeight).lineWidth(0).stroke();

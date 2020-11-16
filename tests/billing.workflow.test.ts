@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import moment = require("moment");
 import "mocha";
 import fs = require("fs");
-import { QuoteExample, PurchaseOrderExample, SalesReceiptExample } from "./utils";
+import { QuoteExample, PurchaseOrderExample, EntityId } from "./utils";
 import Quote, { IQuote } from '../src/models/document/quote';
 import SalesReceipt, { ISalesReceipt } from '../src/models/document/salesReceipt';
 import PurchaseOrder, { IPurchaseOrder } from '../src/models/document/purchaseOrder';
@@ -22,7 +22,7 @@ describe('Billing workflow', () => {
         let workflow: BillingWorkflowService = new BillingWorkflowService();
         let quote: IQuote = QuoteExample;
         
-        const quoteResult = await query.createAndSave(quote, "5fabc76ed0c4b12444fa45ca");
+        const quoteResult = await query.createAndSave(quote, EntityId);
         expect(fs.existsSync(ApplicationSetting.pdfRepository + quoteResult.filename), "PDF file won't exists").equal(true);
         //fs.unlink(ApplicationSetting.pdfRepository + quoteResult.filename, function () { });
 
@@ -51,7 +51,7 @@ describe('Billing workflow', () => {
         let workflow: BillingWorkflowService = new BillingWorkflowService();
         let po: IPurchaseOrder = PurchaseOrderExample;
 
-        const poResult = await query.createAndSave(po, "5fabc76ed0c4b12444fa45ca");
+        const poResult = await query.createAndSave(po, EntityId);
         expect(fs.existsSync(ApplicationSetting.pdfRepository + poResult.filename), "PDF file won't exists").equal(true);
         //fs.unlink(ApplicationSetting.pdfRepository + quoteResult.filename, function () { });
 

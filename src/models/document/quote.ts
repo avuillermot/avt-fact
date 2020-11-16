@@ -1,11 +1,10 @@
 import { model } from "mongoose";
 import { IBase } from "./../interface.base";
 import { DefaultQuoteSchema } from "../schema.document.base";
-import { ISalesReceipt } from "../document/salesReceipt";
 import { IStatus } from "../document/status";
 import { IEntity } from "../entity/entity"
 import { ICustomer } from "../entity/customer"
-import { IProduct } from "../entity/product";
+import { IItemLine } from "./itemLine";
 
 export interface IQuote extends IBase {
     entityId: string,
@@ -21,7 +20,7 @@ export interface IQuote extends IBase {
     city: string;
     country: string;
     seller: IEntity;
-    items: IProduct[];
+    items: IItemLine[];
     status: string;
     statusHistory: IStatus[];
     total: number;

@@ -2,7 +2,7 @@
 import "mocha";
 import fs = require("fs");
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
-import { SalesReceiptExample } from "./utils";
+import { SalesReceiptExample, EntityId } from "./utils";
 import { SalesReceiptService } from '../src/controllers/salesReceipt.document.serv';
 import SalesReceipt, { ISalesReceipt } from '../src/models/document/salesReceipt';
 
@@ -17,7 +17,7 @@ describe('SalesReceipt', () => {
         let query: SalesReceiptService = new SalesReceiptService(ApplicationSetting.pdfRepository);
         let sales: ISalesReceipt = SalesReceiptExample;
 
-        const document = await query.createAndSave(sales, "5fabc76ed0c4b12444fa45ca");
+        const document = await query.createAndSave(sales, EntityId);
         expect(fs.existsSync(ApplicationSetting.pdfRepository + document.filename), "PDF file won't exists").equal(true);
         //fs.unlink(ApplicationSetting.pdfRepository + document.filename, function () { });
     });
