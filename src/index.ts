@@ -3,6 +3,7 @@ import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./.
 import { CustomerService } from './controllers/customer.serv'
 import url = require('url');
 import bodyParser = require('body-parser');
+import { ICustomer } from './models/entity/customer';
 
 // rest of the code remains same
 const app = express();
@@ -33,8 +34,13 @@ app.get('/customer', async (req, res) => {
 
 app.put('/customer', async (req, res) => {
     let serv: CustomerService = new CustomerService();
-    await serv.update(req.body);
-    res.send();
+    try {
+        let customer:ICustomer = await serv.update(req.body);
+        res.send(customer);
+    }
+    catch (ex) {
+        res.status(500).send(ex.toString());
+    }
 });
 
 app.listen(PORT, () => {

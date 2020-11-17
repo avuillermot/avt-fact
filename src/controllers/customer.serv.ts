@@ -19,7 +19,13 @@ export class CustomerService {
     }
 
     public async update(customer: ICustomer): Promise<ICustomer> {
-        let result: ICustomer = await Customer.updateOne({ _id: customer._id, entityId: customer.entityId }, customer);
-        return result;
+        try {
+            let result: ICustomer = await Customer.updateOne({ _id: customer._id, entityId: customer.entityId }, customer, { runValidators: true });
+            return result;
+        }
+        catch (ex) {
+            let err: string = JSON.stringify(ex.errors);
+            throw new Error(err);
+        }
     }
 }
