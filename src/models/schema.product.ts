@@ -9,11 +9,11 @@ const SchemaBaseProduct = {
     updatedBy: { type: String, required: true, default: "create_process" },
 
     entityId: { type: String, required: true },
-    productCode: { type: String, required: true, default: "NO_CODE" },
-    productName: { type: String, required: true, default: "(?)" },
-    quantity: { type: Number, required: true, default: 0 },
+    code: { type: String, required: true, default: "NO_CODE" },
+    name: { type: String, required: true, default: "(?)" },
     price: { type: Float, required: true, default: 0 },
-    taxPercent: { type: Float, required: true, default: 0 }
+    taxPercent: { type: Float, required: true, default: 0 },
+    deleted: { type: String, required: true, default: false }
 }
 export const DefaultProductSchema: Schema = new Schema(SchemaBaseProduct);
 DefaultProductSchema.pre("save", function (next) {

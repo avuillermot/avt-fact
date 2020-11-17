@@ -5,5 +5,7 @@ export interface IBase extends Document {
     createdBy: string,
     created: Date,
     updated: Date,
-    updatedBy: string
+    updatedBy: string;
+    deleted: boolean;
+    status: string;
 }

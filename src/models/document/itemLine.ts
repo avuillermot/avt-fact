@@ -1,6 +1,6 @@
 import { model } from "mongoose";
 import { IBase } from "./../interface.base";
-import { DefaultProductSchema } from "../schema.product";
+import { DefaultItemLineSchema } from "../schema.itemLine";
 
 export interface IItemLine extends IBase {
     entityId: string;
@@ -14,4 +14,4 @@ export interface IItemLine extends IBase {
     taxPercent: number;
 }
 
-export default model<IItemLine>('Product', DefaultProductSchema);
+export default model<IItemLine>('IItemLine', DefaultItemLineSchema);

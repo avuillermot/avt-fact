@@ -41,7 +41,8 @@ const SchemaCustomer: Schema = new Schema({
     city: { type: String, required: true, minlength: 1 },
     country: { type: String, required: true, minlength: 1 },
     email: { type: String, required: true, minlength: 3 },
-    phone: { type: String, required: true, minlength: 3 }
+    phone: { type: String, required: true, minlength: 3 },
+    deleted: { type: String, required: true, default: false }
 
 });
 export const DefaultCustomerSchema: Schema = new Schema(SchemaCustomer);

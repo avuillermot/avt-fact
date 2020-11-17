@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon src/index.ts",
     "test": "mocha --timeout 5000 --exit -r ts-node/register tests/**/*.test.ts",
-    "testone": "mocha --timeout 5000 --exit -r ts-node/register tests/**/purchaseOrder.test.ts",
+    "testone": "mocha --timeout 5000 --exit -r ts-node/register tests/**/product.test.ts",
     "entity": "mocha --timeout 5000 --exit -r ts-node/register tests/**/entity.test.ts"
   },
   "repository": {

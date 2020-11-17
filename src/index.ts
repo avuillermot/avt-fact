@@ -1,6 +1,7 @@
 import express from 'express';
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
 import { CustomerService } from './controllers/customer.serv'
+import { ProductService } from './controllers/product.serv'
 import url = require('url');
 import bodyParser = require('body-parser');
 import { ICustomer } from './models/entity/customer';
@@ -41,6 +42,12 @@ app.put('/customer', async (req, res) => {
     catch (ex) {
         res.status(500).send(ex.toString());
     }
+});
+
+app.get('/products', async (req, res) => {
+    let serv: ProductService = new ProductService();
+    const params: { entity: string, id: string } = <any>url.parse(req.url, true).query;
+    res.send(await serv.getAll(params.entity));
 });
 
 app.listen(PORT, () => {

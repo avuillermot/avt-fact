@@ -12,6 +12,7 @@ const SchemaBaseStatus: Schema = new Schema({
     updatedBy: { type: String, required: true, default: "system" },
 
     status: { type: String, required: true },
+    deleted: { type: String, required: true, default: false }
 
 });
 export const DefaultStatusSchema: Schema = new Schema(SchemaBaseStatus);
