@@ -5,6 +5,7 @@ import { ProductService } from './controllers/product.serv'
 import url = require('url');
 import bodyParser = require('body-parser');
 import { ICustomer } from './models/entity/customer';
+import { IProduct } from './models/entity/product';
 
 // rest of the code remains same
 const app = express();
@@ -35,6 +36,7 @@ app.get('/customer', async (req, res) => {
 
 app.put('/customer', async (req, res) => {
     let serv: CustomerService = new CustomerService();
+    const params: { entity: string, id: string } = <any>url.parse(req.url, true).query;
     try {
         let customer:ICustomer = await serv.update(req.body);
         res.send(customer);
@@ -44,10 +46,35 @@ app.put('/customer', async (req, res) => {
     }
 });
 
+app.post('/customer', async (req, res) => {
+    let serv: CustomerService = new CustomerService();
+    const params: { entity: string, id: string } = <any>url.parse(req.url, true).query;
+    try {
+        let customer: ICustomer = await serv.create(req.body);
+        res.send(customer);
+    }
+    catch (ex) {
+        console.log(ex.toString());
+        res.status(500).send(ex.toString());
+    }
+});
+
 app.get('/products', async (req, res) => {
     let serv: ProductService = new ProductService();
     const params: { entity: string, id: string } = <any>url.parse(req.url, true).query;
     res.send(await serv.getAll(params.entity));
+});
+
+app.put('/product', async (req, res) => {
+    let serv: ProductService = new ProductService();
+    const params: { entity: string, id: string } = <any>url.parse(req.url, true).query;
+    try {
+        let product: IProduct = await serv.update(req.body);
+        res.send(product);
+    }
+    catch (ex) {
+        res.status(500).send(ex.toString());
+    }
 });
 
 app.get('/product', async (req, res) => {

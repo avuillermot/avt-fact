@@ -2,6 +2,10 @@ import Customer, { ICustomer } from "./../models/entity/customer"
 export class CustomerService {
 
     public async create(customer: ICustomer): Promise<ICustomer> {
+
+        let max: ICustomer[] | null = await Customer.find({entityId: customer.entityId}).limit(1).sort("-number");
+        customer.number = (max == null || max.length == 0) ? 1 : max[0].number + 1;
+        
         let back: ICustomer = await Customer.create(customer);
         return back;
     }

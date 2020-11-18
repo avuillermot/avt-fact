@@ -25,6 +25,12 @@ const SchemaEntity: Schema = new Schema({
     phone: { type: String, required: true },
 });
 export const DefaultEntitySchema: Schema = new Schema(SchemaEntity);
+DefaultEntitySchema.pre("save", function (next) {
+    this.set("created", moment().utc().toDate());
+    this.set("updated", moment().utc().toDate())
+
+    next();
+});
 
 export interface IEntity extends IBase {
     name: string;
