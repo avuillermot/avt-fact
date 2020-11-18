@@ -50,6 +50,12 @@ app.get('/products', async (req, res) => {
     res.send(await serv.getAll(params.entity));
 });
 
+app.get('/product', async (req, res) => {
+    let serv: ProductService = new ProductService();
+    const params: { entity: string, id: string } = <any>url.parse(req.url, true).query;
+    res.send(await serv.get(params.entity, params.id));
+});
+
 app.listen(PORT, () => {
     console.log('[server]: Server is running at https://localhost:${PORT}');
 });

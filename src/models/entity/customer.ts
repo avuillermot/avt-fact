@@ -9,6 +9,7 @@ const SchemaCustomer: Schema = new Schema({
     updatedBy: { type: String, required: true, default: "system" },
 
     entityId: { type: String, required: true },
+    number: { type: String, required: true },
     lastName: { type: String, required: true, minlength: 1 },
     firstName: { type: String, required: true, minlength: 1 },
     type: {type: String, required: true, default: "PERSON"},
@@ -27,6 +28,7 @@ export const DefaultCustomerSchema: Schema = new Schema(SchemaCustomer);
 
 export interface ICustomer extends IBase {
     entityId: string;
+    number: string;
     lastName: string;
     firstName: string;
     address1: string;
