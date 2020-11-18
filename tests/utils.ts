@@ -8,6 +8,12 @@ import { IPurchaseOrder } from "../src/models/document/purchaseOrder";
 
 export const EntityId: string = "5fb2d568aa307646f0bae2c0";
 
+let fnNumberCustomer = function getRandomIntInclusive(min: number, max: number): number {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 export const QuoteExample: IQuote = <IQuote>{
     entityId: "ENTTEST",
     seller: <IEntity>{
@@ -40,7 +46,8 @@ export const QuoteExample: IQuote = <IQuote>{
         city: "Lissieu",
         country: "FRANCE",
         email: "clustomer@quote.com",
-        phone: "03487502770"
+        phone: "03487502770",
+        number: fnNumberCustomer(0,10000)
     },
     zipCode : "21160",
     address1 : "7 impasse des devis",
@@ -93,7 +100,8 @@ export const SalesReceiptExample: ISalesReceipt = <ISalesReceipt>{
         city: "Lissieu",
         country: "FRANCE",
         email: "clustomer@salesreceipt.com",
-        phone: "03487502560"
+        phone: "03487502560",
+        number: fnNumberCustomer(0, 10000)
     },
     zipCode: "21160",
     address1: "7 impasse de la facture",
@@ -147,7 +155,8 @@ export const PurchaseOrderExample: IPurchaseOrder = <IPurchaseOrder>{
         city: "Lissieu",
         country: "FRANCE",
         email: "clustomer@salesreceipt.com",
-        phone: "03487502560"
+        phone: "03487502560",
+        number: fnNumberCustomer(0, 10000)
     },
     zipCode: "21160",
     address1: "7 impasse de la facture",

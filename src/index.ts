@@ -65,6 +65,12 @@ app.get('/products', async (req, res) => {
     res.send(await serv.getAll(params.entity));
 });
 
+app.get('/product', async (req, res) => {
+    let serv: ProductService = new ProductService();
+    const params: { entity: string, id: string } = <any>url.parse(req.url, true).query;
+    res.send(await serv.get(params.entity, params.id));
+});
+
 app.put('/product', async (req, res) => {
     let serv: ProductService = new ProductService();
     const params: { entity: string, id: string } = <any>url.parse(req.url, true).query;
@@ -77,11 +83,19 @@ app.put('/product', async (req, res) => {
     }
 });
 
-app.get('/product', async (req, res) => {
+app.post('/product', async (req, res) => {
     let serv: ProductService = new ProductService();
     const params: { entity: string, id: string } = <any>url.parse(req.url, true).query;
-    res.send(await serv.get(params.entity, params.id));
+    try {
+        let product: IProduct = await serv.create(req.body);
+        res.send(product);
+    }
+    catch (ex) {
+        console.log(ex.toString());
+        res.status(500).send(ex.toString());
+    }
 });
+
 
 app.listen(PORT, () => {
     console.log('[server]: Server is running at https://localhost:${PORT}');
