@@ -1,8 +1,8 @@
 ﻿import mongoose, { Schema, Document } from "mongoose";
 import moment = require("moment");
-import { DefaultEntitySchema } from "./schema.entity";
-import { DefaultCustomerSchema } from "./schema.entity";
-import { DefaultItemLineSchema } from "./schema.itemLine";
+import { DefaultEntitySchema } from "../models/entity/entity";
+import { DefaultCustomerSchema } from "../models/entity/customer";
+import { DefaultItemLineSchema } from "../models/document/itemLine";
 var Float = require('mongoose-float').loadType(mongoose, 2);
 
 const SchemaBaseStatus: Schema = new Schema({

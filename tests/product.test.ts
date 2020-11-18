@@ -13,7 +13,7 @@ describe('Product', () => {
 
         let params: IProduct = <IProduct>{
             code: "PROD1", name: "Produit test 1", price : 5.25, taxPercent:8,
-            entityId: "ENTTEST"
+            description: "Tube de 25 mm", entityId: "ENTTEST"
         };
         let query: ProductService = new ProductService();
         const product = await query.create(params);
