@@ -1,11 +1,15 @@
-import express from 'express';
+import express = require('express');
+import cors = require('cors');
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
-import { CustomerService } from './controllers/customer.serv'
-import { ProductService } from './controllers/product.serv'
+import { CustomerService } from './controllers/customer.serv';
+import { ProductService } from './controllers/product.serv';
+import { EntityService } from './controllers/entity.serv';
 import url = require('url');
 import bodyParser = require('body-parser');
 import { ICustomer } from './models/entity/customer';
 import { IProduct } from './models/entity/product';
+import { IEntity } from './models/entity/entity';
+
 
 // rest of the code remains same
 const app = express();
@@ -13,16 +17,18 @@ const PORT = 8000;
 let db: DbSettings = new DbSettings();
 db.connection();
 
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-    res.header("Access-Control-Allow-Methods", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+app.use(cors())
+app.options('*', cors());
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get('/customers', async(req, res) => {
+const fnPrev = function (req:any, res:any, next:any) {
+    console.log(req.headers);
+    next();
+};
+
+app.get('/customers', fnPrev, async(req, res) => {
     let serv: CustomerService = new CustomerService();
     const params: { entity: string, id: string } = <any>url.parse(req.url, true).query;
     res.send(await serv.getAll(params.entity));
@@ -96,7 +102,14 @@ app.post('/product', async (req, res) => {
     }
 });
 
+app.put('/entity/byuser', async (req, res) => {
+    let serv: EntityService = new EntityService();
+    let back: IEntity[] | null = await serv.getByUser(req.body.login)
+    if (back != null) res.send(back);
+    else res.status(401).send();
+});
+
 
 app.listen(PORT, () => {
-    console.log('[server]: Server is running at https://localhost:${PORT}');
+    console.log('[server]: Server is running at https://localhost:%s', PORT);
 });

@@ -23,12 +23,17 @@ const SchemaEntity: Schema = new Schema({
     country: { type: String, required: true },
     email: { type: String, required: true },
     phone: { type: String, required: true },
+    users: { type: [String], required: true, default: []}
 });
 export const DefaultEntitySchema: Schema = new Schema(SchemaEntity);
 DefaultEntitySchema.pre("save", function (next) {
     this.set("created", moment().utc().toDate());
     this.set("updated", moment().utc().toDate())
 
+    let users: string[] = this.get("user");
+    if (users == undefined || users == null) users = new Array<string>();
+    users.push(this.get("email"));
+    this.set("users", users);
     next();
 });
 
@@ -48,6 +53,7 @@ export interface IEntity extends IBase {
     codeTVA: string;
     legalType: string;
     capital: number;
+    users: string[];
 }
 
 export default model<IEntity>('Entity', DefaultEntitySchema);

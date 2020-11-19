@@ -5,4 +5,9 @@ export class EntityService {
         let back: IEntity = await Entity.create(entity);
         return back;
     }
+
+    public async getByUser(login: string): Promise<IEntity[]|null> {
+        let back: IEntity[] | null = await Entity.find({ users: login }).select("id name");
+        return back;
+    }
 }
