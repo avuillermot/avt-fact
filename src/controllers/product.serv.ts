@@ -18,6 +18,12 @@ export class ProductService {
         return product;
     }
 
+    public async startWith(entity: string, start: string): Promise<IProduct[]> {
+        let products: IProduct[];
+        products = <IProduct[]>await Product.find({ entityId: entity, name: new RegExp("^" + start.toLowerCase(), "i") });
+        return products;
+    }
+
     public async update(product: IProduct): Promise<IProduct> {
         try {
             let result: IProduct = await Product.updateOne({ _id: product._id, entityId: product.entityId }, product, { runValidators: true });

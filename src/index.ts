@@ -7,7 +7,8 @@ import { EntityService } from './controllers/entity.serv';
 import url = require('url');
 import bodyParser = require('body-parser');
 import { ICustomer } from './models/entity/customer';
-import { IProduct } from './models/entity/product';
+import { IProduct } from './models/entity/product'
+import { IItemLine } from './models/document/itemLine';
 import { IEntity } from './models/entity/entity';
 
 
@@ -28,6 +29,9 @@ const fnPrev = function (req:any, res:any, next:any) {
     next();
 };
 
+//****************************************************************************
+// CUSTOMER
+//****************************************************************************
 app.get('/customers', fnPrev, async(req, res) => {
     let serv: CustomerService = new CustomerService();
     const params: { entity: string, id: string } = <any>url.parse(req.url, true).query;
@@ -65,6 +69,9 @@ app.post('/customer', async (req, res) => {
     }
 });
 
+//****************************************************************************
+// PRODUCT
+//****************************************************************************
 app.get('/products', async (req, res) => {
     let serv: ProductService = new ProductService();
     const params: { entity: string, id: string } = <any>url.parse(req.url, true).query;
@@ -75,6 +82,13 @@ app.get('/product', async (req, res) => {
     let serv: ProductService = new ProductService();
     const params: { entity: string, id: string } = <any>url.parse(req.url, true).query;
     res.send(await serv.get(params.entity, params.id));
+});
+
+app.get('/product/startwith', async (req, res) => {
+    let serv: ProductService = new ProductService();
+    const params: { entity: string, startwith: string } = <any>url.parse(req.url, true).query;
+    
+    res.send(await serv.startWith(params.entity, params.startwith));
 });
 
 app.put('/product', async (req, res) => {
@@ -102,6 +116,9 @@ app.post('/product', async (req, res) => {
     }
 });
 
+//****************************************************************************
+// ENTITY
+//****************************************************************************
 app.put('/entity/byuser', async (req, res) => {
     let serv: EntityService = new EntityService();
     let back: IEntity[] | null = await serv.getByUser(req.body.login)
@@ -109,7 +126,42 @@ app.put('/entity/byuser', async (req, res) => {
     else res.status(401).send();
 });
 
+//****************************************************************************
+// ITEM LINE
+//****************************************************************************
+// calcul des montants d'un document, cote serveur pour gerer le probleme des decimaux en js
+app.put('/document/calcul', async (req, res) => {
 
+
+    let data: { total: number, taxAmount: number, totalFreeTax: number; items: IItemLine[] } =
+        { total: 0, taxAmount: 0, totalFreeTax: 0, items: new Array<IItemLine>() };
+
+    let status: number = 200;
+    try {
+        let origine: { total: number, taxAmount: number, totalFreeTax: number; items: IItemLine[] } =
+            <{ total: 0, taxAmount: 0, totalFreeTax: 0, items: IItemLine[] }> req.body;
+
+
+
+        for (let i = 0; i < origine.items.length; i++) {
+            let current = origine.items[i];
+            current.taxAmount = (current.price * (current.taxPercent / 100)) * current.quantity;
+            current.totalFreeTax = current.price * current.quantity;
+            current.total = current.taxAmount + current.totalFreeTax;
+
+            data.taxAmount = data.taxAmount + current.taxAmount;
+            data.totalFreeTax = data.totalFreeTax + current.totalFreeTax;
+            data.total = data.total + current.total;
+        }
+        data.items = origine.items;
+    }
+    catch (ex) {
+        console.log(ex);
+        status = 500;
+    }
+    console.log(data);
+    res.status(status).send(data);
+});
 app.listen(PORT, () => {
     console.log('[server]: Server is running at https://localhost:%s', PORT);
 });
