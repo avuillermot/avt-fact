@@ -1,4 +1,5 @@
 import express = require('express');
+import moment = require('moment');
 import cors = require('cors');
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
 import { CustomerService } from './controllers/customer.serv';
@@ -10,6 +11,8 @@ import { ICustomer } from './models/entity/customer';
 import { IProduct } from './models/entity/product'
 import { IItemLine } from './models/document/itemLine';
 import { IEntity } from './models/entity/entity';
+import { QuoteService } from './controllers/quote.document.serv';
+import Quote, { IQuote } from './models/document/quote';
 
 
 // rest of the code remains same
@@ -67,6 +70,13 @@ app.post('/customer', async (req, res) => {
         console.log(ex.toString());
         res.status(500).send(ex.toString());
     }
+});
+
+app.get('/customer/startwith', async (req, res) => {
+    let serv: CustomerService = new CustomerService();
+    const params: { entity: string, startwith: string } = <any>url.parse(req.url, true).query;
+
+    res.send(await serv.startWith(params.entity, params.startwith));
 });
 
 //****************************************************************************
@@ -131,18 +141,17 @@ app.put('/entity/byuser', async (req, res) => {
 //****************************************************************************
 // calcul des montants d'un document, cote serveur pour gerer le probleme des decimaux en js
 app.put('/document/calcul', async (req, res) => {
-
-
+    
     let data: { total: number, taxAmount: number, totalFreeTax: number; items: IItemLine[] } =
-        { total: 0, taxAmount: 0, totalFreeTax: 0, items: new Array<IItemLine>() };
+    {
+        total: 0, taxAmount: 0, totalFreeTax: 0, items: new Array<IItemLine>()
+    };
 
     let status: number = 200;
     try {
-        let origine: { total: number, taxAmount: number, totalFreeTax: number; items: IItemLine[] } =
-            <{ total: 0, taxAmount: 0, totalFreeTax: 0, items: IItemLine[] }> req.body;
-
-
-
+        let origine: {total: number, taxAmount: number, totalFreeTax: number; items: IItemLine[]} =
+            <{total: 0, taxAmount: 0, totalFreeTax: 0, items: IItemLine[]}> req.body;
+               
         for (let i = 0; i < origine.items.length; i++) {
             let current = origine.items[i];
             current.taxAmount = (current.price * (current.taxPercent / 100)) * current.quantity;
@@ -162,6 +171,20 @@ app.put('/document/calcul', async (req, res) => {
     console.log(data);
     res.status(status).send(data);
 });
+
+//****************************************************************************
+// QUOTE
+//****************************************************************************
+app.post('/quote/create', async (req, res) => {
+    const params: { entity: string } = <any>url.parse(req.url, true).query;
+
+    let serv: QuoteService = new QuoteService(ApplicationSetting.pdfRepository);
+    let body: IQuote = <IQuote>req.body;
+    let result: { id: string, hasError: boolean, filename: string } = await serv.createAndSave(body, params.entity);
+    if (result.hasError) res.status(500).send();
+    else res.send();
+});
+
 app.listen(PORT, () => {
     console.log('[server]: Server is running at https://localhost:%s', PORT);
 });

@@ -32,4 +32,10 @@ export class CustomerService {
             throw new Error(err);
         }
     }
+
+    public async startWith(entity: string, start: string): Promise<ICustomer[]> {
+        let customers: ICustomer[];
+        customers = <ICustomer[]>await Customer.find({ entityId: entity, lastName: new RegExp("^" + start.toLowerCase(), "i") });
+        return customers;
+    }
 }

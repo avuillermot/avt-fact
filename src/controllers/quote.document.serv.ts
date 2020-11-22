@@ -42,11 +42,20 @@ export class QuoteService extends DocumentService implements IDocumentService<IQ
         let back: { id: string, hasError: boolean, filename: string } = { id: "", hasError: false, filename: "" };
 
         let seller: IEntity = <IEntity>await Entity.findOne({ _id: sellerId });
+
         if (seller != null && seller != undefined) {
             quote.statusHistory = new Array<IStatus>();
             quote.statusHistory.push(<IStatus>{ status: "CREATE" });
             quote.seller = seller;
             quote.number = this.getNumDocument("DE");
+
+            if (quote.address1 == null || quote.address1 == "") quote.address1 = quote.seller.address1;
+            if (quote.address2 == null || quote.address2 == "") quote.address2 = quote.seller.address2;
+            if (quote.address3 == null || quote.address3 == "") quote.address3 = quote.seller.address3;
+            if (quote.zipCode == null || quote.zipCode == "") quote.zipCode = quote.seller.zipCode;
+            if (quote.city == null || quote.city == "") quote.city = quote.seller.city;
+            if (quote.country == null || quote.country == "") quote.country = quote.seller.country;
+            if (quote.entityId == null || quote.entityId == "") quote.entityId = sellerId;
 
             let saved = await Quote.create(quote);
             let result = await Quote.updateOne({ _id: saved.id }, { fileName: saved.id + ".pdf" });

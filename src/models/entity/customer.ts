@@ -22,9 +22,11 @@ const SchemaCustomer: Schema = new Schema({
     email: { type: String, required: true, minlength: 3 },
     phone: { type: String, required: true, minlength: 3 },
     deleted: { type: Boolean, required: true, default: false }
-
 });
-export const DefaultCustomerSchema: Schema = new Schema(SchemaCustomer);
+export const DefaultCustomerSchema: Schema = new Schema(SchemaCustomer, { toJSON: { virtuals: true } });
+DefaultCustomerSchema.virtual('fullName').get(function (this: { firstName: string, lastName: string }) {
+    return this.firstName + " " + this.lastName;
+});
 DefaultCustomerSchema.pre("save", function (next) {
     this.set("created", moment().utc().toDate());
     this.set("updated", moment().utc().toDate())
@@ -37,6 +39,7 @@ export interface ICustomer extends IBase {
     number: number;
     lastName: string;
     firstName: string;
+    fullName: string;
     address1: string;
     address2: string;
     address3: string;

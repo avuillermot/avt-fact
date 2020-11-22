@@ -60,12 +60,12 @@ export const QuoteExample: IQuote = <IQuote>{
     date : moment().utc().toDate(),
 
     items : [
-        <IItemLine>{ productName: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId:"ENTTEST" },
-        <IItemLine>{ productName: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ productName: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ productName: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ productName: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ productName: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: "ENTTEST" }
+        <IItemLine>{ name: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId:"ENTTEST" },
+        <IItemLine>{ name: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ name: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ name: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ name: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ name: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: "ENTTEST" }
     ]
 }
 
@@ -115,12 +115,12 @@ export const SalesReceiptExample: ISalesReceipt = <ISalesReceipt>{
     quoteId: "",
     purchaseOrderId: "",
     items: [
-        <IItemLine>{ productName: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ productName: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ productName: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ productName: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ productName: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ productName: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: "ENTTEST" }
+        <IItemLine>{ name: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ name: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ name: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ name: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ name: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ name: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: "ENTTEST" }
     ]
 }
 
@@ -169,11 +169,11 @@ export const PurchaseOrderExample: IPurchaseOrder = <IPurchaseOrder>{
     date: moment().utc().toDate(),
     quoteId: "",
     items: [
-        <IItemLine>{ productName: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ productName: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ productName: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ productName: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ productName: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ productName: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: "ENTTEST" }
+        <IItemLine>{ name: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ name: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ name: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ name: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ name: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
+        <IItemLine>{ name: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: "ENTTEST" }
     ]
 }

@@ -46,7 +46,7 @@ export abstract class DocumentBodyService {
             this.document.rect(45, (this.startBodyY)  + ((i + 1) * lineHeight), 515, lineHeight).lineWidth(0).stroke();
 
             this.document.fontSize(8).font(this.defaultFont)
-                .text(item.productName.padEnd(190, " "), col1, y)
+                .text(item.name.padEnd(190, " "), col1, y)
                 .text(item.quantity.toString(), col2, y)
                 .text(item.price.toString().padStart(12, " "), col3, y)
                 .text(item.totalFreeTax.toString(), col4, y)

@@ -10,8 +10,8 @@ const SchemaBaseItemLine = {
     updatedBy: { type: String, required: true, default: "create_process" },
 
     entityId: { type: String, required: true },
-    productCode: { type: String, required: true, default: "NO_CODE" },
-    productName: { type: String, required: true, default: "(?)" },
+    code: { type: String, required: true, default: "NO_CODE" },
+    name: { type: String, required: true, default: "(?)" },
     quantity: { type: Number, required: true, default: 0 },
     price: { type: Float, required: true, default: 0 },
     total: { type: Float, required: true, default: 0 },
@@ -37,8 +37,8 @@ DefaultItemLineSchema.pre("save", function (next) {
 
 export interface IItemLine extends IBase {
     entityId: string;
-    productCode: string;
-    productName: string;
+    code: string;
+    name: string;
     quantity: number;
     price: number;
     total: number;
