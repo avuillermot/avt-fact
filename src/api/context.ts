@@ -7,7 +7,7 @@ import { Router } from 'express';
 const router: Router = Router();
 router.get('/context', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
-    res.send({ login: token.login, entite: token.currentEntity.name });
+    res.send({ login: token.login, entity: token.currentEntity.name });
 });
 
 export default router;

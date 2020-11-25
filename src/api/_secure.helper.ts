@@ -6,10 +6,12 @@ export class Secure {
     public static async decrypt (token: string|undefined): Promise<IToken> {
 
         if (token != null && token != undefined) {
-            token = token.replace("Bearer ", "");
+            token = token.replace("Bearer", "");
         }
         else throw new Error("Auth token undefined");
 
+        if (token.substring(0, 1) == " ") token = token.substring(1);
+        if (token == "") throw new Error("Auth token undefined");
         let decrypt: IToken = <IToken>jwt.verify(token, "PERRIGNY21160");
 
         return decrypt;
@@ -19,13 +21,18 @@ export class Secure {
 
         let token:IToken;
         if (req.headers.authorization != null && req.headers.authorization != undefined) {
-            token = await Secure.decrypt(req.headers.authorization);
+            try {
+                token = await Secure.decrypt(req.headers.authorization);
 
-            if (moment(token.expire).toDate() < moment().utc().toDate()) {
+                if (moment(token.expire).toDate() < moment().utc().toDate()) {
+                    res.redirect(401, '/login');
+                }
+                else next();
+            }
+            catch (ex) {
                 res.redirect(401, '/login');
             }
-            else next();
         }
-        else res.redirect(401, 'http://www.lemonde.fr');
+        else res.redirect(401, '/login');
     }
 }
