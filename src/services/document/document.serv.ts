@@ -22,6 +22,7 @@ export abstract class DocumentService {
 }
 
 export interface IDocumentService<T> {
-    createAndSave(document: T, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string }>;
+    create(document: T, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string }>;
+    update(document: T, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string }>;
     duplicatePdf(documentId: string): Promise<{ id: string, hasError: boolean, filename: string }>;
 }

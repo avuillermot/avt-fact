@@ -38,7 +38,7 @@ export class PurchaseOrderService extends DocumentService implements IDocumentSe
         this.pdfRepository = pdfRepository;
     }
 
-    public async createAndSave(po: IPurchaseOrder, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string }> {
+    public async create(po: IPurchaseOrder, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string }> {
         let back: { id: string, hasError: boolean, filename: string } = { id: "", hasError: false, filename: "" };
 
         let seller: IEntity = <IEntity>await Entity.findOne({ _id: sellerId });

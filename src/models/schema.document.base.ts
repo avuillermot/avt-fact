@@ -46,6 +46,8 @@ const SchemaBaseDocument = {
     totalFreeTax: { type: Float, required: true, default: 0 },
     taxAmount: { type: Float, required: true, default: 0 }    
 };
+const _DefaultBaseDocument: Schema = new Schema(SchemaBaseDocument);
+export const DefaultBaseDocument = _DefaultBaseDocument;
 
 const _DefaultSalesReceiptSchema: Schema = new Schema(SchemaBaseDocument);
 _DefaultSalesReceiptSchema.add({
@@ -69,29 +71,6 @@ _DefaultSalesReceiptSchema.pre("save", function (next) {
     next();
 });
 export const DefaultSalesReceiptSchema = _DefaultSalesReceiptSchema
-
-const _DefaultQuoteSchema: Schema = new Schema(SchemaBaseDocument);
-_DefaultQuoteSchema.add({
-    entityId: { type: String, required: true },
-    expirationDate: { type: Date, required: true, default: moment().utc().add(30, "days").toDate() }
-});
-_DefaultQuoteSchema.pre("save", function (next) {
-    this.set("created", moment().utc().toDate());
-    this.set("updated", moment().utc().toDate())
-
-    var total = 0
-    var taxAmount = 0;
-    for (var i = 0; i < this.get("items").length; i++) {
-        total = total + this.get("items")[i].get("total");
-        taxAmount = taxAmount + this.get("items")[i].get("taxAmount");
-    }
-    this.set("total", total);
-    this.set("taxAmount", taxAmount);
-    this.set("totalFreeTax", total - taxAmount);
-    next();
-});
-export const DefaultQuoteSchema = _DefaultQuoteSchema
-
 
 const _DefaultPurchaseOrderSchema: Schema = new Schema(SchemaBaseDocument);
 _DefaultPurchaseOrderSchema.add({

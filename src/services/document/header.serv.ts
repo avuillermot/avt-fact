@@ -60,7 +60,7 @@ export abstract class DocumentHeaderService {
 
         let x: number = this.margeX;
         let y: number = 50;
-        this.document.rect(45, 45, this.margeX + 200, this.headerHeight);
+        this.document.rect(45, 45, this.margeX + 190, this.headerHeight);
 
         // provider part
         this.document.font(this.defaultFontBold)
@@ -123,9 +123,9 @@ export abstract class DocumentHeaderService {
     }
 
     public async setAddressPart(params: BillingAddressPart): Promise<void> {
-        let x: number = this.margeX + 250;
+        let x: number = this.margeX + 240;
         let y: number = 50;
-        this.document.rect(295, 45, 130, this.headerHeight);
+        this.document.rect(285, 45, 130, this.headerHeight);
 
         this.document.font(this.defaultFontBold).fontSize(8).text("Adresse de facturation :", x, y)
         y = y + this.interval;
@@ -153,9 +153,9 @@ export abstract class DocumentHeaderService {
     }
 
     public async setCustomerAddressPart(params: CustomerAddressPart): Promise<void> {
-        let x: number = this.margeX + 380;
+        let x: number = this.margeX + 370;
         let y: number = 50;
-        this.document.rect(425, 45, 135, this.headerHeight);
+        this.document.rect(415, 45, 145, this.headerHeight);
 
         this.document.font(this.defaultFontBold).fontSize(8).text("Client :", x, y)
         y = y + this.interval;

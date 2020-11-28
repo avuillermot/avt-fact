@@ -1,4 +1,5 @@
 import url = require('url');
+import fs = require("fs");
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "../../src/config";
 import { IToken } from '../models/token';
 import { QuoteDocumentService } from '../services/quote.document.serv';
@@ -10,13 +11,47 @@ import { Router } from 'express';
 // QUOTE
 //****************************************************************************
 const router: Router = Router();
-router.post('/quote/create', Secure.authenticate, async (req, res) => {
+
+router.get('/quote/pdf', async (req, res) => {
+    try {
+        const params: { id: string } = <any>url.parse(req.url, true).query;
+        const path: string = ApplicationSetting.pdfRepository + params.id + '.pdf';
+        if (fs.existsSync(path)) {
+            var file = fs.createReadStream(path);
+            res.setHeader('Content-Type', 'application/pdf');
+            res.setHeader('Content-Disposition', 'filename=quote.pdf');
+            file.pipe(res);
+        }
+        else {
+            console.log("Not exists : " + path);
+            res.status(500).send();
+        }
+    }
+    catch (ex) {
+        console.log(ex);
+        res.status(500).send();
+    }
+
+});
+
+router.post('/quote', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
 
     let serv:QuoteDocumentService = new QuoteDocumentService(ApplicationSetting.pdfRepository);
     let body: IQuote = <IQuote>req.body;
-    let result: { id: string, hasError: boolean, filename: string } = await serv.createAndSave(body, token.currentEntity._id);
-    if (result.hasError) res.status(500).send();
+    let result: { id: string, hasError: boolean, filename: string } = await serv.create(body, token.currentEntity._id);
+    if (result.hasError) res.status(500).send(result);
+    else res.send();
+});
+
+router.put('/quote', Secure.authenticate, async (req, res) => {
+    let token: IToken = await Secure.decrypt(req.headers.authorization);
+
+    let serv: QuoteDocumentService = new QuoteDocumentService(ApplicationSetting.pdfRepository);
+    let body: IQuote = <IQuote>req.body;
+    body.updatedBy = token.login;
+    let result: { id: string, hasError: boolean, filename: string } = await serv.update(body, token.currentEntity._id);
+    if (result.hasError) res.status(500).send(result);
     else res.send();
 });
 

@@ -19,13 +19,13 @@ export abstract class DocumentBodyService {
 
     public async setDetails(params: { taxAmount: string, total: string, totalFreeTax: string },items: IItemLine[]): Promise<void> {
         
-        let baseCol: number = this.width / 7 - 20;
+        let baseCol: number = this.width / 7 - 15;
         let col1: number = this.margeX;
-        let col2: number = baseCol * 2;
-        let col3: number = baseCol * 3;
-        let col4: number = baseCol * 4;
-        let col5: number = baseCol * 5;
-        let col6: number = baseCol * 6;
+        let col2: number = (baseCol * 2) + 50;
+        let col3: number = (baseCol * 3) + 20;
+        let col4: number = (baseCol * 4) + 20;
+        let col5: number = (baseCol * 5) + 20;
+        let col6: number = (baseCol * 6) + 20;
         let col7: number = baseCol * 7;
 
         let lineHeight: number = 35;

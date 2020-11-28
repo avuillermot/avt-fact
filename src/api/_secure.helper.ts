@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import moment = require('moment');
 import { IToken } from '../models/token';
+import { ApplicationSetting } from '../config';
 
 export class Secure {
     public static async decrypt (token: string|undefined): Promise<IToken> {
@@ -12,7 +13,7 @@ export class Secure {
 
         if (token.substring(0, 1) == " ") token = token.substring(1);
         if (token == "") throw new Error("Auth token undefined");
-        let decrypt: IToken = <IToken>jwt.verify(token, "PERRIGNY21160");
+        let decrypt: IToken = <IToken>jwt.verify(token, ApplicationSetting.jtokenSecretKey);
 
         return decrypt;
     }

@@ -5,6 +5,7 @@ import { EntityService } from '../services/entity.serv';
 import { IEntity } from '../models/entity/entity';
 import { Secure } from './_secure.helper';
 import { Router } from 'express';
+import { ApplicationSetting } from '../config';
 
 const router:Router = Router();
 //****************************************************************************
@@ -15,10 +16,9 @@ router.put('/entity/byuser', Secure.authenticate, async (req, res) => {
     let serv: EntityService = new EntityService();
     let back: IEntity[] | null = await serv.getByUser(token.login);
     if (back != null) {
-        console.log(back);
         token.entities = back;
         token.currentEntity = back[0];
-        let encrypt: string = await jwt.sign(JSON.stringify(token), 'PERRIGNY21160');
+        let encrypt: string = await jwt.sign(JSON.stringify(token), ApplicationSetting.jtokenSecretKey);
 
         res.send({ token: encrypt });
     }

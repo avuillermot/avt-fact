@@ -38,8 +38,14 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
         this.pdfRepository = pdfRepository;
     }
 
-    public async createAndSave(quote: IQuote, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string }> {
-        let back: { id: string, hasError: boolean, filename: string } = { id: "", hasError: false, filename: "" };
+    public async get(params: IQuote): Promise<IQuote[]> {
+        let result: IQuote[] = await Quote.find(params);
+        return result;
+    }
+
+    // Create a PDF file from a quote
+    public async create(quote: IQuote, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string, message: string }> {
+        let back: { id: string, hasError: boolean, filename: string, message: string } = { id: "", hasError: false, filename: "", message: "" };
 
         let seller: IEntity = <IEntity>await Entity.findOne({ _id: sellerId });
 
@@ -57,12 +63,19 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
             if (quote.country == null || quote.country == "") quote.country = quote.seller.country;
             if (quote.entityId == null || quote.entityId == "") quote.entityId = sellerId;
 
-            let saved = await Quote.create(quote);
-            let result = await Quote.updateOne({ _id: saved.id }, { fileName: saved.id + ".pdf" });
-            saved.fileName = saved.id + ".pdf";
+            try {
+                let saved = await Quote.create(quote);
+                let result = await Quote.updateOne({ _id: saved.id }, { fileName: saved.id + ".pdf" });
+                saved.fileName = saved.id + ".pdf";
 
-            back = await this.createPDF(saved, { annotation: false, annotationText: "DUPLICATA" });
-            back.id = saved.id;
+                back = await this.createFilePDF(saved, { annotation: false, annotationText: "" });
+                back.id = saved.id;
+            }
+            catch (ex) {
+                console.log(ex);
+                back.hasError = true;
+                back.message = ex.toString()
+            }
         }
         else {
             back.hasError = true;
@@ -70,11 +83,40 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
         return back;
     }
 
-    public async get(params: IQuote): Promise<IQuote[]> {
-        console.log("ici");
-        let result: IQuote[] = await Quote.find(params);
-        console.log(result);
-        return result;
+    // update & a PDF file from a quote
+    public async update(quote: IQuote, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string, message: string }> {
+        let back: { id: string, hasError: boolean, filename: string, message: string } = { id: "", hasError: false, filename: "", message: "" };
+
+        let seller: IEntity = <IEntity>await Entity.findOne({ _id: sellerId });
+
+        if (seller != null && seller != undefined) {
+            quote.seller = seller;
+
+            quote.statusHistory.push(<IStatus>({ status: 'UPDATE' }));
+            if (quote._id == null || quote._id == undefined) quote._id = quote.id;
+            if (quote.address1 == null || quote.address1 == "") quote.address1 = quote.seller.address1;
+            if (quote.address2 == null || quote.address2 == "") quote.address2 = quote.seller.address2;
+            if (quote.address3 == null || quote.address3 == "") quote.address3 = quote.seller.address3;
+            if (quote.zipCode == null || quote.zipCode == "") quote.zipCode = quote.seller.zipCode;
+            if (quote.city == null || quote.city == "") quote.city = quote.seller.city;
+            if (quote.country == null || quote.country == "") quote.country = quote.seller.country;
+            if (quote.entityId == null || quote.entityId == "") quote.entityId = sellerId;
+
+            try {
+                await Quote.updateOne({ _id: quote._id },quote);
+                
+                back = await this.createFilePDF(quote, { annotation: false, annotationText: "" });
+            }
+            catch (ex) {
+                console.log(ex);
+                back.hasError = true;
+                back.message = ex.toString()
+            }
+        }
+        else {
+            back.hasError = true;
+        }
+        return back;
     }
 
     public async duplicatePdf(quoteid: string): Promise<{ id: string, hasError: boolean, filename: string }> {
@@ -82,19 +124,21 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
         let current: IQuote = <IQuote>await Quote.findOne({ _id: quoteid });
         if (current != null) {
             current.fileName = current.fileName.replace(".pdf", "").replace(".PDF", "") + "-" + moment().unix() + ".pdf";
-            back = await this.createPDF(current, { annotation: true, annotationText: "DUPLICATA" });
+            back = await this.createFilePDF(current, { annotation: true, annotationText: "DUPLICATA" });
         }
         else back.hasError = true;
         back.id = quoteid;
         return back;
     }
 
-    private async createPDF(quote: IQuote, params: { annotation: boolean, annotationText: string }): Promise<{ id: string, hasError: boolean, filename: string }> {
+    private async createFilePDF(quote: IQuote, params: { annotation: boolean, annotationText: string }): Promise<{ id: string, hasError: boolean, filename: string, message: string }> {
         
-        let hasError = false;
         let path = this.pdfRepository + quote.fileName;
+        let exist: boolean = await fs.existsSync(path);
+        if (exist) await fs.unlinkSync(path);
         this.document.pipe(fs.createWriteStream(path));
         
+        const back = { id: quote.id, hasError: false, filename: quote.fileName, message: "" }
         try {
             if (params.annotation) {
                 this.document.text(params.annotationText, 10, 10);
@@ -111,14 +155,13 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
             await this.document.end();
 
             await new Promise(resolve => setTimeout(resolve, 2000)); // 3 sec
-
         }
         catch (ex) {
-            hasError = true;
+            back.hasError = true;
             console.log(ex);
         }
-
-        if (hasError) {
+        
+        if (back.hasError) {
             fs.unlink(path, function (err) {
                 if (err) throw err;
                 // if no error, file has been deleted successfully
@@ -126,7 +169,7 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
             });
         }
 
-        return { id: quote.id, hasError: hasError, filename: quote.fileName };
+        return back;
     }
 
     private async generateHeader(quote: IQuote): Promise<void> {
