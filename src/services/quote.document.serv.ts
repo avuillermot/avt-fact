@@ -45,6 +45,9 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
 
     // Create a PDF file from a quote
     public async create(quote: IQuote, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string, message: string }> {
+        delete quote._id;
+        delete quote.id;
+
         let back: { id: string, hasError: boolean, filename: string, message: string } = { id: "", hasError: false, filename: "", message: "" };
 
         let seller: IEntity = <IEntity>await Entity.findOne({ _id: sellerId });

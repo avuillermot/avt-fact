@@ -60,7 +60,6 @@ app.put('/document/calcul', async (req, res) => {
         console.log(ex);
         status = 500;
     }
-    console.log(data);
     res.status(status).send(data);
 });
 

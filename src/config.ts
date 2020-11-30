@@ -40,5 +40,6 @@ export class ApplicationDbTestSettings extends ApplicationDbSettings {
 export class ApplicationSetting {
     public static pdfRepository: string = "pdf/"
     public static jtokenSecretKey: string = "PERRIGNY21160";
+    public static previewPdfAllowDomain: string = "http://localhost:8000";
 }
 

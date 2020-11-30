@@ -18,9 +18,11 @@ _DefaultQuoteSchema.pre("save", function (next) {
 
     var total = 0
     var taxAmount = 0;
-    for (var i = 0; i < this.get("items").length; i++) {
-        total = total + this.get("items")[i].get("total");
-        taxAmount = taxAmount + this.get("items")[i].get("taxAmount");
+    if (this.get("items").length != null && this.get("items").length != undefined) {
+        for (var i = 0; i < this.get("items").length; i++) {
+            total = total + this.get("items")[i].get("total");
+            taxAmount = taxAmount + this.get("items")[i].get("taxAmount");
+        }
     }
     this.set("total", total);
     this.set("taxAmount", taxAmount);
@@ -30,15 +32,17 @@ _DefaultQuoteSchema.pre("save", function (next) {
 _DefaultQuoteSchema.pre("updateOne", function (next) {
     this.getUpdate().updated = moment().utc().toDate();
 
-    var total = 0
-    var taxAmount = 0;
-    for (var i = 0; i < this.getUpdate().items.length; i++) {
-        total = total + this.getUpdate().items[i].total;
-        taxAmount = taxAmount + this.getUpdate().items[i].taxAmount;
+    if (this.getUpdate().items != null && this.getUpdate().items != undefined) {
+        var total = 0
+        var taxAmount = 0;
+        for (var i = 0; i < this.getUpdate().items.length; i++) {
+            total = total + this.getUpdate().items[i].total;
+            taxAmount = taxAmount + this.getUpdate().items[i].taxAmount;
+        }
+        this.getUpdate().total = total;
+        this.getUpdate().taxAmount = taxAmount;
+        this.getUpdate().totalFreeTax = total - taxAmount;
     }
-    this.getUpdate().total = total;
-    this.getUpdate().taxAmount = taxAmount;
-    this.getUpdate().totalFreeTax = total - taxAmount;
     next();
 });
 
