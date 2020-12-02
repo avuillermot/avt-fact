@@ -17,7 +17,7 @@ export class BillingWorkflowService {
         quote.updated = moment().utc().toDate();
         quote.updatedBy = "billing_workflow";
 
-        await Quote.updateOne({ _id: quote.id }, quote);
+        await Quote.updateOne({ _id: quote._id }, quote);
 
         let sales: ISalesReceipt = <ISalesReceipt>{
             entityId: quote.entityId,
@@ -36,9 +36,9 @@ export class BillingWorkflowService {
             date: moment().utc().toDate(),
             items: quote.items,
 
-            quoteId: quote.id
+            quoteId: quote._id
         };
-        return await servSR.createAndSave(sales, sales.seller.id);
+        return await servSR.createAndSave(sales, sales.seller._id);
     }
 
     public async createSalesReceiptFromPurchaseOrder(id: string) {
@@ -49,7 +49,7 @@ export class BillingWorkflowService {
         po.status = "CLOSE";
         po.updated = moment().utc().toDate();
         po.updatedBy = "billing_workflow";
-        await PurchaseOrder.updateOne({ _id: po.id }, po);
+        await PurchaseOrder.updateOne({ _id: po._id }, po);
 
         let sales: ISalesReceipt = <ISalesReceipt>{
             entityId: po.entityId,
@@ -69,9 +69,9 @@ export class BillingWorkflowService {
             items: po.items,
 
             quoteId: po.quoteId,
-            purchaseOrderId: po.id
+            purchaseOrderId: po._id
         };
-        return await servSR.createAndSave(sales, sales.seller.id);
+        return await servSR.createAndSave(sales, sales.seller._id);
     }
     
 }

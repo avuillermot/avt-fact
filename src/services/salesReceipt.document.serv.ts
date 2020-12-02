@@ -39,6 +39,13 @@ export class SalesReceiptService extends DocumentService implements IDocumentSer
         this.pdfRepository = pdfRepository;
     }
 
+    create(document: ISalesReceipt, sellerId: string): Promise<{ id: string; hasError: boolean; filename: string; }> {
+        throw new Error("Method not implemented.");
+    }
+    update(document: ISalesReceipt, sellerId: string): Promise<{ id: string; hasError: boolean; filename: string; }> {
+        throw new Error("Method not implemented.");
+    }
+
     public async createAndSave(sales: ISalesReceipt, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string }> {
         let back: { id: string, hasError: boolean, filename: string } = { id: "", hasError: false, filename: "" };
 
@@ -50,8 +57,8 @@ export class SalesReceiptService extends DocumentService implements IDocumentSer
             sales.number = this.getNumDocument("FV");
 
             let saved = await SalesReceipt.create(sales);
-            let result = await SalesReceipt.updateOne({ _id: saved.id }, { fileName: saved.id + ".pdf" });
-            saved.fileName = saved.id + ".pdf";
+            let result = await SalesReceipt.updateOne({ _id: saved._id }, { fileName: saved._id + ".pdf" });
+            saved.fileName = saved._id + ".pdf";
          
             back = await this.createPDF(saved, { annotation: false, annotationText: "" });
         }
@@ -110,7 +117,7 @@ export class SalesReceiptService extends DocumentService implements IDocumentSer
             }); 
         }
         
-        return { id: sales.id, hasError: hasError, filename: sales.fileName };
+        return { id: sales._id, hasError: hasError, filename: sales.fileName };
     }
 
     private async generateHeader(sales: ISalesReceipt): Promise<void> {

@@ -1,4 +1,4 @@
-import url = require('url');
+﻿import url = require('url');
 import fs = require("fs");
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "../../src/config";
 import { IToken } from '../models/token';
@@ -56,6 +56,23 @@ router.put('/quote', Secure.authenticate, async (req, res) => {
     let result: { id: string, hasError: boolean, filename: string } = await serv.update(body, token.currentEntity._id);
     if (result.hasError) res.status(500).send(result);
     else res.send(result);
+});
+
+router.put('/quote/lock', Secure.authenticate, async (req, res) => {
+    let token: IToken = await Secure.decrypt(req.headers.authorization);
+
+    let serv: QuoteDocumentService = new QuoteDocumentService(ApplicationSetting.pdfRepository);
+    let body: IQuote = <IQuote>req.body;
+    body.updatedBy = token.login;
+    try {
+        let result: { id: string, hasError: boolean, filename: string } = await serv.lock(body, token.currentEntity._id);
+        if (result.hasError) res.status(500).send(result);
+        else res.send(result);
+    }
+    catch (ex) {
+        console.log(ex.message);
+        res.status(500).send(ex.message);
+    }
 });
 
 router.get('/quote', Secure.authenticate, async (req, res) => {

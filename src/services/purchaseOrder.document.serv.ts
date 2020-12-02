@@ -10,6 +10,7 @@ import { PurchaseOrderBodyService } from './document/purchaseOrder.body.serv';
 import { PurchaseOrderFooterService } from './document/purchaseOrder.footer.serv';
 
 export class PurchaseOrderService extends DocumentService implements IDocumentService<IPurchaseOrder> {
+
     servDocumentHeader: PurchaseOrderHeaderService;
     servDocumentBody: PurchaseOrderBodyService;
     servDocumentFooter: PurchaseOrderFooterService;
@@ -49,16 +50,20 @@ export class PurchaseOrderService extends DocumentService implements IDocumentSe
             po.number = this.getNumDocument("BC");
 
             let saved = await PurchaseOrder.create(po);
-            let result = await PurchaseOrder.updateOne({ _id: saved.id }, { fileName: saved.id + ".pdf" });
-            saved.fileName = saved.id + ".pdf";
+            let result = await PurchaseOrder.updateOne({ _id: saved._id }, { fileName: saved._id + ".pdf" });
+            saved.fileName = saved._id + ".pdf";
 
             back = await this.createPDF(saved, { annotation: false, annotationText: "DUPLICATA" });
-            back.id = saved.id;
+            back.id = saved._id;
         }
         else {
             back.hasError = true;
         }
         return back;
+    }
+
+    update(document: IPurchaseOrder, sellerId: string): Promise<{ id: string; hasError: boolean; filename: string; }> {
+        throw new Error("Method not implemented.");
     }
 
     public async duplicatePdf(poid: string): Promise<{ id: string, hasError: boolean, filename: string }> {
@@ -110,7 +115,7 @@ export class PurchaseOrderService extends DocumentService implements IDocumentSe
             });
         }
 
-        return { id: po.id, hasError: hasError, filename: po.fileName };
+        return { id: po._id, hasError: hasError, filename: po.fileName };
     }
 
     private async generateHeader(po: IPurchaseOrder): Promise<void> {

@@ -1,4 +1,4 @@
-import PDFDocument = require('pdfkit');
+﻿import PDFDocument = require('pdfkit');
 import fs = require("fs");
 import moment = require("moment");
 import Entity, { IEntity } from "./../models/entity/entity";
@@ -39,7 +39,7 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
     }
 
     public async get(params: IQuote): Promise<IQuote[]> {
-        let result: IQuote[] = await Quote.find(params);
+        let result: IQuote[] = await Quote.find(params).sort('-updated');
         return result;
     }
 
@@ -68,11 +68,48 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
 
             try {
                 let saved = await Quote.create(quote);
-                let result = await Quote.updateOne({ _id: saved.id }, { fileName: saved.id + ".pdf" });
-                saved.fileName = saved.id + ".pdf";
+                let result = await Quote.updateOne({ _id: saved._id }, { fileName: saved._id + ".pdf" });
+                saved.fileName = saved._id + ".pdf";
 
                 back = await this.createFilePDF(saved, { annotation: false, annotationText: "" });
-                back.id = saved.id;
+                back.id = saved._id;
+            }
+            catch (ex) {
+                console.log(ex);
+                back.hasError = true;
+                back.message = ex.toString()
+            }
+        }
+        else {
+            back.hasError = true;
+        }
+        return back;
+    }
+
+    private async change(quote: IQuote, sellerId: string, status: string): Promise<{ id: string, hasError: boolean, filename: string, message: string }> {
+        let back: { id: string, hasError: boolean, filename: string, message: string } = { id: "", hasError: false, filename: "", message: "" };
+
+        let seller: IEntity = <IEntity>await Entity.findOne({ _id: sellerId });
+
+        if (seller != null && seller != undefined) {
+            quote.seller = seller;
+
+            quote.statusHistory.push(<IStatus>({ status: status, created: moment().utc().toDate() }));
+            quote.status = status;
+
+            if (quote._id == null || quote._id == undefined) quote._id = quote._id;
+            if (quote.address1 == null || quote.address1 == "") quote.address1 = quote.seller.address1;
+            if (quote.address2 == null || quote.address2 == "") quote.address2 = quote.seller.address2;
+            if (quote.address3 == null || quote.address3 == "") quote.address3 = quote.seller.address3;
+            if (quote.zipCode == null || quote.zipCode == "") quote.zipCode = quote.seller.zipCode;
+            if (quote.city == null || quote.city == "") quote.city = quote.seller.city;
+            if (quote.country == null || quote.country == "") quote.country = quote.seller.country;
+            if (quote.entityId == null || quote.entityId == "") quote.entityId = sellerId;
+
+            try {
+                await Quote.updateOne({ _id: quote._id }, quote);
+
+                back = await this.createFilePDF(quote, { annotation: false, annotationText: "" });
             }
             catch (ex) {
                 console.log(ex);
@@ -88,38 +125,19 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
 
     // update & a PDF file from a quote
     public async update(quote: IQuote, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string, message: string }> {
-        let back: { id: string, hasError: boolean, filename: string, message: string } = { id: "", hasError: false, filename: "", message: "" };
-
-        let seller: IEntity = <IEntity>await Entity.findOne({ _id: sellerId });
-
-        if (seller != null && seller != undefined) {
-            quote.seller = seller;
-
-            quote.statusHistory.push(<IStatus>({ status: 'UPDATE' }));
-            if (quote._id == null || quote._id == undefined) quote._id = quote.id;
-            if (quote.address1 == null || quote.address1 == "") quote.address1 = quote.seller.address1;
-            if (quote.address2 == null || quote.address2 == "") quote.address2 = quote.seller.address2;
-            if (quote.address3 == null || quote.address3 == "") quote.address3 = quote.seller.address3;
-            if (quote.zipCode == null || quote.zipCode == "") quote.zipCode = quote.seller.zipCode;
-            if (quote.city == null || quote.city == "") quote.city = quote.seller.city;
-            if (quote.country == null || quote.country == "") quote.country = quote.seller.country;
-            if (quote.entityId == null || quote.entityId == "") quote.entityId = sellerId;
-
-            try {
-                await Quote.updateOne({ _id: quote._id },quote);
-                
-                back = await this.createFilePDF(quote, { annotation: false, annotationText: "" });
-            }
-            catch (ex) {
-                console.log(ex);
-                back.hasError = true;
-                back.message = ex.toString()
-            }
+        const read: IQuote | null = await Quote.findById(quote._id);
+        if (read != null) {
+            if (read.status == 'LOCK') throw new Error("Un devis edité ne peut pas être mis à jour")
         }
-        else {
-            back.hasError = true;
+        return await this.change(quote, sellerId, 'UPDATE');
+    }
+
+    public async lock(quote: IQuote, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string, message: string }> {
+        const read: IQuote | null = await Quote.findById(quote._id);
+        if (read != null) {
+            if (read.status == 'LOCK') throw new Error("Devis déjà édité")
         }
-        return back;
+        return await this.change(quote, sellerId, 'LOCK');
     }
 
     public async duplicatePdf(quoteid: string): Promise<{ id: string, hasError: boolean, filename: string }> {
@@ -141,7 +159,7 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
         if (exist) await fs.unlinkSync(path);
         this.document.pipe(fs.createWriteStream(path));
         
-        const back = { id: quote.id, hasError: false, filename: quote.fileName, message: "" }
+        const back = { id: quote._id, hasError: false, filename: quote.fileName, message: "" }
         try {
             if (params.annotation) {
                 this.document.text(params.annotationText, 10, 10);
