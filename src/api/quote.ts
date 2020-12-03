@@ -42,9 +42,15 @@ router.post('/quote', Secure.authenticate, async (req, res) => {
 
     let serv:QuoteDocumentService = new QuoteDocumentService(ApplicationSetting.pdfRepository);
     let body: IQuote = <IQuote>req.body;
-    let result: { id: string, hasError: boolean, filename: string } = await serv.create(body, token.currentEntity._id);
-    if (result.hasError) res.status(500).send(result);
-    else res.send(result);
+    try {
+        let result: { id: string, hasError: boolean, filename: string } = await serv.create(body, token.currentEntity._id);
+        if (result.hasError) res.status(500).send(result);
+        else res.send(result);
+    }
+    catch (ex) {
+        console.log(ex.message);
+        res.status(500).send(ex.message);
+    }
 });
 
 router.put('/quote', Secure.authenticate, async (req, res) => {

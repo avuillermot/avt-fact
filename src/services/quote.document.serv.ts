@@ -47,7 +47,7 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
     public async create(quote: IQuote, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string, message: string }> {
         delete quote._id;
         delete quote.id;
-
+        
         let back: { id: string, hasError: boolean, filename: string, message: string } = { id: "", hasError: false, filename: "", message: "" };
 
         let seller: IEntity = <IEntity>await Entity.findOne({ _id: sellerId });
@@ -127,7 +127,7 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
     public async update(quote: IQuote, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string, message: string }> {
         const read: IQuote | null = await Quote.findById(quote._id);
         if (read != null) {
-            if (read.status == 'LOCK') throw new Error("Un devis edité ne peut pas être mis à jour")
+            if (read.status == 'LOCK') throw new Error("Un devis edité ne peut pas être mis à jour");
         }
         return await this.change(quote, sellerId, 'UPDATE');
     }
@@ -135,7 +135,7 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
     public async lock(quote: IQuote, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string, message: string }> {
         const read: IQuote | null = await Quote.findById(quote._id);
         if (read != null) {
-            if (read.status == 'LOCK') throw new Error("Devis déjà édité")
+            if (read.status == 'LOCK') throw new Error("Devis déjà édité");
         }
         return await this.change(quote, sellerId, 'LOCK');
     }
