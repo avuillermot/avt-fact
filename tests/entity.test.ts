@@ -1,7 +1,7 @@
 ﻿import { expect } from 'chai';
 import "mocha";
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
-import { EntityService } from '../src/controllers/entity.serv';
+import { EntityService } from '../src/services/entity.serv';
 import { IEntity } from '../src/models/entity/entity';
 
 describe('Entity', () => {

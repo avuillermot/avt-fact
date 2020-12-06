@@ -39,7 +39,7 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
     }
 
     public async get(params: IQuote): Promise<IQuote[]> {
-        let result: IQuote[] = await Quote.find(params).sort('-updated');
+        let result: IQuote[] = await Quote.find(params);
         return result;
     }
 
@@ -54,7 +54,7 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
 
         if (seller != null && seller != undefined) {
             quote.statusHistory = new Array<IStatus>();
-            quote.statusHistory.push(<IStatus>{ status: "CREATE" });
+            quote.statusHistory.push(<IStatus>{ status: "CREATE", created: moment().utc().toDate(), updated: moment().utc().toDate(), createdBy: quote.createdBy, updatedBy: quote.createdBy });
             quote.seller = seller;
             quote.number = this.getNumDocument("DE");
 
@@ -67,6 +67,7 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
             if (quote.entityId == null || quote.entityId == "") quote.entityId = sellerId;
 
             try {
+                console.log(quote);
                 let saved = await Quote.create(quote);
                 let result = await Quote.updateOne({ _id: saved._id }, { fileName: saved._id + ".pdf" });
                 saved.fileName = saved._id + ".pdf";
@@ -94,7 +95,7 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
         if (seller != null && seller != undefined) {
             quote.seller = seller;
 
-            quote.statusHistory.push(<IStatus>({ status: status, created: moment().utc().toDate() }));
+            quote.statusHistory.push(<IStatus>{ status: "UPDATE", created: moment().utc().toDate(), updated: moment().utc().toDate(), createdBy: quote.updatedBy, updatedBy: quote.updatedBy });
             quote.status = status;
 
             if (quote._id == null || quote._id == undefined) quote._id = quote._id;

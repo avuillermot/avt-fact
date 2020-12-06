@@ -42,6 +42,7 @@ router.post('/quote', Secure.authenticate, async (req, res) => {
 
     let serv:QuoteDocumentService = new QuoteDocumentService(ApplicationSetting.pdfRepository);
     let body: IQuote = <IQuote>req.body;
+    body.createdBy = token.login;
     try {
         let result: { id: string, hasError: boolean, filename: string } = await serv.create(body, token.currentEntity._id);
         if (result.hasError) res.status(500).send(result);

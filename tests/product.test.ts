@@ -1,7 +1,7 @@
 ﻿import { expect } from 'chai';
 import "mocha";
 import { ApplicationDbTestSettings as DbSettings } from "./../src/config";
-import { ProductService } from '../src/controllers/product.serv';
+import { ProductService } from '../src/services/product.serv';
 import { IProduct } from '../src/models/entity/product';
 
 describe('Product', () => {

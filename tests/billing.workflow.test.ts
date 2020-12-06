@@ -6,10 +6,10 @@ import { QuoteExample, PurchaseOrderExample, EntityId } from "./utils";
 import Quote, { IQuote } from '../src/models/document/quote';
 import SalesReceipt, { ISalesReceipt } from '../src/models/document/salesReceipt';
 import PurchaseOrder, { IPurchaseOrder } from '../src/models/document/purchaseOrder';
-import { QuoteService } from '../src/controllers/quote.document.serv';
-import { PurchaseOrderService } from '../src/controllers/purchaseOrder.document.serv';
+import { QuoteDocumentService } from '../src/services/quote.document.serv';
+import { PurchaseOrderService } from '../src/services/purchaseOrder.document.serv';
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
-import { BillingWorkflowService } from "./../src/controllers/billing.workflow.serv";
+import { BillingWorkflowService } from "./../src/services/billing.workflow.serv";
 
 describe('Billing workflow', () => {
 
@@ -18,11 +18,11 @@ describe('Billing workflow', () => {
 
     it('Should create a sales receipt from a quote', async () => {
 
-        let query: QuoteService = new QuoteService(ApplicationSetting.pdfRepository);
+        let query: QuoteDocumentService = new QuoteDocumentService(ApplicationSetting.pdfRepository);
         let workflow: BillingWorkflowService = new BillingWorkflowService();
         let quote: IQuote = QuoteExample;
         
-        const quoteResult = await query.createAndSave(quote, EntityId);
+        const quoteResult = await query.create(quote, EntityId);
         expect(fs.existsSync(ApplicationSetting.pdfRepository + quoteResult.filename), "PDF file won't exists").equal(true);
         //fs.unlink(ApplicationSetting.pdfRepository + quoteResult.filename, function () { });
 
@@ -51,7 +51,7 @@ describe('Billing workflow', () => {
         let workflow: BillingWorkflowService = new BillingWorkflowService();
         let po: IPurchaseOrder = PurchaseOrderExample;
 
-        const poResult = await query.createAndSave(po, EntityId);
+        const poResult = await query.create(po, EntityId);
         expect(fs.existsSync(ApplicationSetting.pdfRepository + poResult.filename), "PDF file won't exists").equal(true);
         //fs.unlink(ApplicationSetting.pdfRepository + quoteResult.filename, function () { });
 

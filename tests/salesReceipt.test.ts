@@ -3,7 +3,7 @@ import "mocha";
 import fs = require("fs");
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
 import { SalesReceiptExample, EntityId } from "./utils";
-import { SalesReceiptService } from '../src/controllers/salesReceipt.document.serv';
+import { SalesReceiptService } from '../src/services/salesReceipt.document.serv';
 import SalesReceipt, { ISalesReceipt } from '../src/models/document/salesReceipt';
 
 describe('SalesReceipt', () => {
