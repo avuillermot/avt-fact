@@ -17,7 +17,8 @@ const SchemaBaseItemLine = {
     total: { type: Float, required: true, default: 0 },
     totalFreeTax: { type: Number, required: true, default: 0 },
     taxAmount: { type: Float, required: true, default: 0 },
-    taxPercent: { type: Float, required: true, default: 0 }
+    taxPercent: { type: Float, required: true, default: 0 },
+    order: {type: Number, required:true }
 }
 
 export const DefaultItemLineSchema: Schema = new Schema(SchemaBaseItemLine);

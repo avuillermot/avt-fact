@@ -12,6 +12,8 @@ _DefaultQuoteSchema.add({
     entityId: { type: String, required: true },
     expirationDate: { type: Date, required: true, default: moment().utc().add(30, "days").toDate() }
 });
+_DefaultQuoteSchema.index({ entityId: 1});
+
 _DefaultQuoteSchema.pre("save", function (next) {
     this.set("created", moment().utc().toDate());
     this.set("updated", moment().utc().toDate())
