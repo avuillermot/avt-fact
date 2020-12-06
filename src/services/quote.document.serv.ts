@@ -95,7 +95,7 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
         if (seller != null && seller != undefined) {
             quote.seller = seller;
 
-            quote.statusHistory.push(<IStatus>{ status: "UPDATE", created: moment().utc().toDate(), updated: moment().utc().toDate(), createdBy: quote.updatedBy, updatedBy: quote.updatedBy });
+            quote.statusHistory.push(<IStatus>{ status: status, created: moment().utc().toDate(), updated: moment().utc().toDate(), createdBy: quote.updatedBy, updatedBy: quote.updatedBy });
             quote.status = status;
 
             if (quote._id == null || quote._id == undefined) quote._id = quote._id;
