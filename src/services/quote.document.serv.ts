@@ -53,6 +53,7 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
         let seller: IEntity = <IEntity>await Entity.findOne({ _id: sellerId });
 
         if (seller != null && seller != undefined) {
+            quote.status = "CREATE";
             quote.statusHistory = new Array<IStatus>();
             quote.statusHistory.push(<IStatus>{ status: "CREATE", created: moment().utc().toDate(), updated: moment().utc().toDate(), createdBy: quote.createdBy, updatedBy: quote.createdBy });
             quote.seller = seller;
@@ -67,7 +68,6 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
             if (quote.entityId == null || quote.entityId == "") quote.entityId = sellerId;
 
             try {
-                console.log(quote);
                 let saved = await Quote.create(quote);
                 let result = await Quote.updateOne({ _id: saved._id }, { fileName: saved._id + ".pdf" });
                 saved.fileName = saved._id + ".pdf";
