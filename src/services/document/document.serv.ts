@@ -25,4 +25,7 @@ export interface IDocumentService<T> {
     create(document: T, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string }>;
     update(document: T, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string }>;
     duplicatePdf(documentId: string): Promise<{ id: string, hasError: boolean, filename: string }>;
+    get(params: T): Promise<T[]>;
+    lock(document: T, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string, message: string }>;
+    getAll(entity: string): Promise<T[]>;
 }

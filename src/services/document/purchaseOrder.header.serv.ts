@@ -12,7 +12,7 @@ export class PurchaseOrderHeaderService extends DocumentHeaderService {
         await super.setProviderPart(po.seller);
     }
 
-    public async generateQuoteAddressPart(po: IPurchaseOrder): Promise<void> {
+    public async generateAddressPart(po: IPurchaseOrder): Promise<void> {
         await super.setAddressPart(po.customer);
     }
 

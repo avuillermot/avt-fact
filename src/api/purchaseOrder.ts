@@ -2,16 +2,18 @@
 import fs = require("fs");
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "../../src/config";
 import { IToken } from '../models/token';
-import { QuoteDocumentService } from '../services/quote.document.serv';
+import { PurchaseOrderDocumentService } from '../services/purchaseOrder.document.serv';
+import { PurchaseOrderService } from '../services/purchaseOrder.serv';
 import { IQuote } from '../models/document/quote';
 import { Secure } from './_secure.helper';
 import { Router } from 'express';
+import { IPurchaseOrder } from '../models/document/purchaseOrder';
 //****************************************************************************
 // QUOTE
 //****************************************************************************
 const router: Router = Router();
 
-router.get('/quote/pdf', async (req, res) => {
+router.get('/purchaseorder/pdf', async (req, res) => {
     var host:string | undefined = req.get('host');
     if (host != undefined && ApplicationSetting.previewPdfAllowDomain.indexOf(host) > -1) {
         try {
@@ -20,7 +22,7 @@ router.get('/quote/pdf', async (req, res) => {
             if (fs.existsSync(path)) {
                 var file = fs.createReadStream(path);
                 res.setHeader('Content-Type', 'application/pdf');
-                res.setHeader('Content-Disposition', 'filename=quote.pdf');
+                res.setHeader('Content-Disposition', 'filename=purchaseorder.pdf');
                 file.pipe(res);
             }
             else {
@@ -36,11 +38,11 @@ router.get('/quote/pdf', async (req, res) => {
     else res.status(401).send();
 });
 
-router.post('/quote', Secure.authenticate, async (req, res) => {
+router.post('/purchaseorder', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
 
-    let serv:QuoteDocumentService = new QuoteDocumentService(ApplicationSetting.pdfRepository);
-    let body: IQuote = <IQuote>req.body;
+    let serv: PurchaseOrderDocumentService = new PurchaseOrderDocumentService(ApplicationSetting.pdfRepository);
+    let body: IPurchaseOrder = <IPurchaseOrder>req.body;
     body.createdBy = token.login;
     try {
         let result: { id: string, hasError: boolean, filename: string } = await serv.create(body, token.currentEntity._id);
@@ -53,21 +55,21 @@ router.post('/quote', Secure.authenticate, async (req, res) => {
     }
 });
 
-router.put('/quote', Secure.authenticate, async (req, res) => {
+/*router.put('/purchaseorder', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
 
-    let serv: QuoteDocumentService = new QuoteDocumentService(ApplicationSetting.pdfRepository);
+    let serv: PurchaseOrderDocumentService = new PurchaseOrderDocumentService(ApplicationSetting.pdfRepository);
     let body: IQuote = <IQuote>req.body;
     body.updatedBy = token.login;
     let result: { id: string, hasError: boolean, filename: string } = await serv.update(body, token.currentEntity._id);
     if (result.hasError) res.status(500).send(result);
     else res.send(result);
-});
+});*/
 
-router.put('/quote/lock', Secure.authenticate, async (req, res) => {
+/*router.put('/purchaseorder/lock', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
 
-    let serv: QuoteDocumentService = new QuoteDocumentService(ApplicationSetting.pdfRepository);
+    let serv: PurchaseOrderDocumentService = new PurchaseOrderDocumentService(ApplicationSetting.pdfRepository);
     let body: IQuote = <IQuote>req.body;
     body.updatedBy = token.login;
     try {
@@ -79,25 +81,25 @@ router.put('/quote/lock', Secure.authenticate, async (req, res) => {
         console.log(ex.message);
         res.status(500).send(ex.message);
     }
-});
+});*/
 
-router.get('/quote', Secure.authenticate, async (req, res) => {
+router.get('/purchaseorder', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
     const params: { id: string } = <any>url.parse(req.url, true).query;
 
-    let serv:QuoteDocumentService = new QuoteDocumentService(ApplicationSetting.pdfRepository);
+    let serv: PurchaseOrderDocumentService = new PurchaseOrderDocumentService(ApplicationSetting.pdfRepository);
 
-    let result: IQuote[] = await serv.get(<IQuote>{ _id: params.id, entityId: token.currentEntity._id });
+    let result: IPurchaseOrder[] = await serv.get(<IPurchaseOrder>{ _id: params.id, entityId: token.currentEntity._id });
     res.send(result);
 });
 
-router.get('/quotes', Secure.authenticate, async (req, res) => {
+router.get('/purchaseorders', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
     const params: { id: string } = <any>url.parse(req.url, true).query;
 
-    let serv: QuoteDocumentService = new QuoteDocumentService(ApplicationSetting.pdfRepository);
+    let serv: PurchaseOrderService = new PurchaseOrderService();
 
-    let result: IQuote[] = await serv.getAll(token.currentEntity._id);
+    let result: IPurchaseOrder[] = await serv.getAll(token.currentEntity._id);
     res.send(result);
 });
 

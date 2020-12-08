@@ -43,6 +43,12 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
         return result;
     }
 
+    public async getAll(entity: string): Promise<IQuote[]> {
+        let quotes: IQuote[];
+        quotes = await Quote.find({ entityId: entity });
+        return quotes;
+    }
+
     // Create a PDF file from a quote
     public async create(quote: IQuote, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string, message: string }> {
         delete quote._id;
@@ -196,7 +202,7 @@ export class QuoteDocumentService extends DocumentService implements IDocumentSe
 
     private async generateHeader(quote: IQuote): Promise<void> {
         this.servDocumentHeader.generateHeaderProviderPart(quote);
-        this.servDocumentHeader.generateQuoteAddressPart(quote);
+        this.servDocumentHeader.generateAddressPart(quote);
         this.servDocumentHeader.generateCustomerAddressPart(quote);
         this.servDocumentHeader.generateReference(quote);
     }

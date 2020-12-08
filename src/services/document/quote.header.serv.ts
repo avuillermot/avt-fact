@@ -12,7 +12,7 @@ export class QuoteHeaderService extends DocumentHeaderService {
         await super.setProviderPart(quote.seller);
     }
 
-    public async generateQuoteAddressPart(quote: IQuote): Promise<void> {
+    public async generateAddressPart(quote: IQuote): Promise<void> {
         await super.setAddressPart(quote.customer);
     }
 

@@ -9,7 +9,7 @@ import { PurchaseOrderHeaderService } from "./document/purchaseOrder.header.serv
 import { PurchaseOrderBodyService } from './document/purchaseOrder.body.serv';
 import { PurchaseOrderFooterService } from './document/purchaseOrder.footer.serv';
 
-export class PurchaseOrderService extends DocumentService implements IDocumentService<IPurchaseOrder> {
+export class PurchaseOrderDocumentService extends DocumentService implements IDocumentService<IPurchaseOrder> {
 
     servDocumentHeader: PurchaseOrderHeaderService;
     servDocumentBody: PurchaseOrderBodyService;
@@ -39,51 +39,25 @@ export class PurchaseOrderService extends DocumentService implements IDocumentSe
         this.pdfRepository = pdfRepository;
     }
 
-    public async create(po: IPurchaseOrder, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string }> {
-        let back: { id: string, hasError: boolean, filename: string } = { id: "", hasError: false, filename: "" };
-
-        let seller: IEntity = <IEntity>await Entity.findOne({ _id: sellerId });
-        if (seller != null && seller != undefined) {
-            po.statusHistory = new Array<IStatus>();
-            po.statusHistory.push(<IStatus>{ status: "CREATE" });
-            po.seller = seller;
-            po.number = this.getNumDocument("BC");
-
-            let saved = await PurchaseOrder.create(po);
-            let result = await PurchaseOrder.updateOne({ _id: saved._id }, { fileName: saved._id + ".pdf" });
-            saved.fileName = saved._id + ".pdf";
-
-            back = await this.createPDF(saved, { annotation: false, annotationText: "DUPLICATA" });
-            back.id = saved._id;
-        }
-        else {
-            back.hasError = true;
-        }
-        return back;
+    public async get(params: IPurchaseOrder): Promise<IPurchaseOrder[]> {
+        let result: IPurchaseOrder[] = await PurchaseOrder.find(params);
+        return result;
     }
 
-    update(document: IPurchaseOrder, sellerId: string): Promise<{ id: string; hasError: boolean; filename: string; }> {
-        throw new Error("Method not implemented.");
+    public async getAll(entity: string): Promise<IPurchaseOrder[]> {
+        let pos: IPurchaseOrder[];
+        pos = await PurchaseOrder.find({ entityId: entity });
+        return pos;
     }
 
-    public async duplicatePdf(poid: string): Promise<{ id: string, hasError: boolean, filename: string }> {
-        let back: { id: string, hasError: boolean, filename: string } = { id: "", hasError: false, filename: "" };
-        let current: IPurchaseOrder = <IPurchaseOrder>await PurchaseOrder.findOne({ _id: poid });
-        if (current != null) {
-            current.fileName = current.fileName.replace(".pdf", "").replace(".PDF", "") + "-" + moment().unix() + ".pdf";
-            back = await this.createPDF(current, { annotation: true, annotationText: "DUPLICATA" });
-        }
-        else back.hasError = true;
-        back.id = poid;
-        return back;
-    }
+    private async createFilePDF(po: IPurchaseOrder, params: { annotation: boolean, annotationText: string }): Promise<{ id: string, hasError: boolean, filename: string, message: string }> {
 
-    private async createPDF(po: IPurchaseOrder, params: { annotation: boolean, annotationText: string }): Promise<{ id: string, hasError: boolean, filename: string }> {
-        
-        let hasError = false;
         let path = this.pdfRepository + po.fileName;
+        let exist: boolean = await fs.existsSync(path);
+        if (exist) await fs.unlinkSync(path);
         this.document.pipe(fs.createWriteStream(path));
-        
+
+        const back = { id: po._id, hasError: false, filename: po.fileName, message: "" }
         try {
             if (params.annotation) {
                 this.document.text(params.annotationText, 10, 10);
@@ -100,14 +74,13 @@ export class PurchaseOrderService extends DocumentService implements IDocumentSe
             await this.document.end();
 
             await new Promise(resolve => setTimeout(resolve, 2000)); // 3 sec
-
         }
         catch (ex) {
-            hasError = true;
+            back.hasError = true;
             console.log(ex);
         }
 
-        if (hasError) {
+        if (back.hasError) {
             fs.unlink(path, function (err) {
                 if (err) throw err;
                 // if no error, file has been deleted successfully
@@ -115,12 +88,67 @@ export class PurchaseOrderService extends DocumentService implements IDocumentSe
             });
         }
 
-        return { id: po._id, hasError: hasError, filename: po.fileName };
+        return back;
+    }
+
+    public async create(po: IPurchaseOrder, sellerId: string): Promise<{ id: string, hasError: boolean, filename: string, message: string }> {
+        delete po._id;
+        delete po.id;
+
+        let back: { id: string, hasError: boolean, filename: string, message: string } = { id: "", hasError: false, filename: "", message: "" };
+
+        let seller: IEntity = <IEntity>await Entity.findOne({ _id: sellerId });
+
+        if (seller != null && seller != undefined) {
+            po.status = "CREATE";
+            po.statusHistory = new Array<IStatus>();
+            po.statusHistory.push(<IStatus>{ status: "CREATE", created: moment().utc().toDate(), updated: moment().utc().toDate(), createdBy: po.createdBy, updatedBy: po.createdBy });
+            po.seller = seller;
+            po.number = this.getNumDocument("BC");
+
+            if (po.address1 == null || po.address1 == "") po.address1 = po.seller.address1;
+            if (po.address2 == null || po.address2 == "") po.address2 = po.seller.address2;
+            if (po.address3 == null || po.address3 == "") po.address3 = po.seller.address3;
+            if (po.zipCode == null || po.zipCode == "") po.zipCode = po.seller.zipCode;
+            if (po.city == null || po.city == "") po.city = po.seller.city;
+            if (po.country == null || po.country == "") po.country = po.seller.country;
+            if (po.entityId == null || po.entityId == "") po.entityId = sellerId;
+
+            try {
+                let saved = await PurchaseOrder.create(po);
+                let result = await PurchaseOrder.updateOne({ _id: saved._id }, { fileName: saved._id + ".pdf" });
+                saved.fileName = saved._id + ".pdf";
+
+                back = await this.createFilePDF(saved, { annotation: false, annotationText: "" });
+                back.id = saved._id;
+            }
+            catch (ex) {
+                console.log(ex);
+                back.hasError = true;
+                back.message = ex.toString()
+            }
+        }
+        else {
+            back.hasError = true;
+        }
+        return back;
+    }
+
+    update(document: IPurchaseOrder, sellerId: string): Promise<{ id: string; hasError: boolean; filename: string; }> {
+        throw new Error("Method not implemented.");
+    }
+
+    public async duplicatePdf(poid: string): Promise<{ id: string, hasError: boolean, filename: string }> {
+        throw new Error("Method not implemented.");
+    }
+
+    lock(document: IPurchaseOrder, sellerId: string): Promise<{ id: string; hasError: boolean; filename: string; message: string; }> {
+        throw new Error("Method not implemented.");
     }
 
     private async generateHeader(po: IPurchaseOrder): Promise<void> {
         this.servDocumentHeader.generateHeaderProviderPart(po);
-        this.servDocumentHeader.generateQuoteAddressPart(po);
+        this.servDocumentHeader.generateAddressPart(po);
         this.servDocumentHeader.generateCustomerAddressPart(po);
         this.servDocumentHeader.generateReference(po);
     }
