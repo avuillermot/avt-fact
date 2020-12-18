@@ -46,6 +46,7 @@ export interface IItemLine extends IBase {
     totalFreeTax: number;
     taxAmount: number;
     taxPercent: number;
+    order: number;
 }
 
 export default model<IItemLine>('IItemLine', DefaultItemLineSchema);

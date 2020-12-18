@@ -1,0 +1,54 @@
+.angular-editor {
+    background-color: #faf5f5;
+}
+
+div.angular-editor-textarea {
+    margin-left: 100px;
+    width: 745px;
+    height: 1060px;
+    align-content: center;
+    background-color: white !important;
+}
+
+.document-header {
+    width:100%;
+    display: flex;
+}
+
+.document-seller, .document-customer, .document-address {
+    padding-left: 5px;
+    margin-left: 1px;
+    height: 150px;
+    width: 247px;
+    vertical-align: top;
+    border: 1px black solid;
+    display: inline-block;
+    font-family: Calibri;
+    font-size: 14px;
+}
+
+/*.angular-editor {
+    width: 1000px !important;
+    background-color:lightgray !important;
+}
+*/
+/*.document-footer {
+    padding-left: 5px;
+    margin-top: 5px;
+    min-width: 150px;
+    min-height:100px;
+    width: 99%;
+    vertical-align: top;
+    border: 1px black solid;
+}
+
+.document-body {
+    padding-left: 5px;
+    min-height: 500px;
+    margin-top: 5px;
+    min-width: 150px !important;
+    width: 99%;
+    vertical-align: top;
+    border: 1px black solid;
+}*/
+

@@ -1,12 +1,12 @@
 import { model } from "mongoose";
-import { IBase } from "./../interface.base";
+import { IDocument } from "./../interface.base";
 import { IEntity } from "../entity/entity"
 import { DefaultPurchaseOrderSchema } from "../schema.document.base";
 import { IItemLine } from "./itemLine";
 import { IStatus } from "../document/status";
 import { ICustomer } from "../entity/customer"
 
-export interface IPurchaseOrder extends IBase {
+export interface IPurchaseOrder extends IDocument {
     entityId: string;
     fileName: string;
     date: Date;

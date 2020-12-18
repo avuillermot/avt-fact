@@ -2,10 +2,9 @@ import moment = require("moment");
 import Quote, { IQuote } from "./../models/document/quote";
 import PurchaseOrder, { IPurchaseOrder } from "./../models/document/purchaseOrder";
 import { ISalesReceipt } from "./../models/document/salesReceipt";
-import { SalesReceiptService } from './salesReceipt.document.serv';
 import { ApplicationSetting } from "./../config";
 import { IStatus } from "../models/document/status";
-
+/*
 export class BillingWorkflowService {
 
     public async createSalesReceiptFromQuote(id: string) {
@@ -74,4 +73,4 @@ export class BillingWorkflowService {
         return await servSR.createAndSave(sales, sales.seller._id);
     }
     
-}
+}*/

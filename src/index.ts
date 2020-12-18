@@ -9,7 +9,7 @@ import customerRoutes from './api/customer';
 import entityRoutes from './api/entity';
 import productRoutes from './api/product';
 import quoteRoutes from './api/quote';
-import purchaseOrderRoutes from './api/purchaseOrder';
+import pdfRoutes from './api/pdf';
 
 // rest of the code remains same
 const app = express();
@@ -28,7 +28,7 @@ app.use(customerRoutes);
 app.use(entityRoutes);
 app.use(productRoutes);
 app.use(quoteRoutes);
-app.use(purchaseOrderRoutes);
+app.use(pdfRoutes);
 
 //****************************************************************************
 // ITEM LINE

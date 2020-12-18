@@ -25,4 +25,11 @@ router.put('/entity/byuser', Secure.authenticate, async (req, res) => {
     else res.status(401).send();
 });
 
+router.get('/entity/current', Secure.authenticate, async (req, res) => {
+    let token: IToken = await Secure.decrypt(req.headers.authorization);
+    let serv: EntityService = new EntityService();
+    let back: IEntity | null = await serv.get(token.currentEntity._id);
+    res.send(back);
+});
+
 export default router;

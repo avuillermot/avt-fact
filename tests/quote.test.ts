@@ -3,8 +3,8 @@ import "mocha";
 import fs = require("fs");
 import { QuoteExample, EntityId } from "./utils";
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
-import { QuoteDocumentService } from '../src/services/quote.document.serv';
-import Quote, { IQuote } from '../src/models/document/quote';
+import { QuoteService } from '../src/services/quote.serv';
+import { IQuote } from '../src/models/document/quote';
 
 describe('Quote', async() => {
 
@@ -12,21 +12,17 @@ describe('Quote', async() => {
     db.connection();
     db.dropCollection("quotes");
 
-    it('Should create a quote & PDF', async () => {
+    it('Should create a quote', async () => {
 
-        let query: QuoteDocumentService = new QuoteDocumentService(ApplicationSetting.pdfRepository);
+        let query: QuoteService = new QuoteService();
         let quote: IQuote = QuoteExample;
 
         const document = await query.create(quote, EntityId);
-        expect(fs.existsSync(ApplicationSetting.pdfRepository + document.filename), "PDF file won't exists").equal(true);
-        //fs.unlink(ApplicationSetting.pdfRepository + document.filename, function () { });
-    });
-
-    it('Should generate a duplicate PDF', async () => {
-        let input: IQuote = <IQuote>await Quote.findOne();
-        let query: QuoteDocumentService = new QuoteDocumentService(ApplicationSetting.pdfRepository);
-        let result = await query.duplicatePdf(input._id);
-        expect(fs.existsSync(ApplicationSetting.pdfRepository + result.filename), "PDF file won't exists").equal(true);
-        //fs.unlink(ApplicationSetting.pdfRepository + result.filename, function () { });
+        expect(document.taxAmount).equal(51.22, "quote - tax amount is not valid");
+        expect(document.totalFreeTax).equal(640.28, "quote - totaltaxFree amount is not valid");
+        expect(document.total).equal(691.5, "quote - total amount is not valid");
+        expect(document.status).equal("CREATE", "quote - create status not set");
+        expect(document.statusHistory[0].status).equal("CREATE", "quote - create status not set");
+        expect(document.entityId).equal(EntityId, "quote - entity not set");
     });
 });

@@ -41,5 +41,7 @@ export class ApplicationSetting {
     public static pdfRepository: string = "pdf/"
     public static jtokenSecretKey: string = "PERRIGNY21160";
     public static previewPdfAllowDomain: string = "http://localhost:8000";
+    public static CssDocument: string = "http://localhost:8000/pdf/document-pdf";
+    public static HtmlDocumentTemplateDirectory: string = "c:/projets_test/avt-fact/src/html-template/";
 }
 

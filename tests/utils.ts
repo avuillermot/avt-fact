@@ -15,7 +15,7 @@ let fnNumberCustomer = function getRandomIntInclusive(min: number, max: number):
 }
 
 export const QuoteExample: IQuote = <IQuote>{
-    entityId: "ENTTEST",
+    entityId: EntityId,
     seller: <IEntity>{
         name: "Green light.",
         siren: "424 430 015 00026",
@@ -35,7 +35,7 @@ export const QuoteExample: IQuote = <IQuote>{
 
     },
     customer: <ICustomer>{
-        entityId: "ENTTEST",
+        entityId: EntityId,
         id: "TIERS0001",
         lastName: "Doe",
         firstName: "John",
@@ -58,19 +58,19 @@ export const QuoteExample: IQuote = <IQuote>{
 
     number : "",
     date : moment().utc().toDate(),
-
+    html: "<div>mon html</div>",
     items : [
-        <IItemLine>{ name: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId:"ENTTEST" },
-        <IItemLine>{ name: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ name: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ name: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ name: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ name: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: "ENTTEST" }
+        <IItemLine>{ name: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId:EntityId, order: 1 },
+        <IItemLine>{ name: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: EntityId, order: 2 },
+        <IItemLine>{ name: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: EntityId, order: 3 },
+        <IItemLine>{ name: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: EntityId, order: 4 },
+        <IItemLine>{ name: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: EntityId, order: 5 },
+        <IItemLine>{ name: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: EntityId, order: 6 }
     ]
 }
 
 export const SalesReceiptExample: ISalesReceipt = <ISalesReceipt>{
-    entityId: "ENTTEST",
+    entityId: EntityId,
     seller: <IEntity>{
         name: "Green light.",
         siren: "424 430 015 00026",
@@ -89,7 +89,7 @@ export const SalesReceiptExample: ISalesReceipt = <ISalesReceipt>{
         phone: "0385421423",
     },
     customer: {
-        entityId: "ENTTEST",
+        entityId: EntityId,
         id: "TIERS0001",
         lastName: "Doe",
         firstName: "Jane",
@@ -115,17 +115,17 @@ export const SalesReceiptExample: ISalesReceipt = <ISalesReceipt>{
     quoteId: "",
     purchaseOrderId: "",
     items: [
-        <IItemLine>{ name: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ name: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ name: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ name: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ name: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ name: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: "ENTTEST" }
+        <IItemLine>{ name: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId: EntityId },
+        <IItemLine>{ name: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: EntityId },
+        <IItemLine>{ name: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: EntityId },
+        <IItemLine>{ name: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: EntityId },
+        <IItemLine>{ name: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: EntityId },
+        <IItemLine>{ name: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: EntityId }
     ]
 }
 
 export const PurchaseOrderExample: IPurchaseOrder = <IPurchaseOrder>{
-    entityId: "ENTTEST",
+    entityId: EntityId,
     seller: <IEntity>{
         name: "Green light.",
         siren: "424 430 015 00026",
@@ -144,7 +144,7 @@ export const PurchaseOrderExample: IPurchaseOrder = <IPurchaseOrder>{
         phone: "0385421423",
     },
     customer: {
-        entityId: "ENTTEST",
+        entityId: EntityId,
         id: "TIERS0001",
         lastName: "Doe",
         firstName: "Jane",
@@ -169,11 +169,11 @@ export const PurchaseOrderExample: IPurchaseOrder = <IPurchaseOrder>{
     date: moment().utc().toDate(),
     quoteId: "",
     items: [
-        <IItemLine>{ name: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ name: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ name: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ name: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ name: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: "ENTTEST" },
-        <IItemLine>{ name: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: "ENTTEST" }
+        <IItemLine>{ name: "Kit EMBD 3P", price: 170.1, quantity: 1, taxPercent: 8, entityId: EntityId },
+        <IItemLine>{ name: "Cylindre", price: 91.4, quantity: 1, taxPercent: 8, entityId: EntityId },
+        <IItemLine>{ name: "Tarif horaire", price: 78, quantity: 4, taxPercent: 8, entityId: EntityId },
+        <IItemLine>{ name: "Huile BP", price: 5.09, quantity: 4, taxPercent: 8, entityId: EntityId },
+        <IItemLine>{ name: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: EntityId },
+        <IItemLine>{ name: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: EntityId }
     ]
 }

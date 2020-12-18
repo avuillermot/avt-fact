@@ -1,6 +1,6 @@
 import moment = require("moment");
 import mongoose, { model, Schema } from "mongoose";
-import { IBase } from "./../interface.base";
+import { IDocument } from "./../interface.base";
 import { DefaultBaseDocument } from "../schema.document.base";
 import { IStatus } from "../document/status";
 import { IEntity } from "../entity/entity"
@@ -48,7 +48,7 @@ _DefaultQuoteSchema.pre("updateOne", function (next) {
     next();
 });
 
-export interface IQuote extends IBase {
+export interface IQuote extends IDocument {
     entityId: string,
     fileName: string;
     date: Date;

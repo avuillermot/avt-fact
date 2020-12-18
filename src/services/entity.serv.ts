@@ -10,4 +10,9 @@ export class EntityService {
         let back: IEntity[] | null = await Entity.find({ users: login }).select("id name");
         return back;
     }
+
+    public async get(id: string): Promise<IEntity | null> {
+        let back: IEntity | null = await Entity.findOne({ _id: id });
+        return back;
+    }
 }

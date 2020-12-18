@@ -13,7 +13,6 @@ const SchemaBaseStatus: Schema = new Schema({
 
     status: { type: String, required: true },
     deleted: { type: String, required: true, default: false }
-
 });
 export const DefaultStatusSchema: Schema = new Schema(SchemaBaseStatus);
 
@@ -44,7 +43,9 @@ const SchemaBaseDocument = {
     items: { type: [DefaultItemLineSchema] },
     total: { type: Float, required: true, default: 0 },
     totalFreeTax: { type: Float, required: true, default: 0 },
-    taxAmount: { type: Float, required: true, default: 0 }    
+    taxAmount: { type: Float, required: true, default: 0 },
+
+    html: { type: String, required: true }
 };
 const _DefaultBaseDocument: Schema = new Schema(SchemaBaseDocument);
 export const DefaultBaseDocument = _DefaultBaseDocument;

@@ -9,3 +9,7 @@ export interface IBase extends Document {
     deleted: boolean;
     status: string;
 }
+
+export interface IDocument extends IBase {
+    html: string;
+}
