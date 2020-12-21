@@ -1,4 +1,6 @@
 import AsyncLock = require('async-lock');
+import moment = require('moment');
+import Quote, { IQuote } from '../../models/document/quote';
 
 export interface IDocumentService<T> {
     get(params: T): Promise<T[]>;
@@ -13,8 +15,22 @@ export class DocumentBaseService<T> {
     private static lock: AsyncLock = new AsyncLock();
     private static num: number = 0;
 
-    public getNumDocument(prefix: string): string {
-        DocumentBaseService.lock.acquire('key', function () { DocumentBaseService.num++ });
-        return prefix + DocumentBaseService.num.toString();
+    public async getNumDocument(prefix: string, typeDocument: string): Promise<string> {
+        let startWith: string = prefix + moment.utc().format("YYYYMMDD") + "-";
+        let query: string = "^" + startWith;
+        let index: number = 0;
+        await DocumentBaseService.lock.acquire('key', async function () {
+            if (typeDocument == "QUOTE") {
+                let quotes: IQuote[] = await Quote.find({ number: { $regex: query } }).select("number");
+                let indexes: string = quotes.map(quote => quote.number.replace(startWith, ""))
+                    .reduce((acc: string, current: string) => {
+                        if (current > acc) return current;
+                        else return acc;
+                    });
+                index = parseInt(indexes);
+            }
+            else throw new Error("NumDocument not implemented !")
+        });
+        return startWith + ++index
     }
 }

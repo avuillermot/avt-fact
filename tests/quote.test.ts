@@ -10,7 +10,7 @@ describe('Quote', async() => {
 
     let db: DbSettings = new DbSettings();
     db.connection();
-    db.dropCollection("quotes");
+    //db.dropCollection("quotes");
 
     it('Should create a quote', async () => {
 
@@ -25,4 +25,10 @@ describe('Quote', async() => {
         expect(document.statusHistory[0].status).equal("CREATE", "quote - create status not set");
         expect(document.entityId).equal(EntityId, "quote - entity not set");
     });
+
+
+    it('Find unique number', async () => {
+        let query: QuoteService = new QuoteService();
+        await query.getNumDocument("DE", "QUOTE");
+    })
 });

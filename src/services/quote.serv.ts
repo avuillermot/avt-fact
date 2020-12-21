@@ -1,5 +1,4 @@
-﻿import PDFDocument = require('pdfkit');
-import moment = require("moment");
+﻿import moment = require("moment");
 import Entity, { IEntity } from "./../models/entity/entity";
 import Quote, { IQuote } from '../models/document/quote';
 import { IStatus } from "../models/document/status";
@@ -31,7 +30,7 @@ export class QuoteService extends DocumentBaseService<IQuote> implements IDocume
             quote.statusHistory = new Array<IStatus>();
             quote.statusHistory.push(<IStatus>{ status: "CREATE", created: moment().utc().toDate(), updated: moment().utc().toDate(), createdBy: quote.createdBy, updatedBy: quote.createdBy });
             quote.seller = seller;
-            quote.number = this.getNumDocument("DE");
+            quote.number = await this.getNumDocument("DE", "QUOTE");
 
             if (quote.address1 == null || quote.address1 == "") quote.address1 = quote.seller.address1;
             if (quote.address2 == null || quote.address2 == "") quote.address2 = quote.seller.address2;
