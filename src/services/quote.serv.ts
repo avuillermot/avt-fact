@@ -111,4 +111,12 @@ export class QuoteService extends DocumentBaseService<IQuote> implements IDocume
 
         return await this.change(quotes[0], sellerId, 'ACCEPT');
     }
+
+    public async reject(id: string, sellerId: string): Promise<IQuote> {
+        let quotes: IQuote[] = await Quote.find({ _id: id, entityId: sellerId });
+        if (quotes.length != 1) throw new Error("Devis introuvable !");
+        if (quotes[0].status == 'REJECT') throw new Error("Devis déjà refusé");
+
+        return await this.change(quotes[0], sellerId, 'REJECT');
+    }
 }
