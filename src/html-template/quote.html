@@ -1,4 +1,4 @@
-<div id="document-content">
+﻿<div id="document-content">
     <div class='document-header'>
         <div class='document-seller' style='display:inline-block'>
             <div data-binding='document.seller.name'></div>
@@ -27,9 +27,11 @@
             <span data-binding='document.city'></span>
         </div>
     </div>
-    <div>
-        Devis <span data-binding='document.number'></span>
-        Expire le<span data-binding='document.date'></span>
+    <div class="document-header">
+        <div class="document-detail">
+            <div>Devis n°<span data-binding='document.number'></span></div>
+            <div>(Devis valable jusqu'au <span data-binding='document.date' data-type="date"></span>)</div>
+        </div>
     </div>
     <div class="document-body">
 
