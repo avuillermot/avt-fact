@@ -32,12 +32,12 @@ export class QuoteService extends DocumentBaseService<IQuote> implements IDocume
             quote.seller = seller;
             quote.number = await this.getNumDocument("DE", "QUOTE");
 
-            if (quote.address1 == null || quote.address1 == "") quote.address1 = quote.seller.address1;
-            if (quote.address2 == null || quote.address2 == "") quote.address2 = quote.seller.address2;
-            if (quote.address3 == null || quote.address3 == "") quote.address3 = quote.seller.address3;
-            if (quote.zipCode == null || quote.zipCode == "") quote.zipCode = quote.seller.zipCode;
-            if (quote.city == null || quote.city == "") quote.city = quote.seller.city;
-            if (quote.country == null || quote.country == "") quote.country = quote.seller.country;
+            if (quote.address1 == null || quote.address1 == "") quote.address1 = quote.customer.address1;
+            if (quote.address2 == null || quote.address2 == "") quote.address2 = quote.customer.address2;
+            if (quote.address3 == null || quote.address3 == "") quote.address3 = quote.customer.address3;
+            if (quote.zipCode == null || quote.zipCode == "") quote.zipCode = quote.customer.zipCode;
+            if (quote.city == null || quote.city == "") quote.city = quote.customer.city;
+            if (quote.country == null || quote.country == "") quote.country = quote.customer.country;
             if (quote.entityId == null || quote.entityId == "") quote.entityId = sellerId;
             
             try {
