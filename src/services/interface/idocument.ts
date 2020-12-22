@@ -34,8 +34,6 @@ export class DocumentBaseService<T> {
             }
             else throw new Error("NumDocument not implemented !")
         });
-        console.log(index);
-        //console.log(++index);
         return startWith + ++index
     }
 }

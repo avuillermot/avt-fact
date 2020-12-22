@@ -96,25 +96,28 @@ export class QuoteService extends DocumentBaseService<IQuote> implements IDocume
         return await this.change(quote, sellerId, 'LOCK');
     }
 
-    public async cancel(id: string, sellerId: string): Promise<IQuote> {
+    public async cancel(id: string, sellerId: string, userid:string): Promise<IQuote> {
         let quotes: IQuote[] = await Quote.find({ _id: id, entityId: sellerId });
         if (quotes.length != 1) throw new Error("Devis introuvable !");
+        quotes[0].updatedBy = userid;
         if (quotes[0].status == 'CANCEL') throw new Error("Devis déjà annulé");
 
         return await this.change(quotes[0], sellerId, 'CANCEL');
     }
 
-    public async accept(id: string, sellerId: string): Promise<IQuote> {
+    public async accept(id: string, sellerId: string, userid: string): Promise<IQuote> {
         let quotes: IQuote[] = await Quote.find({ _id: id, entityId: sellerId });
         if (quotes.length != 1) throw new Error("Devis introuvable !");
+        quotes[0].updatedBy = userid;
         if (quotes[0].status == 'ACCEPT') throw new Error("Devis déjà accepté");
 
         return await this.change(quotes[0], sellerId, 'ACCEPT');
     }
 
-    public async reject(id: string, sellerId: string): Promise<IQuote> {
+    public async reject(id: string, sellerId: string, userid: string): Promise<IQuote> {
         let quotes: IQuote[] = await Quote.find({ _id: id, entityId: sellerId });
         if (quotes.length != 1) throw new Error("Devis introuvable !");
+        quotes[0].updatedBy = userid;
         if (quotes[0].status == 'REJECT') throw new Error("Devis déjà refusé");
 
         return await this.change(quotes[0], sellerId, 'REJECT');

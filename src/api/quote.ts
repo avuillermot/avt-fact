@@ -57,7 +57,7 @@ router.put('/quote/cancel', Secure.authenticate, async (req, res) => {
     let serv: QuoteService = new QuoteService();
     let back: IQuote = <IQuote>{};
     try {
-        back = await serv.cancel(params.id, token.currentEntity._id);
+        back = await serv.cancel(params.id, token.currentEntity._id, token.login);
         res.send(back);
     }
     catch (ex) {
@@ -72,7 +72,7 @@ router.put('/quote/accept', Secure.authenticate, async (req, res) => {
     let serv: QuoteService = new QuoteService();
     let back: IQuote = <IQuote>{};
     try {
-        back = await serv.accept(params.id, token.currentEntity._id);
+        back = await serv.accept(params.id, token.currentEntity._id, token.login);
         res.send(back);
     }
     catch (ex) {
@@ -87,7 +87,7 @@ router.put('/quote/reject', Secure.authenticate, async (req, res) => {
     let serv: QuoteService = new QuoteService();
     let back: IQuote = <IQuote>{};
     try {
-        back = await serv.reject(params.id, token.currentEntity._id);
+        back = await serv.reject(params.id, token.currentEntity._id, token.login);
         res.send(back);
     }
     catch (ex) {
