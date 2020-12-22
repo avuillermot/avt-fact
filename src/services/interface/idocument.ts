@@ -22,15 +22,20 @@ export class DocumentBaseService<T> {
         await DocumentBaseService.lock.acquire('key', async function () {
             if (typeDocument == "QUOTE") {
                 let quotes: IQuote[] = await Quote.find({ number: { $regex: query } }).select("number");
-                let indexes: string = quotes.map(quote => quote.number.replace(startWith, ""))
-                    .reduce((acc: string, current: string) => {
-                        if (current > acc) return current;
-                        else return acc;
-                    });
-                index = parseInt(indexes);
+                if (quotes.length > 0) {
+                    let indexes: string = quotes.map(quote => quote.number.replace(startWith, ""))
+                        .reduce((acc: string, current: string) => {
+                            if (parseInt(current) > parseInt(acc)) return current;
+                            else return acc;
+                        });
+                    index = parseInt(indexes);
+                }
+                else index = 0;
             }
             else throw new Error("NumDocument not implemented !")
         });
+        console.log(index);
+        //console.log(++index);
         return startWith + ++index
     }
 }

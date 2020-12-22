@@ -22,6 +22,13 @@ router.get('/product', Secure.authenticate, async (req, res) => {
     res.send(await serv.get(token.currentEntity._id, params.id));
 });
 
+/*router.get('/product/sales', Secure.authenticate, async (req, res) => {
+    let token: IToken = await Secure.decrypt(req.headers.authorization);
+    let serv: ProductService = new ProductService();
+    const params: { id: string } = <any>url.parse(req.url, true).query;
+    res.send(await serv.get(token.currentEntity._id, params.id));
+});*/
+
 router.get('/product/startwith', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
     let serv: ProductService = new ProductService();

@@ -51,6 +51,36 @@ router.put('/quote/lock', Secure.authenticate, async (req, res) => {
     }
 });
 
+router.put('/quote/cancel', Secure.authenticate, async (req, res) => {
+    let token: IToken = await Secure.decrypt(req.headers.authorization);
+    const params: { id: string } = <any>url.parse(req.url, true).query;
+    let serv: QuoteService = new QuoteService();
+    let back: IQuote = <IQuote>{};
+    try {
+        back = await serv.cancel(params.id, token.currentEntity._id);
+        res.send(back);
+    }
+    catch (ex) {
+        console.log(ex.message);
+        res.status(500).send(ex.message);
+    }
+});
+
+router.put('/quote/accept', Secure.authenticate, async (req, res) => {
+    let token: IToken = await Secure.decrypt(req.headers.authorization);
+    const params: { id: string } = <any>url.parse(req.url, true).query;
+    let serv: QuoteService = new QuoteService();
+    let back: IQuote = <IQuote>{};
+    try {
+        back = await serv.accept(params.id, token.currentEntity._id);
+        res.send(back);
+    }
+    catch (ex) {
+        console.log(ex.message);
+        res.status(500).send(ex.message);
+    }
+});
+
 router.get('/quote', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
     const params: { id: string } = <any>url.parse(req.url, true).query;
