@@ -6,6 +6,17 @@ import { IDocumentService, DocumentBaseService } from '../services/interface/ido
 
 export class QuoteService extends DocumentBaseService<IQuote> implements IDocumentService<IQuote> {
 
+    private checkStatusTransition(sourceStatus: string, targetStatus: string) : boolean {
+        if (sourceStatus == "INIT" && targetStatus == "CREATE") return true;
+        if (sourceStatus == "CREATE" && targetStatus == "UPDATE") return true;
+        if (sourceStatus == "UPDATE" && targetStatus == "UPDATE") return true;
+        if (sourceStatus == "CREATE" && targetStatus == "LOCK") return true;
+        if (sourceStatus == "UPDATE" && targetStatus == "LOCK") return true;
+        if (sourceStatus == "LOCK" && targetStatus == "ACCEPT") return true;
+        if (sourceStatus == "LOCK" && targetStatus == "REJECT") return true;
+        return false;
+    }
+
     public async get(params: IQuote): Promise<IQuote[]> {
         let result: IQuote[] = await Quote.find(params);
         return result;
@@ -51,6 +62,9 @@ export class QuoteService extends DocumentBaseService<IQuote> implements IDocume
     }
 
     private async change(quote: IQuote, sellerId: string, status: string): Promise<IQuote> {
+
+        if (this.checkStatusTransition(quote.status, status) == false) throw new Error('Ce changement de statut n\'est pas autorisé.')
+
         let saved: IQuote = <IQuote>{};
         let seller: IEntity = <IEntity>await Entity.findOne({ _id: sellerId });
 

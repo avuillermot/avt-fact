@@ -30,9 +30,15 @@ router.put('/quote', Secure.authenticate, async (req, res) => {
     let back: IQuote = <IQuote>{};
     let serv: QuoteService = new QuoteService();
     let body: IQuote = <IQuote>req.body;
-    body.updatedBy = token.login;
-    back = await serv.update(body, token.currentEntity._id);
-    res.send(back);
+    try {
+        body.updatedBy = token.login;
+        back = await serv.update(body, token.currentEntity._id);
+        res.send(back);
+    }
+    catch (ex) {
+        console.log(ex.message);
+        res.status(500).send(ex.message);
+    }
 });
 
 router.put('/quote/lock', Secure.authenticate, async (req, res) => {
