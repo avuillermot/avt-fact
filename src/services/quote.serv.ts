@@ -9,6 +9,7 @@ export class QuoteService extends DocumentBaseService<IQuote> implements IDocume
     private checkStatusTransition(sourceStatus: string, targetStatus: string) : boolean {
         if (sourceStatus == "INIT" && targetStatus == "CREATE") return true;
         if (sourceStatus == "CREATE" && targetStatus == "UPDATE") return true;
+        if (sourceStatus == "CREATE" && targetStatus == "CANCEL") return true;
         if (sourceStatus == "UPDATE" && targetStatus == "UPDATE") return true;
         if (sourceStatus == "CREATE" && targetStatus == "LOCK") return true;
         if (sourceStatus == "UPDATE" && targetStatus == "LOCK") return true;
