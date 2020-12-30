@@ -1,7 +1,7 @@
-import express = require('express');
-import cors = require('cors');
+import express from 'express';
+import cors from 'cors';
 import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
-import bodyParser = require('body-parser');
+import bodyParser from 'body-parser';
 import { IItemLine } from './models/document/itemLine';
 
 import contextRoutes from './api/context';
