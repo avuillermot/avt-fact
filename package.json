@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Module de facturation",
   "main": "src/index.ts",
+  "type": "module",
   "scripts": {
     "start": "nodemon src/index.ts",
     "test": "mocha --timeout 5000 --exit -r ts-node/register tests/**/*.test.ts",
