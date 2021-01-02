@@ -32,7 +32,6 @@ export class QuoteService extends DocumentBaseService<IQuote> implements IDocume
 
     // Create a PDF file from a quote
     public async create(quote: IQuote, sellerId: string): Promise<IQuote> {
-        //delete quote._id;
         delete quote.id;
 
         let saved: IQuote = <IQuote>{};
