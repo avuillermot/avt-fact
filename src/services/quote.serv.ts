@@ -19,7 +19,8 @@ export class QuoteService extends DocumentBaseService<IQuote> implements IDocume
     }
 
     public async get(params: IQuote): Promise<IQuote[]> {
-        let result: IQuote[] = await Quote.find(params);
+        let err: any = {};
+        let result: IQuote[] = await Quote.find(err, params);
         return result;
     }
 
@@ -31,7 +32,7 @@ export class QuoteService extends DocumentBaseService<IQuote> implements IDocume
 
     // Create a PDF file from a quote
     public async create(quote: IQuote, sellerId: string): Promise<IQuote> {
-        delete quote._id;
+        //delete quote._id;
         delete quote.id;
 
         let saved: IQuote = <IQuote>{};

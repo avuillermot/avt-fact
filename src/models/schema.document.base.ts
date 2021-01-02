@@ -5,7 +5,7 @@ import { DefaultCustomerSchema } from "../models/entity/customer";
 import { DefaultItemLineSchema } from "../models/document/itemLine";
 var Float = require('mongoose-float').loadType(mongoose, 2);
 
-const SchemaBaseStatus: Schema = new Schema({
+export const DefaultStatusSchemaDef = {
     created: { type: Date, required: true, default: moment().utc() },
     createdBy: { type: String, required: true, default: "system" },
     updated: { type: Date, required: true, default: moment().utc() },
@@ -13,10 +13,10 @@ const SchemaBaseStatus: Schema = new Schema({
 
     status: { type: String, required: true },
     deleted: { type: String, required: true, default: false }
-});
-export const DefaultStatusSchema: Schema = new Schema(SchemaBaseStatus);
+};
+export const DefaultStatusSchema: Schema = new Schema(DefaultStatusSchemaDef);
 
-const SchemaBaseDocument = {
+export const DefaultBaseDocumentDef = {
     created: { type: Date, required: true, default: moment().utc() },
     createdBy: { type: String, required: true, default: "create_process" },
     updated: { type: Date, required: true, default: moment().utc() },
@@ -47,10 +47,9 @@ const SchemaBaseDocument = {
 
     html: { type: String, required: true }
 };
-const _DefaultBaseDocument: Schema = new Schema(SchemaBaseDocument);
-export const DefaultBaseDocument = _DefaultBaseDocument;
+export const DefaultBaseDocument = new Schema(DefaultBaseDocumentDef);
 
-const _DefaultSalesReceiptSchema: Schema = new Schema(SchemaBaseDocument);
+const _DefaultSalesReceiptSchema: Schema = new Schema(DefaultBaseDocumentDef);
 _DefaultSalesReceiptSchema.add({
     entityId: { type: String, required: true },
     quoteId: { type: String, required: false },
@@ -73,7 +72,7 @@ _DefaultSalesReceiptSchema.pre("save", function (next) {
 });
 export const DefaultSalesReceiptSchema = _DefaultSalesReceiptSchema
 
-const _DefaultPurchaseOrderSchema: Schema = new Schema(SchemaBaseDocument);
+const _DefaultPurchaseOrderSchema: Schema = new Schema(DefaultBaseDocumentDef);
 _DefaultPurchaseOrderSchema.add({
     entityId: { type: String, required: true },
     quoteId: { type: String, required: false },

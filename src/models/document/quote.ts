@@ -1,13 +1,13 @@
 import moment = require("moment");
 import mongoose, { model, Schema } from "mongoose";
 import { IDocument } from "./../interface.base";
-import { DefaultBaseDocument } from "../schema.document.base";
+import { DefaultBaseDocumentDef } from "../schema.document.base";
 import { IStatus } from "../document/status";
 import { IEntity } from "../entity/entity"
 import { ICustomer } from "../entity/customer"
 import { IItemLine } from "./itemLine";
 
-const _DefaultQuoteSchema: Schema = new Schema(DefaultBaseDocument);
+const _DefaultQuoteSchema: Schema = new Schema(DefaultBaseDocumentDef);
 _DefaultQuoteSchema.add({
     entityId: { type: String, required: true },
     expirationDate: { type: Date, required: true, default: moment().utc().add(30, "days").toDate() }
@@ -32,7 +32,7 @@ _DefaultQuoteSchema.pre("save", function (next) {
     next();
 });
 _DefaultQuoteSchema.pre("updateOne", function (next) {
-    this.getUpdate().updated = moment().utc().toDate();
+    /*this.getUpdate().updated = moment().utc().toDate();
 
     if (this.getUpdate().items != null && this.getUpdate().items != undefined) {
         var total = 0
@@ -44,7 +44,7 @@ _DefaultQuoteSchema.pre("updateOne", function (next) {
         this.getUpdate().total = total;
         this.getUpdate().taxAmount = taxAmount;
         this.getUpdate().totalFreeTax = total - taxAmount;
-    }
+    }*/
     next();
 });
 

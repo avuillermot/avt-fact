@@ -3,7 +3,7 @@ import { IBase } from "./../interface.base";
 import moment = require("moment");
 var Float = require('mongoose-float').loadType(mongoose, 2);
 
-const SchemaBaseItemLine = {
+const DefaultItemLineSchemaDef = {
     created: { type: Date, required: true, default: moment().utc() },
     createdBy: { type: String, required: true, default: "create_process" },
     updated: { type: Date, required: true, default: moment().utc() },
@@ -21,7 +21,7 @@ const SchemaBaseItemLine = {
     order: {type: Number, required:true }
 }
 
-export const DefaultItemLineSchema: Schema = new Schema(SchemaBaseItemLine);
+export const DefaultItemLineSchema: Schema = new Schema(DefaultItemLineSchemaDef);
 DefaultItemLineSchema.pre("save", function (next) {
     let taxPercent = 1 + (this.get("taxPercent") / 100);
     let total = this.get("quantity") * this.get("price") * taxPercent;

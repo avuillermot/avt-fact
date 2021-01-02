@@ -2,7 +2,7 @@ import { model, Schema } from "mongoose";
 import moment = require("moment");
 import { IBase } from "../interface.base";
 
-const SchemaEntity: Schema = new Schema({
+const SchEntity = {
     created: { type: Date, required: true, default: moment().utc() },
     createdBy: { type: String, required: true, default: "system" },
     updated: { type: Date, required: true, default: moment().utc() },
@@ -23,9 +23,10 @@ const SchemaEntity: Schema = new Schema({
     country: { type: String, required: true },
     email: { type: String, required: true },
     phone: { type: String, required: true },
-    users: { type: [String], required: true, default: []}
-});
-export const DefaultEntitySchema: Schema = new Schema(SchemaEntity);
+    users: { type: [String], required: true, default: [] }
+};
+
+export const DefaultEntitySchema: Schema = new Schema(SchEntity);
 DefaultEntitySchema.pre("save", function (next) {
     this.set("created", moment().utc().toDate());
     this.set("updated", moment().utc().toDate())

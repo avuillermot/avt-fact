@@ -2,7 +2,7 @@ import moment = require("moment");
 import { model, Schema } from "mongoose";
 import { IBase } from "../interface.base";
 
-const SchemaCustomer: Schema = new Schema({
+const SchCustomer = {
     created: { type: Date, required: true, default: moment().utc() },
     createdBy: { type: String, required: true, default: "system" },
     updated: { type: Date, required: true, default: moment().utc() },
@@ -22,8 +22,8 @@ const SchemaCustomer: Schema = new Schema({
     email: { type: String, required: true, minlength: 3 },
     phone: { type: String, required: true, minlength: 3 },
     deleted: { type: Boolean, required: true, default: false }
-});
-export const DefaultCustomerSchema: Schema = new Schema(SchemaCustomer, { toJSON: { virtuals: true } });
+};
+export const DefaultCustomerSchema: Schema = new Schema(SchCustomer, { toJSON: { virtuals: true } });
 DefaultCustomerSchema.virtual('fullName').get(function (this: { firstName: string, lastName: string }) {
     return this.firstName + " " + this.lastName;
 });
