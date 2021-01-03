@@ -13,7 +13,6 @@ import pdfRoutes from './api/pdf';
 
 // rest of the code remains same
 const app = express();
-const PORT = 8000;
 let db: DbSettings = new DbSettings();
 db.connection();
 
@@ -66,6 +65,6 @@ app.put('/document/calcul', async (req, res) => {
 });
 
 
-app.listen(PORT, () => {
-    console.log('[server]: Server is running at https://localhost:%s', PORT);
+app.listen(process.env.PORT, () => {
+    console.log('[server]: Server is running at https://localhost:%s', process.env.PORT);
 });

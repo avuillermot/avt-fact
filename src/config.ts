@@ -1,7 +1,7 @@
 import { connect, connection } from 'mongoose';
 
 export class ApplicationDbSettings {
-    protected dbUrl: string = "mongodb://localhost:27017/avtFact";
+    protected dbUrl: string = <string> process.env.MONGOHOST;
     protected debug: boolean = true;
     protected static isInit: boolean = false;
 
@@ -33,7 +33,7 @@ export class ApplicationDbSettings {
 export class ApplicationDbTestSettings extends ApplicationDbSettings {
     constructor() {
         super();
-        this.dbUrl = "mongodb://localhost:27017/unitAvtFact";
+        this.dbUrl = <string>process.env.MONGOHOST;
     }
 }
 
