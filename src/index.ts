@@ -16,7 +16,7 @@ const app = express();
 let db: DbSettings = new DbSettings();
 db.connection();
 
-//app.use(cors())
+app.use(cors())
 //app.options('*', cors());
 
 app.use(bodyParser.urlencoded({ extended: true }));
