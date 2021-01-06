@@ -64,6 +64,9 @@ app.put('/document/calcul', async (req, res) => {
     res.status(status).send(data);
 });
 
+app.get('/alive', async (req, res) => {
+    res.send("OK FACT");
+});
 
 app.listen(process.env.PORT, () => {
     console.log('[server]: Server is running at https://localhost:%s', process.env.PORT);

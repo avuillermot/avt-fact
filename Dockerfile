@@ -1,7 +1,7 @@
 FROM node:latest
+ENV PORT=80 MONGOHOST=mongodb://pc-246.home:27017/facturation
 RUN mkdir -p /usr/nodeapp
 COPY . /usr/nodeapp
 WORKDIR /usr/nodeapp
-RUN ls
 RUN npm install --verbose
-CMD ["node","src/index.ts"]
+CMD ["npx","ts-node","src/index.ts"]
