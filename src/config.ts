@@ -1,7 +1,7 @@
 import { connect, connection } from 'mongoose';
 
 export class ApplicationDbSettings {
-    protected dbUrl: string = <string> process.env.MONGOHOST;
+    protected dbUrl: string = <string>process.env.MONGOHOST;
     protected debug: boolean = true;
     protected static isInit: boolean = false;
 
@@ -15,6 +15,7 @@ export class ApplicationDbSettings {
                 console.log("open connection :");
                 console.log(connection.host);
                 console.log(connection.port);
+                console.log("-"+connection.name+"-");
             }
             ApplicationDbSettings.isInit = true;
         }
@@ -27,13 +28,6 @@ export class ApplicationDbSettings {
         catch (ex) {
             console.log("Collection " + collection + " not exists, dropCollection impossible.");
         }
-    }
-}
-
-export class ApplicationDbTestSettings extends ApplicationDbSettings {
-    constructor() {
-        super();
-        this.dbUrl = <string>process.env.MONGOHOST;
     }
 }
 

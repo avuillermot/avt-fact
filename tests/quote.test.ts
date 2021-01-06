@@ -2,7 +2,7 @@
 import "mocha";
 import fs = require("fs");
 import { QuoteExample, EntityId } from "./utils";
-import { ApplicationDbTestSettings as DbSettings, ApplicationSetting } from "./../src/config";
+import { ApplicationDbSettings as DbSettings, ApplicationSetting } from "./../src/config";
 import { QuoteService } from '../src/services/quote.serv';
 import { IQuote } from '../src/models/document/quote';
 
