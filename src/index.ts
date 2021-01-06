@@ -1,5 +1,5 @@
 import express from 'express';
-import cors from 'cors';
+import cors = require('cors');
 import { ApplicationDbSettings as DbSettings, ApplicationSetting } from "./../src/config";
 import bodyParser from 'body-parser';
 import { IItemLine } from './models/document/itemLine';
@@ -17,7 +17,7 @@ let db: DbSettings = new DbSettings();
 db.connection();
 
 app.use(cors())
-//app.options('*', cors());
+app.options('*', cors());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

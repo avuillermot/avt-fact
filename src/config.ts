@@ -15,7 +15,7 @@ export class ApplicationDbSettings {
                 console.log("open connection :");
                 console.log(connection.host);
                 console.log(connection.port);
-                console.log("-"+connection.name+"-");
+                console.log(connection.name);
             }
             ApplicationDbSettings.isInit = true;
         }
