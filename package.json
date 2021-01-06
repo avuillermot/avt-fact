@@ -6,10 +6,12 @@
   "type": "modules",
   "scripts": {
     "linux": "PORT=8080 MONGOHOST=mongodb://pc-246.home:27017/facturation nodemon src/index.ts",
-    "windows": "SET PORT=8080&& SET MONGOHOST=mongodb://localhost:27017/unitAvtFact&& nodemon src/index.ts",
+    "windows": "SET PORT=8080&& SET MONGOHOST=mongodb://localhost:27017/facturation&& nodemon src/index.ts",
     "test": "MONGOHOST=mongodb://pc-246.home:27017/facturation mocha --timeout 5000 --exit -r ts-node/register tests/**/*.test.ts",
+    "testwindows": "SET MONGOHOST=mongodb://localhost:27017/facturation&& mocha --timeout 5000 --exit -r ts-node/register tests/**/*.test.ts",
     "quote": "MONGOHOST=mongodb://pc-246.home:27017/facturation mocha --timeout 5000 --exit -r ts-node/register tests/**/quote.test.ts",
     "entity": "MONGOHOST=mongodb://pc-246.home:27017/facturation mocha --timeout 5000 --exit -r ts-node/register tests/**/entity.test.ts",
+    "entitywindows": "SET MONGOHOST=mongodb://localhost:27017/facturation&& mocha --timeout 5000 --exit -r ts-node/register tests/**/entity.test.ts",
     "customer": "MONGOHOST=mongodb://pc-246.home:27017/facturation mocha --timeout 5000 --exit -r ts-node/register tests/**/customer.test.ts",
     "product": "MONGOHOST=mongodb://pc-246.home:27017/facturation mocha --timeout 5000 --exit -r ts-node/register tests/**/product.test.ts",
     "start": "PORT=8000 MONGOHOST=mongodb://pc-246.home:27017/facturation ts-node src/index.ts"

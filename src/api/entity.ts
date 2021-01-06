@@ -15,7 +15,8 @@ router.put('/entity/byuser', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
     let serv: EntityService = new EntityService();
     let back: IEntity[] | null = await serv.getByUser(token.login);
-    if (back != null) {
+    console.log(back);
+    if (back != null && back.length > 0) {
         token.entities = back;
         token.currentEntity = back[0];
         let encrypt: string = await jwt.sign(JSON.stringify(token), ApplicationSetting.jtokenSecretKey);
