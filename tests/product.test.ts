@@ -17,5 +17,10 @@ describe('Product', () => {
         };
         let query: ProductService = new ProductService();
         const product = await query.create(params);
+        expect(product.created).not.equal(null, "created must be not null");
+        expect(product.updated).not.equal(null, "updated must be not null");
+        expect(product.createdBy).equal("create_process", "createdBy must be system");
+        expect(product.updatedBy).equal("create_process", "updatedBy must be not system");
+        expect(product.deleted).equal(false, "should not be deleted");
     });
 });

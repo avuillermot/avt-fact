@@ -10,9 +10,9 @@ const DefaultRoleSchema: Schema = new Schema(SchRole);
 
 const SchEntity = {
     created: { type: Date, required: true, default: moment().utc() },
-    createdBy: { type: String, required: true, default: "system" },
+    createdBy: { type: String, required: true, default: "create_process" },
     updated: { type: Date, required: true, default: moment().utc() },
-    updatedBy: { type: String, required: true, default: "system" },
+    updatedBy: { type: String, required: true, default: "create_process" },
 
     name: { type: String, required: true },
     siren: { type: String, required: true },

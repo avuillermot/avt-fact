@@ -33,8 +33,8 @@ describe('Entity', () => {
         expect(entity._id).not.equal(null, "id ne peu pas etre null");
         expect(entity.created).not.equal(null, "created must be not null");
         expect(entity.updated).not.equal(null, "updated must be not null");
-        expect(entity.createdBy).equal("system", "createdBy must be system");
-        expect(entity.updatedBy).equal("system", "updatedBy must be not system");
+        expect(entity.createdBy).equal("create_process", "createdBy must be system");
+        expect(entity.updatedBy).equal("create_process", "updatedBy must be not system");
     });
 
     it('Should find an account', async () => {
