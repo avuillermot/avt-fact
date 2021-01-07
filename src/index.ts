@@ -1,4 +1,6 @@
 import express from 'express';
+import https = require('https');
+import fs = require('fs');
 import cors = require('cors');
 import { ApplicationDbSettings as DbSettings, ApplicationSetting } from "./../src/config";
 import bodyParser from 'body-parser';
@@ -10,6 +12,12 @@ import entityRoutes from './api/entity';
 import productRoutes from './api/product';
 import quoteRoutes from './api/quote';
 import pdfRoutes from './api/pdf';
+
+console.log("WORKSPACE:" + __dirname);
+const options = {
+    key: fs.readFileSync('./src/config/key.pem'),
+    cert: fs.readFileSync('./src/config/cert.pem')
+};
 
 // rest of the code remains same
 const app = express();
@@ -68,6 +76,6 @@ app.get('/alive', async (req, res) => {
     res.send("OK FACT");
 });
 
-app.listen(process.env.PORT, () => {
+https.createServer(options, app).listen(process.env.PORT, () => {
     console.log('[server]: Server is running at https://localhost:%s', process.env.PORT);
 });
