@@ -1,13 +1,13 @@
-import Entity, { IEntity } from "./../models/entity/entity"
+import Entity, { IEntity, IRoles } from "./../models/entity/entity"
 export class EntityService {
 
-    public async create(entity: IEntity): Promise<IEntity> {
+    public async create(entity: IEntity, owner: any = null): Promise<IEntity> {
         let back: IEntity = await Entity.create(entity);
         return back;
     }
 
     public async getByUser(login: string): Promise<IEntity[]|null> {
-        let back: IEntity[] | null = await Entity.find({ users: login }).select("id name");
+        let back: IEntity[] | null = await Entity.find({"users.email": login}).select("id name");
         return back;
     }
 

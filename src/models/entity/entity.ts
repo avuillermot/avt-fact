@@ -2,6 +2,12 @@ import { model, Schema } from "mongoose";
 import moment = require("moment");
 import { IBase } from "../interface.base";
 
+const SchRole = {
+    email: { type: String, required: true },
+    role: { type: String, required: true }
+};
+const DefaultRoleSchema: Schema = new Schema(SchRole);
+
 const SchEntity = {
     created: { type: Date, required: true, default: moment().utc() },
     createdBy: { type: String, required: true, default: "system" },
@@ -23,7 +29,7 @@ const SchEntity = {
     country: { type: String, required: true },
     email: { type: String, required: true },
     phone: { type: String, required: true },
-    users: { type: [String], required: true, default: [] }
+    users: { type: [DefaultRoleSchema], required: true, default: [] }
 };
 
 export const DefaultEntitySchema: Schema = new Schema(SchEntity);
@@ -31,13 +37,15 @@ DefaultEntitySchema.pre("save", function (next) {
     this.set("created", moment().utc().toDate());
     this.set("updated", moment().utc().toDate())
 
-    let users: string[] = this.get("user");
-    if (users == undefined || users == null) users = new Array<string>();
-    users.push(this.get("email"));
-    this.set("users", users);
+    let users: IRoles[] = new Array<IRoles>();
+    this.get("users").push({ email: this.get("email"), role: "ADMIN" });
     next();
 });
 
+export interface IRoles {
+    email: string;
+    role: string;
+}
 export interface IEntity extends IBase {
     name: string;
     address1: string;
@@ -54,7 +62,7 @@ export interface IEntity extends IBase {
     codeTVA: string;
     legalType: string;
     capital: number;
-    users: string[];
+    users: IRoles[];
 }
 
 export default model<IEntity>('Entity', DefaultEntitySchema);
