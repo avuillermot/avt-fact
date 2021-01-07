@@ -18,5 +18,9 @@ describe('Customer', () => {
         };
         let query: CustomerService = new CustomerService();
         const customer = await query.create(params);
+        expect(customer.created).not.equal(null, "created must be not null");
+        expect(customer.updated).not.equal(null, "updated must be not null");
+        expect(customer.createdBy).equal("system", "createdBy must be system");
+        expect(customer.updatedBy).equal("system", "updatedBy must be not system");
     });
 });
