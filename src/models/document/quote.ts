@@ -15,6 +15,7 @@ _DefaultQuoteSchema.add({
 _DefaultQuoteSchema.index({ entityId: 1});
 
 _DefaultQuoteSchema.pre("save", function (next) {
+    console.log("***************************************save1");
     this.set("created", moment().utc().toDate());
     this.set("updated", moment().utc().toDate())
 
@@ -29,22 +30,28 @@ _DefaultQuoteSchema.pre("save", function (next) {
     this.set("total", total);
     this.set("taxAmount", taxAmount);
     this.set("totalFreeTax", total - taxAmount);
+    console.log("taxAmount");
+    console.log(taxAmount);
     next();
 });
 _DefaultQuoteSchema.pre("updateOne", function (next) {
-    /*this.getUpdate().updated = moment().utc().toDate();
+    console.log("***************************************save2");
+    let _update = this["_update"];
+    _update["updated"] = moment().utc().toDate();
 
-    if (this.getUpdate().items != null && this.getUpdate().items != undefined) {
+    if (_update["items"] != null && _update["items"] != undefined) {
         var total = 0
         var taxAmount = 0;
-        for (var i = 0; i < this.getUpdate().items.length; i++) {
-            total = total + this.getUpdate().items[i].total;
-            taxAmount = taxAmount + this.getUpdate().items[i].taxAmount;
+        for (var i = 0; i < _update["items"].length; i++) {
+            total = total + _update["items"][i].total;
+            taxAmount = taxAmount + _update["items"][i].taxAmount;
         }
-        this.getUpdate().total = total;
-        this.getUpdate().taxAmount = taxAmount;
-        this.getUpdate().totalFreeTax = total - taxAmount;
-    }*/
+        _update["total"] = total;
+        _update["taxAmount"] = taxAmount;
+        _update["totalFreeTax"] = total - taxAmount;
+    }
+    console.log("taxAmount");
+    console.log(taxAmount);
     next();
 });
 

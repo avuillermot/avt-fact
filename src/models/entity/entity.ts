@@ -37,7 +37,6 @@ DefaultEntitySchema.pre("save", function (next) {
     this.set("created", moment().utc().toDate());
     this.set("updated", moment().utc().toDate())
 
-    let users: IRoles[] = new Array<IRoles>();
     this.get("users").push({ email: this.get("email"), role: "ADMIN" });
     next();
 });

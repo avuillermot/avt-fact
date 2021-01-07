@@ -11,11 +11,14 @@
     "testlinux": "MONGOHOST=mongodb://pc-246.home:27017/facturation_test mocha --timeout 5000 --exit -r ts-node/register tests/**/*.test.ts",
     "testwindows": "SET MONGOHOST=mongodb://pc-246.home:27017/facturation_test&& mocha --timeout 5000 --exit -r ts-node/register tests/**/*.test.ts",
 
-    "quote": "MONGOHOST=mongodb://pc-246.home:27017/facturation mocha --timeout 5000 --exit -r ts-node/register tests/**/quote.test.ts",
-    "entity": "MONGOHOST=mongodb://pc-246.home:27017/facturation mocha --timeout 5000 --exit -r ts-node/register tests/**/entity.test.ts",
+    "quotelinux": "MONGOHOST=mongodb://pc-246.home:27017/facturation_test mocha --timeout 5000 --exit -r ts-node/register tests/**/quote.test.ts",
+    "quotewindows": "SET MONGOHOST=mongodb://pc-246.home:27017/facturation_test&& mocha --timeout 5000 --exit -r ts-node/register tests/**/quote.test.ts",
+    "entitylinux": "MONGOHOST=mongodb://pc-246.home:27017/facturation_test mocha --timeout 5000 --exit -r ts-node/register tests/**/entity.test.ts",
     "entitywindows": "SET MONGOHOST=mongodb://pc-246.home:27017:27017/facturation_test&& mocha --timeout 5000 --exit -r ts-node/register tests/**/entity.test.ts",
-    "customer": "MONGOHOST=mongodb://pc-246.home:27017/facturation mocha --timeout 5000 --exit -r ts-node/register tests/**/customer.test.ts",
-    "product": "MONGOHOST=mongodb://pc-246.home:27017/facturation mocha --timeout 5000 --exit -r ts-node/register tests/**/product.test.ts",
+    "customerlinux": "MONGOHOST=mongodb://pc-246.home:27017/facturation_test mocha --timeout 5000 --exit -r ts-node/register tests/**/customer.test.ts",
+    "customerwindows": "SET MONGOHOST=mongodb://pc-246.home:27017/facturation_test&& mocha --timeout 5000 --exit -r ts-node/register tests/**/customer.test.ts",
+    "productlinux": "MONGOHOST=mongodb://pc-246.home:27017/facturation mocha --timeout 5000 --exit -r ts-node/register tests/**/product.test.ts",
+    "productwindows": "SET MONGOHOST=mongodb://pc-246.home:27017/facturation_test&& mocha --timeout 5000 --exit -r ts-node/register tests/**/product.test.ts",
 
     "start": "PORT=8000 MONGOHOST=mongodb://pc-246.home:27017/facturation ts-node src/index.ts"
   },
