@@ -8,12 +8,21 @@ import { Router } from 'express';
 // CUSTOMER
 //****************************************************************************
 const router: Router = Router();
+/**
+ * @api {get} /customers [Get all customers]
+ * @apiDescription Return all customers by entity
+ * @apiPermission authenticated
+ */
 router.get('/customers', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
     let serv: CustomerService = new CustomerService();
     res.send(await serv.getAll(token.currentEntity._id));
 });
-
+/**
+ * @api {get} /customer/:id [Get one customer]
+ * @apiDescription Return one customer
+ * @apiPermission authenticated
+ */
 router.get('/customer', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
     let serv: CustomerService = new CustomerService();
