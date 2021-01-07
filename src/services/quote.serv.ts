@@ -3,6 +3,7 @@ import Entity, { IEntity } from "./../models/entity/entity";
 import Quote, { IQuote } from '../models/document/quote';
 import { IStatus } from "../models/document/status";
 import { IDocumentService, DocumentBaseService } from '../services/interface/idocument';
+import { Error } from "mongoose";
 
 export class QuoteService extends DocumentBaseService<IQuote> implements IDocumentService<IQuote> {
 
@@ -36,7 +37,6 @@ export class QuoteService extends DocumentBaseService<IQuote> implements IDocume
 
         let saved: IQuote = <IQuote>{};
         let seller: IEntity = <IEntity>await Entity.findOne({ _id: sellerId });
-
         if (seller != null && seller != undefined) {
             quote.status = "CREATE";
             quote.statusHistory = new Array<IStatus>();
@@ -51,14 +51,16 @@ export class QuoteService extends DocumentBaseService<IQuote> implements IDocume
             if (quote.city == null || quote.city == "") quote.city = quote.customer.city;
             if (quote.country == null || quote.country == "") quote.country = quote.customer.country;
             if (quote.entityId == null || quote.entityId == "") quote.entityId = sellerId;
-            
+
             try {
                 saved = await Quote.create(quote);
             }
             catch (ex) {
                 console.log(ex);
+                throw new Error("QUOTE_NOT_CREATE");
             }
         }
+        else throw new Error("SELLER_NOT_FIND");
         return saved;
     }
 

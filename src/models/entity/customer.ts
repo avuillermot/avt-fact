@@ -4,9 +4,9 @@ import { IBase } from "../interface.base";
 
 const SchCustomer = {
     created: { type: Date, required: true, default: moment().utc() },
-    createdBy: { type: String, required: true, default: "system" },
+    createdBy: { type: String, required: true, default: "create_process" },
     updated: { type: Date, required: true, default: moment().utc() },
-    updatedBy: { type: String, required: true, default: "system" },
+    updatedBy: { type: String, required: true, default: "create_process" },
 
     entityId: { type: String, required: true },
     number: { type: Number, required: true },

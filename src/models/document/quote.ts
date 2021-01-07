@@ -15,7 +15,6 @@ _DefaultQuoteSchema.add({
 _DefaultQuoteSchema.index({ entityId: 1});
 
 _DefaultQuoteSchema.pre("save", function (next) {
-    console.log("***************************************save1");
     this.set("created", moment().utc().toDate());
     this.set("updated", moment().utc().toDate())
 
@@ -30,12 +29,9 @@ _DefaultQuoteSchema.pre("save", function (next) {
     this.set("total", total);
     this.set("taxAmount", taxAmount);
     this.set("totalFreeTax", total - taxAmount);
-    console.log("taxAmount");
-    console.log(taxAmount);
     next();
 });
 _DefaultQuoteSchema.pre("updateOne", function (next) {
-    console.log("***************************************save2");
     let _update = this["_update"];
     _update["updated"] = moment().utc().toDate();
 
@@ -50,8 +46,6 @@ _DefaultQuoteSchema.pre("updateOne", function (next) {
         _update["taxAmount"] = taxAmount;
         _update["totalFreeTax"] = total - taxAmount;
     }
-    console.log("taxAmount");
-    console.log(taxAmount);
     next();
 });
 

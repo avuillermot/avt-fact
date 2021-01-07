@@ -20,8 +20,8 @@ describe('Customer', () => {
         const customer = await query.create(params);
         expect(customer.created).not.equal(null, "created must be not null");
         expect(customer.updated).not.equal(null, "updated must be not null");
-        expect(customer.createdBy).equal("create_process", "createdBy must be system");
-        expect(customer.updatedBy).equal("create_process", "updatedBy must be not system");
+        expect(customer.createdBy).equal("create_process", "createdBy must be create_process");
+        expect(customer.updatedBy).equal("create_process", "updatedBy must be not create_process");
         expect(customer.deleted).equal(false, "should not be deleted");
     });
 });
