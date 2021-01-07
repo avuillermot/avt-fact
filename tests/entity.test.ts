@@ -31,6 +31,10 @@ describe('Entity', () => {
         expect(entity.email).equal(email, "Bad email for entity");
         expect(entity.email).equal(entity.users[0].email, "Bad email for role");
         expect(entity._id).not.equal(null, "id ne peu pas etre null");
+        expect(entity.created).not.equal(null, "created must be not null");
+        expect(entity.updated).not.equal(null, "updated must be not null");
+        expect(entity.createdBy).equal("system", "createdBy must be system");
+        expect(entity.updatedBy).equal("system", "updatedBy must be not system");
     });
 
     it('Should find an account', async () => {
