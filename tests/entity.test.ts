@@ -30,6 +30,7 @@ describe('Entity', () => {
         expect(entity.users[0].role).equal("ADMIN", "Must be ADMIN");
         expect(entity.email).equal(email, "Bad email for entity");
         expect(entity.email).equal(entity.users[0].email, "Bad email for role");
+        expect(entity._id).not.equal(null, "id ne peu pas etre null");
     });
 
     it('Should find an account', async () => {
