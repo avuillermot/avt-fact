@@ -5,7 +5,7 @@ import https from 'https';
 
 export class EntityService {
 
-    public async create(entity: IEntity, owner: any = null): Promise<IEntity> {
+    public async create(entity: IEntity, owner: { firstName: string, lastName: string, email: string, emailConfirmed: boolean, phone: string, password: string, confirmPassword: string} = null): Promise<IEntity> {
         let back: IEntity = await Entity.create(entity);
         if (owner != null) {
             const instance = axios.create({
