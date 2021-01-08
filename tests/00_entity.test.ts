@@ -1,6 +1,6 @@
 ﻿import { expect } from 'chai';
 import "mocha";
-import { ApplicationDbSettings as DbSettings, ApplicationSetting } from "./../src/config";
+import { ApplicationDbSettings as DbSettings, ApplicationSetting } from "./../src/config/config";
 import { EntityService } from '../src/services/entity.serv';                                                                                                                                              
 import { IEntity } from '../src/models/entity/entity';
 

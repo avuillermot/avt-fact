@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import moment = require('moment');
 import { IToken } from '../models/token';
-import { ApplicationSetting } from '../config';
+import { ApplicationSetting } from '../config/config';
 
 export class Secure {
     public static async decrypt (token: string|undefined): Promise<IToken> {

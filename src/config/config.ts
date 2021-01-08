@@ -1,5 +1,9 @@
 import { connect, connection } from 'mongoose';
 
+export class ApplicationServiceConfig {
+    public static urlUserService: string = <string>process.env.URL_USER_SERVICES;
+}
+
 export class ApplicationDbSettings {
     protected dbUrl: string = <string>process.env.MONGOHOST;
     protected debug: boolean = true;

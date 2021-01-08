@@ -2,7 +2,7 @@ import express from 'express';
 import https = require('https');
 import fs = require('fs');
 import cors = require('cors');
-import { ApplicationDbSettings as DbSettings, ApplicationSetting } from "./../src/config";
+import { ApplicationDbSettings as DbSettings, ApplicationSetting } from "./../src/config/config";
 import bodyParser from 'body-parser';
 import { IItemLine } from './models/document/itemLine';
 

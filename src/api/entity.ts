@@ -4,7 +4,7 @@ import { EntityService } from '../services/entity.serv';
 import { IEntity } from '../models/entity/entity';
 import { Secure } from './_secure.helper';
 import { Router } from 'express';
-import { ApplicationSetting } from '../config';
+import { ApplicationSetting } from '../config/config';
 
 const router:Router = Router();
 //****************************************************************************

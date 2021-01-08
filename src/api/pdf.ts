@@ -5,7 +5,7 @@ import * as pdf from 'html-pdf';
 import fs = require("fs");
 import url = require('url');
 import { IQuote } from '../models/document/quote';
-import { ApplicationSetting } from '../config';
+import { ApplicationSetting } from '../config/config';
 
 const router: Router = Router();
 

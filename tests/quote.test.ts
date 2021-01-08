@@ -1,7 +1,7 @@
 ﻿import { expect } from 'chai';
 import "mocha";
 import { QuoteExample, EntityId } from "./utils";
-import { ApplicationDbSettings as DbSettings, ApplicationSetting } from "./../src/config";
+import { ApplicationDbSettings as DbSettings, ApplicationSetting } from "./../src/config/config";
 import { QuoteService } from '../src/services/quote.serv';
 import { IQuote } from '../src/models/document/quote';
 import Entity, { IEntity } from '../src/models/entity/entity';
