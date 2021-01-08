@@ -3,14 +3,15 @@ import "mocha";
 import { ApplicationDbSettings as DbSettings, ApplicationSetting } from "./../src/config/config";
 import { EntityService } from '../src/services/entity.serv';                                                                                                                                              
 import { IEntity } from '../src/models/entity/entity';
+import { v4 } from 'uuid';
 
 describe('Entity', () => {
 
     let db: DbSettings = new DbSettings();
     db.connection();
-    db.dropCollection("entities");
+    db.dropDb();
 
-    let email: string = "bwillis@hotmail.com";
+    let email: string = v4();
     
     it('Should create an entity', async () => {
         
@@ -25,7 +26,7 @@ describe('Entity', () => {
             capital: 8000,
         };
         let query: EntityService = new EntityService();
-        const entity = await query.create(params, { firstName: "Bruce", lastName: "Willis", email: email, emailConfirmed: false, phone: "+330123456" });
+        const entity = await query.create(params, { firstName: "Bruce", lastName: "Willis", email: email, emailConfirmed: false, phone: "+330123456", password: "123456", confirmPassword: "123456" });
         expect(entity.users.length).equal(1, "One role ADMIN must be present");
         expect(entity.users[0].role).equal("ADMIN", "Must be ADMIN");
         expect(entity.email).equal(email, "Bad email for entity");
@@ -42,4 +43,26 @@ describe('Entity', () => {
         let entities: IEntity[] = await query.getByUser(email);
         expect(entities.length).equal(1, "Must find an entity");
     });
+
+    it('Should create an entity (x2)', async () => {
+
+        let params: IEntity = <IEntity>{
+            name: "AVT Corp.", city: "Dijon", address1: "7 imp Heni L.", address2: "-", address3: "-",
+            country: "FRANCE", email: email, phone: "0380564789", zipCode: "21000",
+            siren: "424 430 015 00026",
+            siret: "424 430 015 00026 001",
+            codeAPE: "4322B",
+            codeTVA: "IT1235",
+            legalType: "SARL",
+            capital: 8000,
+        };
+        let query: EntityService = new EntityService();
+        try {
+            const entity = await query.create(params, { firstName: "Bruce", lastName: "Willis", email: email, emailConfirmed: false, phone: "+330123456", password: "123456", confirmPassword: "123456" });
+            expect("").equal("ALREADY_EXIST", "Should already exist");
+        }
+        catch (ex) {
+            expect(ex.message).equal("ALREADY_EXIST","Should already exist");
+        }
+     });
 });

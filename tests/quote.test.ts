@@ -10,7 +10,6 @@ describe('Quote', async() => {
 
     let db: DbSettings = new DbSettings();
     db.connection();
-    //db.dropCollection("quotes");
     
     it('Should create a quote', async () => {
         const entity: IEntity = <IEntity>await Entity.findOne();
