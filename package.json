@@ -6,20 +6,20 @@
   "type": "modules",
   "scripts": {
     "linux": "PORT=8080 MONGOHOST=mongodb://pc-246.home:27017/facturation nodemon src/index.ts",
-    "windows": "SET PORT=8080&& SET MONGOHOST=mongodb://localhost:27017/facturation&& nodemon src/index.ts",
-
+    "windows": "SET PORT=8080&& SET MONGOHOST=mongodb://pc-246.home:27017/facturation_dev&& nodemon src/index.ts",
+    
     "testlinux": "MONGOHOST=mongodb://pc-246.home:27017/facturation_test mocha --timeout 5000 --exit -r ts-node/register tests/**/*.test.ts",
-    "testwindows": "SET MONGOHOST=mongodb://pc-246.home:27017/facturation_test&& mocha --timeout 5000 --exit -r ts-node/register tests/**/*.test.ts",
-
+    "testwindows": "SET MONGOHOST=mongodb://pc-246.home:27017/facturation_test&&SET URL_USER_SERVICES=https://localhost:8081&& mocha --timeout 5000 --exit -r ts-node/register tests/**/*.test.ts",
+    
     "quotelinux": "MONGOHOST=mongodb://pc-246.home:27017/facturation_test mocha --timeout 5000 --exit -r ts-node/register tests/**/quote.test.ts",
     "quotewindows": "SET MONGOHOST=mongodb://pc-246.home:27017/facturation_test&& mocha --timeout 5000 --exit -r ts-node/register tests/**/quote.test.ts",
     "entitylinux": "MONGOHOST=mongodb://pc-246.home:27017/facturation_test mocha --timeout 5000 --exit -r ts-node/register tests/**/00_entity.test.ts",
-    "entitywindows": "SET MONGOHOST=mongodb://pc-246.home:27017:27017/facturation_test&& mocha --timeout 5000 --exit -r ts-node/register tests/**/00_entity.test.ts",
+    "entitywindows": "SET MONGOHOST=mongodb://pc-246.home:27017:27017/facturation_test&&SET URL_USER_SERVICES=https://localhost:8081&& mocha --timeout 5000 --exit -r ts-node/register tests/**/00_entity.test.ts",
     "customerlinux": "MONGOHOST=mongodb://pc-246.home:27017/facturation_test mocha --timeout 5000 --exit -r ts-node/register tests/**/customer.test.ts",
     "customerwindows": "SET MONGOHOST=mongodb://pc-246.home:27017/facturation_test&& mocha --timeout 5000 --exit -r ts-node/register tests/**/customer.test.ts",
     "productlinux": "MONGOHOST=mongodb://pc-246.home:27017/facturation mocha --timeout 5000 --exit -r ts-node/register tests/**/product.test.ts",
     "productwindows": "SET MONGOHOST=mongodb://pc-246.home:27017/facturation_test&& mocha --timeout 5000 --exit -r ts-node/register tests/**/product.test.ts",
-
+    
     "start": "PORT=8000 MONGOHOST=mongodb://pc-246.home:27017/facturation ts-node src/index.ts"
   },
   "repository": {
@@ -52,6 +52,7 @@
     "@types/pdfkit": "^0.10.6",
     "@types/uuid": "^8.3.0",
     "async-lock": "^1.2.8",
+    "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
