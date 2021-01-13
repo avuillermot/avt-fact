@@ -32,7 +32,20 @@ router.get('/entity/current', Secure.authenticate, async (req, res) => {
 });
 
 router.post('/entity', async (req, res) => {
-    let srv: EntityService = new EntityService();
+    if (req.body.entity == null || req.body.entity == undefined) res.status(500).send("ENTITY is mandatory");
+    else if (req.body.owner == null || req.body.owner == undefined) res.status(500).send("OWNER is mandatory");
+    else {
+        try {
+            let srv: EntityService = new EntityService();
+            const entity: IEntity = await srv.create(req.body.entity, req.body.owner);
+            res.send(entity._id);
+        }
+        catch (ex) {
+            console.log(ex.message);
+            res.status(500).send(ex.message);
+        }
+    }
+
 });
 
 export default router;

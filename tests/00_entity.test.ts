@@ -59,10 +59,10 @@ describe('Entity', () => {
         let query: EntityService = new EntityService();
         try {
             const entity = await query.create(params, { firstName: "Bruce", lastName: "Willis", email: email, emailConfirmed: false, phone: "+330123456", password: "123456", confirmPassword: "123456" });
-            expect("").equal("ALREADY_EXIST", "Should already exist");
+            expect("").equal("EMAIL_ALREADY_EXIST", "Should already exist");
         }
         catch (ex) {
-            expect(ex.message).equal("ALREADY_EXIST","Should already exist");
+            expect(ex.message).equal("EMAIL_ALREADY_EXIST","Should already exist");
         }
      });
 });

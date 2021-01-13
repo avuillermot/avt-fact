@@ -1,9 +1,5 @@
 import { connect, connection } from 'mongoose';
 
-export class ApplicationServiceConfig {
-    public static urlUserService: string = <string>process.env.URL_USER_SERVICES;
-}
-
 export class ApplicationDbSettings {
     protected dbUrl: string = <string>process.env.MONGOHOST;
     protected debug: boolean = true;
@@ -36,5 +32,6 @@ export class ApplicationSetting {
     public static previewPdfAllowDomain: string = "http://localhost:8000";
     public static CssDocument: string = "http://localhost:8000/pdf/document-pdf";
     public static HtmlDocumentTemplateDirectory: string = "c:/projets_test/avt-fact/src/html-template/";
+    public static urlUserService: string = "";
 }
 

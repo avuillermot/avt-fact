@@ -1,4 +1,4 @@
-import { ApplicationServiceConfig } from './../config/config';
+import { ApplicationSetting } from './../config/config';
 import Entity, { IEntity } from "./../models/entity/entity"
 import axios from 'axios';
 import https from 'https';
@@ -15,7 +15,7 @@ export class EntityService {
             });
             let response: any = null;
             try {
-                response = await instance.post(ApplicationServiceConfig.urlUserService, owner);
+                response = await instance.post(ApplicationSetting.urlUserService, owner);
             }
             catch (ex) {
                 console.log("Delete entity on error : " + back._id);

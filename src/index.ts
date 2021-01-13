@@ -5,6 +5,7 @@ import cors = require('cors');
 import { ApplicationDbSettings as DbSettings, ApplicationSetting } from "./../src/config/config";
 import bodyParser from 'body-parser';
 import { IItemLine } from './models/document/itemLine';
+import Parameter from './models/parameter';
 
 import contextRoutes from './api/context';
 import customerRoutes from './api/customer';
@@ -18,6 +19,11 @@ const options = {
     key: fs.readFileSync('./src/config/key.pem'),
     cert: fs.readFileSync('./src/config/cert.pem')
 };
+
+Parameter.findOne({ KEY: "URL_USER_SERVICES" }).then((data) => {
+    console.log("URL_USER_SERVICES:" + data);
+    ApplicationSetting.urlUserService = data.VALUE;
+});
 
 // rest of the code remains same
 const app = express();
