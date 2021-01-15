@@ -53,12 +53,11 @@ router.get('/entity/current', Secure.authenticate, async (req, res) => {
     res.send(back);
 });
 /**
- * @api {post} / [Create entity]
+ * @api {post} /entity [Create entity]
  * @apiGroup Enity
  * @apiDescription Create one entity and its owner
  * @apiSuccess (Succes) {String} ID Return entity id
  * @apiError (Error) {Number} HttpCode 500 and response inlucdes error description
- * @apiPermission authenticated
  */
 router.post('/entity', async (req, res) => {
     if (req.body.entity == null || req.body.entity == undefined) res.status(500).send("ENTITY is mandatory");

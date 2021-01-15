@@ -82,6 +82,12 @@ app.get('/alive', async (req, res) => {
     res.send("OK FACT");
 });
 
+app.get('/countries', async (req, res) => {
+    const countries: string[] = new Array<string>();
+    countries.push("FRANCE");
+    res.send(countries);
+});
+
 https.createServer(options, app).listen(process.env.PORT, () => {
     console.log('[server]: Server is running at https://localhost:%s', process.env.PORT);
 });
