@@ -8,7 +8,14 @@ import { Router } from 'express';
 // QUOTE
 //****************************************************************************
 const router: Router = Router();
-
+/**
+ * @api {post} /quote [Create]
+ * @apiGroup Quote
+ * @apiDescription Create a quote
+ * @apiSuccess (Succes) {JSON} Return quote created
+ * @apiError (Error) {Number} HttpCode 500 and response inlucdes error description
+ * @apiPermission authenticated
+ */
 router.post('/quote', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
     let back: IQuote = <IQuote>{};
@@ -24,7 +31,14 @@ router.post('/quote', Secure.authenticate, async (req, res) => {
         res.status(500).send(ex.message);
     }
 });
-
+/**
+ * @api {put} /quote [Update]
+ * @apiGroup Quote
+ * @apiDescription Update a quote
+ * @apiSuccess (Succes) {JSON} Return quote updated
+ * @apiError (Error) {Number} HttpCode 500 and response inlucdes error description
+ * @apiPermission authenticated
+ */
 router.put('/quote', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
     let back: IQuote = <IQuote>{};
@@ -40,7 +54,14 @@ router.put('/quote', Secure.authenticate, async (req, res) => {
         res.status(500).send(ex.message);
     }
 });
-
+/**
+ * @api {put} /quote/lock/:id [Lock]
+ * @apiGroup Quote
+ * @apiDescription Lock a quote before sending to customer. Quote can't be updated anymore
+ * @apiSuccess (Succes) {JSON} Return quote locked
+ * @apiError (Error) {Number} HttpCode 500 and response inlucdes error description
+ * @apiPermission authenticated
+ */
 router.put('/quote/lock', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
     let back: IQuote = <IQuote>{};
@@ -56,7 +77,14 @@ router.put('/quote/lock', Secure.authenticate, async (req, res) => {
         res.status(500).send(ex.message);
     }
 });
-
+/**
+ * @api {put} /quote/cancel/:id [Cancel]
+ * @apiGroup Quote
+ * @apiDescription Cancel (not deleted)
+ * @apiSuccess (Succes) {JSON} Return quote locked
+ * @apiError (Error) {Number} HttpCode 500 and response inlucdes error description
+ * @apiPermission authenticated
+ */
 router.put('/quote/cancel', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
     const params: { id: string } = <any>url.parse(req.url, true).query;
@@ -71,7 +99,14 @@ router.put('/quote/cancel', Secure.authenticate, async (req, res) => {
         res.status(500).send(ex.message);
     }
 });
-
+/**
+ * @api {put} /quote/accept/:id [Accept]
+ * @apiGroup Quote
+ * @apiDescription Accept when a customer sign a quote
+ * @apiSuccess (Succes) {JSON} Return quote accepted
+ * @apiError (Error) {Number} HttpCode 500 and response inlucdes error description
+ * @apiPermission authenticated
+ */
 router.put('/quote/accept', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
     const params: { id: string } = <any>url.parse(req.url, true).query;
@@ -86,7 +121,14 @@ router.put('/quote/accept', Secure.authenticate, async (req, res) => {
         res.status(500).send(ex.message);
     }
 });
-
+/**
+ * @api {put} /quote/reject/:id [Reject]
+ * @apiGroup Quote
+ * @apiDescription Reject when a customer doesn't sign a quote
+ * @apiSuccess (Succes) {JSON} Return quote rejected
+ * @apiError (Error) {Number} HttpCode 500 and response inlucdes error description
+ * @apiPermission authenticated
+ */
 router.put('/quote/reject', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
     const params: { id: string } = <any>url.parse(req.url, true).query;
@@ -101,7 +143,13 @@ router.put('/quote/reject', Secure.authenticate, async (req, res) => {
         res.status(500).send(ex.message);
     }
 });
-
+/**
+ * @api {get} /quote/:id [Get one]
+ * @apiGroup Quote
+ * @apiDescription Return one quote
+ * @apiSuccess (Succes) {JSON} Return quote
+ * @apiPermission authenticated
+ */
 router.get('/quote', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
     const params: { id: string } = <any>url.parse(req.url, true).query;
@@ -111,7 +159,13 @@ router.get('/quote', Secure.authenticate, async (req, res) => {
     let result: IQuote[] = await serv.get(<IQuote>{ _id: params.id, entityId: token.currentEntity._id });
     res.send(result);
 });
-
+/**
+ * @api {get} /quotes [Get all]
+ * @apiGroup Quote
+ * @apiDescription Return quotes for entity
+ * @apiSuccess (Succes) {JSON} Return quotes
+ * @apiPermission authenticated
+ */
 router.get('/quotes', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
     const params: { id: string } = <any>url.parse(req.url, true).query;

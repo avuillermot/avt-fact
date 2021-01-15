@@ -54,7 +54,7 @@ router.get('/entity/current', Secure.authenticate, async (req, res) => {
 });
 /**
  * @api {post} / [Create entity]
- * @apiGroup CreateEntity
+ * @apiGroup Enity
  * @apiDescription Create one entity and its owner
  * @apiSuccess (Succes) {String} ID Return entity id
  * @apiError (Error) {Number} HttpCode 500 and response inlucdes error description
