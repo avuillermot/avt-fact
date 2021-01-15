@@ -27,7 +27,7 @@ router.put('/entity/byuser', Secure.authenticate, async (req, res) => {
  * @api {get} / [Get current entity]
  * @apiGroup Context
  * @apiDescription Return current entity based on token
- * @apiSuccess (Succes) {String} Return entity
+ * @apiSuccess (Succes) {JSON} Data Return entity - 
     name: string;
     address1: string;
     address2: string;
@@ -56,8 +56,8 @@ router.get('/entity/current', Secure.authenticate, async (req, res) => {
  * @api {post} / [Create entity]
  * @apiGroup CreateEntity
  * @apiDescription Create one entity and its owner
- * @apiSuccess (Succes) {String} Return entity id
- * @apiError (Error) {String} Error description
+ * @apiSuccess (Succes) {String} ID Return entity id
+ * @apiError (Error) {Number} HttpCode 500 and response inlucdes error description
  * @apiPermission authenticated
  */
 router.post('/entity', async (req, res) => {
