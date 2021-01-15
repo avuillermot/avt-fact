@@ -1,4 +1,4 @@
-import jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 import { IToken } from '../models/token';
 import { EntityService } from '../services/entity.serv';
 import { IEntity } from '../models/entity/entity';
@@ -23,14 +23,43 @@ router.put('/entity/byuser', Secure.authenticate, async (req, res) => {
     }
     else res.status(401).send();
 });
-
+/**
+ * @api {get} / [Get current entity]
+ * @apiGroup Context
+ * @apiDescription Return current entity based on token
+ * @apiSuccess (Succes) {String} Return entity
+    name: string;
+    address1: string;
+    address2: string;
+    address3: string;
+    zipCode: string;
+    city: string;
+    country: string;
+    email: string;
+    phone: string;
+    siren: string;
+    siret: string;
+    codeAPE: string;
+    codeTVA: string;
+    legalType: string;
+    capital: number;
+    users: IRoles[];
+   @apiPermission authenticated
+ */
 router.get('/entity/current', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
     let serv: EntityService = new EntityService();
     let back: IEntity | null = await serv.get(token.currentEntity._id);
     res.send(back);
 });
-
+/**
+ * @api {post} / [Create entity]
+ * @apiGroup CreateEntity
+ * @apiDescription Create one entity and its owner
+ * @apiSuccess (Succes) {String} Return entity id
+ * @apiError (Error) {String} Error description
+ * @apiPermission authenticated
+ */
 router.post('/entity', async (req, res) => {
     if (req.body.entity == null || req.body.entity == undefined) res.status(500).send("ENTITY is mandatory");
     else if (req.body.owner == null || req.body.owner == undefined) res.status(500).send("OWNER is mandatory");
