@@ -6,9 +6,9 @@ import { DefaultItemLineSchema } from "../models/document/itemLine";
 var Float = require('mongoose-float').loadType(mongoose, 2);
 
 export const DefaultStatusSchemaDef = {
-    created: { type: Date, required: true, default: moment().utc() },
+    created: { type: Date, required: true, default: null },
     createdBy: { type: String, required: true, default: "system" },
-    updated: { type: Date, required: true, default: moment().utc() },
+    updated: { type: Date, required: true, default: null },
     updatedBy: { type: String, required: true, default: "system" },
 
     status: { type: String, required: true },
@@ -17,9 +17,9 @@ export const DefaultStatusSchemaDef = {
 export const DefaultStatusSchema: Schema = new Schema(DefaultStatusSchemaDef);
 
 export const DefaultBaseDocumentDef = {
-    created: { type: Date, required: true, default: moment().utc() },
+    created: { type: Date, required: true, default: null },
     createdBy: { type: String, required: true, default: "create_process" },
-    updated: { type: Date, required: true, default: moment().utc() },
+    updated: { type: Date, required: true, default: null },
     updatedBy: { type: String, required: true, default: "create_process" },
 
     date: { type: Date, required: true },
@@ -48,49 +48,3 @@ export const DefaultBaseDocumentDef = {
     html: { type: String, required: true }
 };
 export const DefaultBaseDocument = new Schema(DefaultBaseDocumentDef);
-
-const _DefaultSalesReceiptSchema: Schema = new Schema(DefaultBaseDocumentDef);
-_DefaultSalesReceiptSchema.add({
-    entityId: { type: String, required: true },
-    quoteId: { type: String, required: false },
-    purchaseOrderId: { type: String, required: false }
-});
-_DefaultSalesReceiptSchema.pre("save", function (next) {
-    this.set("created", moment().utc().toDate());
-    this.set("updated", moment().utc().toDate())
-
-    var total = 0
-    var taxAmount = 0;
-    for (var i = 0; i < this.get("items").length; i++) {
-        total = total + this.get("items")[i].get("total");
-        taxAmount = taxAmount + this.get("items")[i].get("taxAmount");
-    }
-    this.set("total", total);
-    this.set("taxAmount", taxAmount);
-    this.set("totalFreeTax", total - taxAmount);
-    next();
-});
-export const DefaultSalesReceiptSchema = _DefaultSalesReceiptSchema
-
-const _DefaultPurchaseOrderSchema: Schema = new Schema(DefaultBaseDocumentDef);
-_DefaultPurchaseOrderSchema.add({
-    entityId: { type: String, required: true },
-    quoteId: { type: String, required: false },
-    deliveryDate: { type: Date, required: true, default: moment().utc().add(30, "days").toDate() }
-});
-_DefaultPurchaseOrderSchema.pre("save", function (next) {
-    this.set("created", moment().utc().toDate());
-    this.set("updated", moment().utc().toDate())
-
-    var total = 0
-    var taxAmount = 0;
-    for (var i = 0; i < this.get("items").length; i++) {
-        total = total + this.get("items")[i].get("total");
-        taxAmount = taxAmount + this.get("items")[i].get("taxAmount");
-    }
-    this.set("total", total);
-    this.set("taxAmount", taxAmount);
-    this.set("totalFreeTax", total - taxAmount);
-    next();
-});
-export const DefaultPurchaseOrderSchema = _DefaultPurchaseOrderSchema

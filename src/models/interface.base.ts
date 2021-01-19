@@ -7,7 +7,6 @@ export interface IBase extends Document {
     updated: Date,
     updatedBy: string;
     deleted: boolean;
-    status: string;
 }
 
 export interface IDocument extends IBase {

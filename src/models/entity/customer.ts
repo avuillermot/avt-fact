@@ -3,9 +3,9 @@ import { model, Schema } from "mongoose";
 import { IBase } from "../interface.base";
 
 const SchCustomer = {
-    created: { type: Date, required: true, default: moment().utc() },
+    created: { type: Date, required: true, default: null },
     createdBy: { type: String, required: true, default: "create_process" },
-    updated: { type: Date, required: true, default: moment().utc() },
+    updated: { type: Date, required: true, default: null },
     updatedBy: { type: String, required: true, default: "create_process" },
 
     entityId: { type: String, required: true },
@@ -27,9 +27,9 @@ export const DefaultCustomerSchema: Schema = new Schema(SchCustomer, { toJSON: {
 DefaultCustomerSchema.virtual('fullName').get(function (this: { firstName: string, lastName: string }) {
     return this.firstName + " " + this.lastName;
 });
-DefaultCustomerSchema.pre("save", function (next) {
-    this.set("created", moment().utc().toDate());
-    this.set("updated", moment().utc().toDate())
+DefaultCustomerSchema.pre("validate", function (next) {
+    if (this.get("created") == null) this.set("created", moment().utc());
+    this.set("updated", moment().utc().toDate());
 
     next();
 });

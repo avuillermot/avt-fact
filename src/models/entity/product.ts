@@ -4,9 +4,9 @@ import { IBase } from "./../interface.base";
 var Float = require('mongoose-float').loadType(mongoose, 2);
 
 const SchBaseProduct = {
-    created: { type: Date, required: true, default: moment().utc() },
+    created: { type: Date, required: true, default: null },
     createdBy: { type: String, required: true, default: "create_process" },
-    updated: { type: Date, required: true, default: moment().utc() },
+    updated: { type: Date, required: true, default: null },
     updatedBy: { type: String, required: true, default: "create_process" },
 
     entityId: { type: String, required: true },
@@ -19,9 +19,9 @@ const SchBaseProduct = {
 }
 
 export const DefaultProductSchema: Schema = new Schema(SchBaseProduct);
-DefaultProductSchema.pre("save", function (next) {
-    this.set("created", moment().utc().toDate());
-    this.set("updated", moment().utc().toDate())
+DefaultProductSchema.pre("validate", function (next) {
+    if (this.get("created") == null) this.set("created", moment().utc());
+    this.set("updated", moment().utc().toDate());
 
     next();
 });

@@ -10,42 +10,36 @@ import { IItemLine } from "./itemLine";
 const _DefaultQuoteSchema: Schema = new Schema(DefaultBaseDocumentDef);
 _DefaultQuoteSchema.add({
     entityId: { type: String, required: true },
-    expirationDate: { type: Date, required: true, default: moment().utc().add(30, "days").toDate() }
+    expirationDate: { type: Date, required: true, default: moment().utc().add(30, "days") }
 });
 _DefaultQuoteSchema.index({ entityId: 1});
 
-_DefaultQuoteSchema.pre("save", function (next) {
-    this.set("created", moment().utc().toDate());
-    this.set("updated", moment().utc().toDate())
+_DefaultQuoteSchema.pre("validate", function (next) {
+    if (this.get("created") == null) this.set("created", moment().utc());
+    this.set("updated", moment().utc())
 
-    var total = 0
-    var taxAmount = 0;
+    let total:number = 0
+    let taxAmount:number = 0;
     if (this.get("items").length != null && this.get("items").length != undefined) {
         for (var i = 0; i < this.get("items").length; i++) {
-            total = total + this.get("items")[i].get("total");
-            taxAmount = taxAmount + this.get("items")[i].get("taxAmount");
+            let current = this.get("items")[i];
+            current.set("total", (current.quantity * current.price) * (1 + current.taxPercent / 100) );
+            current.set("taxAmount", (current.quantity * current.price) * (current.taxPercent / 100) );
+            current.set("totalFreeTax", current.total - current.taxAmount);
+
+            total = total + current.total;
+            taxAmount = taxAmount + current.taxAmount;
+            /*console.log("*******************");
+            console.log("price:" + this.get("items")[i].price);
+            console.log("quantity:" + this.get("items")[i].quantity);
+            console.log("total:"+this.get("items")[i].total);
+            console.log("taxAmount:"+this.get("items")[i].taxAmount);
+            console.log("totalFreeTax:"+this.get("items")[i].totalFreeTax);*/
         }
     }
     this.set("total", total);
     this.set("taxAmount", taxAmount);
     this.set("totalFreeTax", total - taxAmount);
-    next();
-});
-_DefaultQuoteSchema.pre("updateOne", function (next) {
-    let _update = this["_update"];
-    _update["updated"] = moment().utc().toDate();
-
-    if (_update["items"] != null && _update["items"] != undefined) {
-        var total = 0
-        var taxAmount = 0;
-        for (var i = 0; i < _update["items"].length; i++) {
-            total = total + _update["items"][i].total;
-            taxAmount = taxAmount + _update["items"][i].taxAmount;
-        }
-        _update["total"] = total;
-        _update["taxAmount"] = taxAmount;
-        _update["totalFreeTax"] = total - taxAmount;
-    }
     next();
 });
 
