@@ -1,11 +1,12 @@
 import moment = require("moment");
-import mongoose, { model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { IDocument } from "./../interface.base";
 import { DefaultBaseDocumentDef } from "../schema.document.base";
 import { IStatus } from "../document/status";
 import { IEntity } from "../entity/entity"
 import { ICustomer } from "../entity/customer"
 import { IItemLine } from "./itemLine";
+import { HookHelper } from './../hook.helper';
 
 const _DefaultQuoteSchema: Schema = new Schema(DefaultBaseDocumentDef);
 _DefaultQuoteSchema.add({
@@ -15,31 +16,12 @@ _DefaultQuoteSchema.add({
 _DefaultQuoteSchema.index({ entityId: 1});
 
 _DefaultQuoteSchema.pre("validate", function (next) {
-    if (this.get("created") == null) this.set("created", moment().utc());
-    this.set("updated", moment().utc())
+    HookHelper.onValidate(this);
+    next();
+});
 
-    let total:number = 0
-    let taxAmount:number = 0;
-    if (this.get("items").length != null && this.get("items").length != undefined) {
-        for (var i = 0; i < this.get("items").length; i++) {
-            let current = this.get("items")[i];
-            current.set("total", (current.quantity * current.price) * (1 + current.taxPercent / 100) );
-            current.set("taxAmount", (current.quantity * current.price) * (current.taxPercent / 100) );
-            current.set("totalFreeTax", current.total - current.taxAmount);
-
-            total = total + current.total;
-            taxAmount = taxAmount + current.taxAmount;
-            /*console.log("*******************");
-            console.log("price:" + this.get("items")[i].price);
-            console.log("quantity:" + this.get("items")[i].quantity);
-            console.log("total:"+this.get("items")[i].total);
-            console.log("taxAmount:"+this.get("items")[i].taxAmount);
-            console.log("totalFreeTax:"+this.get("items")[i].totalFreeTax);*/
-        }
-    }
-    this.set("total", total);
-    this.set("taxAmount", taxAmount);
-    this.set("totalFreeTax", total - taxAmount);
+_DefaultQuoteSchema.pre("updateOne", function (next) {
+    HookHelper.onValidate(this["_update"]);
     next();
 });
 

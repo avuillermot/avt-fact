@@ -1,8 +1,10 @@
 ﻿import moment = require("moment");
 import Entity, { IEntity } from "./../models/entity/entity";
 import Quote, { IQuote } from '../models/document/quote';
+import { IItemLine } from '../models/document/itemLine';
 import { IStatus } from "../models/document/status";
 import { IDocumentService, DocumentBaseService } from '../services/interface/idocument';
+import { PriceEngine } from '../services/price.engine';
 import { Error } from "mongoose";
 
 export class QuoteService extends DocumentBaseService<IQuote> implements IDocumentService<IQuote> {
@@ -52,6 +54,12 @@ export class QuoteService extends DocumentBaseService<IQuote> implements IDocume
             if (quote.country == null || quote.country == "") quote.country = quote.customer.country;
             if (quote.entityId == null || quote.entityId == "") quote.entityId = sellerId;
 
+            let calcul: { total: number, taxAmount: number, totalFreeTax: number; items: IItemLine[] } = PriceEngine.calculate(quote);
+            quote.total = calcul.total;
+            quote.totalFreeTax = calcul.totalFreeTax;
+            quote.taxAmount = calcul.taxAmount;
+            quote.items = calcul.items;
+
             try {
                 saved = await Quote.create(quote);
             }
@@ -85,7 +93,12 @@ export class QuoteService extends DocumentBaseService<IQuote> implements IDocume
             if (quote.city == null || quote.city == "") quote.city = quote.seller.city;
             if (quote.country == null || quote.country == "") quote.country = quote.seller.country;
             if (quote.entityId == null || quote.entityId == "") quote.entityId = sellerId;
-            
+
+            let calcul: { total: number, taxAmount: number, totalFreeTax: number; items: IItemLine[] } = PriceEngine.calculate(quote);
+            quote.total = calcul.total;
+            quote.totalFreeTax = calcul.totalFreeTax;
+            quote.taxAmount = calcul.taxAmount;
+            quote.items = calcul.items;
             try {
                 saved = await Quote.updateOne({ _id: quote._id }, quote);
             }

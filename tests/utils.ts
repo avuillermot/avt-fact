@@ -1,6 +1,5 @@
 ﻿import moment = require("moment");
 import { IQuote } from '../src/models/document/quote';
-import { ISalesReceipt } from '../src/models/document/salesReceipt';
 import { IItemLine } from '../src/models/document/itemLine';
 import { IEntity } from '../src/models/entity/entity';
 import { ICustomer } from '../src/models/entity/customer';
@@ -68,7 +67,7 @@ export const QuoteExample: IQuote = <IQuote>{
     ]
 }
 
-export const SalesReceiptExample: ISalesReceipt = <ISalesReceipt>{
+/*export const SalesReceiptExample: ISalesReceipt = <ISalesReceipt>{
     entityId: EntityId,
     seller: <IEntity>{
         name: "Green light.",
@@ -121,7 +120,7 @@ export const SalesReceiptExample: ISalesReceipt = <ISalesReceipt>{
         <IItemLine>{ name: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: EntityId },
         <IItemLine>{ name: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: EntityId }
     ]
-}
+}*/
 
 /*export const PurchaseOrderExample: IPurchaseOrder = <IPurchaseOrder>{
     entityId: EntityId,

@@ -11,6 +11,7 @@ import entityRoutes from './api/entity';
 import productRoutes from './api/product';
 import quoteRoutes from './api/quote';
 import pdfRoutes from './api/pdf';
+import { PriceEngine } from './services/price.engine';
 
 console.log("WORKSPACE:" + __dirname);
 console.log("******************************************************");
@@ -48,7 +49,7 @@ app.use(pdfRoutes);
 //****************************************************************************
 // calcul des montants d'un document, cote serveur pour gerer le probleme des decimaux en js
 app.put('/document/calcul', async (req, res) => {
-    
+
     let data: { total: number, taxAmount: number, totalFreeTax: number; items: IItemLine[] } =
     {
         total: 0, taxAmount: 0, totalFreeTax: 0, items: new Array<IItemLine>()
@@ -56,20 +57,10 @@ app.put('/document/calcul', async (req, res) => {
 
     let status: number = 200;
     try {
-        let origine: {total: number, taxAmount: number, totalFreeTax: number; items: IItemLine[]} =
-            <{total: 0, taxAmount: 0, totalFreeTax: 0, items: IItemLine[]}> req.body;
-               
-        for (let i = 0; i < origine.items.length; i++) {
-            let current = origine.items[i];
-            current.taxAmount = (current.price * (current.taxPercent / 100)) * current.quantity;
-            current.totalFreeTax = current.price * current.quantity;
-            current.total = current.taxAmount + current.totalFreeTax;
+        let origine: { total: number, taxAmount: number, totalFreeTax: number; items: IItemLine[] } =
+            <{ total: 0, taxAmount: 0, totalFreeTax: 0, items: IItemLine[] }>req.body;
 
-            data.taxAmount = data.taxAmount + current.taxAmount;
-            data.totalFreeTax = data.totalFreeTax + current.totalFreeTax;
-            data.total = data.total + current.total;
-        }
-        data.items = origine.items;
+        data = PriceEngine.calculate(origine);
     }
     catch (ex) {
         console.log(ex);

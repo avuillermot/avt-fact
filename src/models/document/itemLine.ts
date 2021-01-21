@@ -1,6 +1,6 @@
 import mongoose, { model, Schema } from "mongoose";
 import { IBase } from "./../interface.base";
-import moment = require("moment");
+import { HookHelper } from './../hook.helper';
 var Float = require('mongoose-float').loadType(mongoose, 2);
 
 const DefaultItemLineSchemaDef = {
@@ -23,16 +23,12 @@ const DefaultItemLineSchemaDef = {
 
 export const DefaultItemLineSchema: Schema = new Schema(DefaultItemLineSchemaDef);
 DefaultItemLineSchema.pre("validate", function (next) {
-    let taxPercent = 1 + (this.get("taxPercent") / 100);
-    let total = this.get("quantity") * this.get("price") * taxPercent;
-    let taxAmount = total - (this.get("quantity") * this.get("price"));
+    HookHelper.onValidate(this);
+    next();
+});
 
-    if (this.get("created") == null) this.set("created", moment().utc());
-    this.set("updated", moment().utc())
-    this.set("total", total);
-    this.set("totalFreeTax", total - taxAmount);
-    this.set("taxAmount", taxAmount);
-
+DefaultItemLineSchema.pre("updateOne", function (next) {
+    HookHelper.onValidate(this["_update"]);
     next();
 });
 
