@@ -1,6 +1,6 @@
-import moment = require("moment");
 import mongoose, { model, Schema } from "mongoose";
 import { IBase } from "./../interface.base";
+import { HookHelper } from './../hook.helper';
 var Float = require('mongoose-float').loadType(mongoose, 2);
 
 const SchBaseProduct = {
@@ -20,9 +20,11 @@ const SchBaseProduct = {
 
 export const DefaultProductSchema: Schema = new Schema(SchBaseProduct);
 DefaultProductSchema.pre("validate", function (next) {
-    if (this.get("created") == null) this.set("created", moment().utc());
-    this.set("updated", moment().utc().toDate());
-
+    HookHelper.onValidate(this);
+    next();
+});
+DefaultProductSchema.pre("updateOne", function (next) {
+    HookHelper.onValidate(this["_update"]);
     next();
 });
 

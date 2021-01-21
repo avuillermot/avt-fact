@@ -16,7 +16,7 @@ router.get('/pdf/quote', async (req, res) => {
         let servQuote: QuoteService = new QuoteService();
         let quotes: IQuote[] = await servQuote.get(<IQuote>{ _id: params.id });
 
-        let html: string = "<html><head><link rel='stylesheet' href='" + ApplicationSetting.CssDocument + "'></head><body>";
+        let html: string = "<html><head><link rel='stylesheet' href='" + ApplicationSetting.cssDocument + "'></head><body>";
         html += quotes[0].html;
         html += "</body></html>"
         pdf.create(html, { format: 'Letter' }).toStream(function (err, stream) {
@@ -30,7 +30,7 @@ router.get('/pdf/quote', async (req, res) => {
         });
     }
     else {
-        let html: string = "<html><head><link rel='stylesheet' href='" + ApplicationSetting.CssDocument + "'></head><body>";
+        let html: string = "<html><head><link rel='stylesheet' href='" + ApplicationSetting.cssDocument + "'></head><body>";
         html += "Apercu disponible après la création."
         html += "</body></html>"
         pdf.create(html, { format: 'Letter' }).toStream(function (err, stream) {
@@ -46,7 +46,7 @@ router.get('/pdf/quote', async (req, res) => {
 });
 
 router.get('/pdf/html/template/quote', Secure.authenticate, async (req, res) => {
-    res.sendFile(ApplicationSetting.HtmlDocumentTemplateDirectory + "/quote.html");
+    res.sendFile(ApplicationSetting.htmlDocumentTemplateDirectory + "/quote.html");
 });
 
 router.get('/pdf/document-pdf', async (req, res) => {

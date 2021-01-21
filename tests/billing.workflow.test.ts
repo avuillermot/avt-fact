@@ -2,10 +2,9 @@ import { expect } from 'chai';
 import moment = require("moment");
 import "mocha";
 import fs = require("fs");
-import { QuoteExample, PurchaseOrderExample, EntityId } from "./utils";
+import { QuoteExample, EntityId } from "./utils";
 import Quote, { IQuote } from '../src/models/document/quote';
 import SalesReceipt, { ISalesReceipt } from '../src/models/document/salesReceipt';
-import PurchaseOrder, { IPurchaseOrder } from '../src/models/document/purchaseOrder';
 import { QuoteService } from '../src/services/quote.serv';
 import { ApplicationDbSettings as DbSettings, ApplicationSetting } from "./../src/config/config";
 /*

@@ -1,7 +1,8 @@
 import { connect, connection } from 'mongoose';
+import Parameter from '../models/parameter';
 
 export class ApplicationDbSettings {
-    protected dbUrl: string = <string>process.env.MONGOHOST;
+    protected dbUrl: string = process.env.APP_MONGOHOST;
     protected debug: boolean = true;
     protected static isInit: boolean = false;
 
@@ -30,8 +31,8 @@ export class ApplicationSetting {
     public static pdfRepository: string = "pdf/"
     public static jtokenSecretKey: string = "PERRIGNY21160";
     public static previewPdfAllowDomain: string = "http://localhost:8000";
-    public static CssDocument: string = "http://localhost:8000/pdf/document-pdf";
-    public static HtmlDocumentTemplateDirectory: string = "c:/projets_test/avt-fact/src/html-template/";
-    public static urlUserService: string = "";
+    public static cssDocument: string = "http://localhost:8000/pdf/document-pdf";
+    public static htmlDocumentTemplateDirectory: string = "c:/projets_test/avt-fact/src/html-template/";
+    public static urlUserService: string = process.env.APP_URL_USER_SERVICE;
 }
 

@@ -1,7 +1,7 @@
-import moment = require("moment");
 import { Schema, model } from "mongoose";
 import { IBase } from "../interface.base";
-import { DefaultRoleSchema, IRoles  } from './role';
+import { DefaultRoleSchema, IRoles } from './role';
+import { HookHelper } from "./../hook.helper";
 
 const SchEntityCreate = {
     created: { type: Date, required: true, default: null },
@@ -22,10 +22,12 @@ const SchEntityCreate = {
 
 export const DefaultEntityCreateSchema: Schema = new Schema(SchEntityCreate);
 DefaultEntityCreateSchema.pre("validate", function (next) {
-    if (this.get("created") == null) this.set("created", moment().utc());
-    this.set("updated", moment().utc());
-
+    HookHelper.onValidate(this);
     if (this.get("users").length == 0) this.get("users").push({ email: this.get("email"), role: "ADMIN" });
+    next();
+});
+DefaultEntityCreateSchema.pre("updateOne", function (next) {
+    HookHelper.onUpdateOne(this["_update"]);
     next();
 });
 

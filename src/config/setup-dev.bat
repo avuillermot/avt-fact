@@ -1,0 +1,4 @@
+ECHO OFF
+SET APP_MONGOHOST=mongodb://pc-246.home:27017/facturation_dev
+SET APP_URL_USER_SERVICE=https://pc-246.home:8090
+SET APP_PORT=8080

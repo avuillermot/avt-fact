@@ -1,6 +1,6 @@
-import moment = require("moment");
 import { model, Schema } from "mongoose";
 import { IBase } from "../interface.base";
+import { HookHelper } from "../hook.helper";
 
 const SchCustomer = {
     created: { type: Date, required: true, default: null },
@@ -28,9 +28,11 @@ DefaultCustomerSchema.virtual('fullName').get(function (this: { firstName: strin
     return this.firstName + " " + this.lastName;
 });
 DefaultCustomerSchema.pre("validate", function (next) {
-    if (this.get("created") == null) this.set("created", moment().utc());
-    this.set("updated", moment().utc().toDate());
-
+    HookHelper.onValidate(this);
+    next();
+});
+DefaultCustomerSchema.pre("updateOne", function (next) {
+    HookHelper.onUpdateOne(this["_update"]);
     next();
 });
 

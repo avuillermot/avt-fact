@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { IToken } from '../models/token';
+import { EntityCreateService } from '../services/entity.create.serv';
 import { EntityService } from '../services/entity.serv';
 import { IEntity } from '../models/entity/entity';
 import { Secure } from './_secure.helper';
@@ -64,7 +65,7 @@ router.post('/entity', async (req, res) => {
     else if (req.body.owner == null || req.body.owner == undefined) res.status(500).send("OWNER is mandatory");
     else {
         try {
-            let srv: EntityService = new EntityService();
+            let srv: EntityCreateService = new EntityCreateService();
             const entity: IEntity = await srv.create(req.body.entity, req.body.owner);
             res.send(entity._id);
         }

@@ -1,17 +1,25 @@
 ﻿import { expect } from 'chai';
 import "mocha";
-import { ApplicationDbSettings as DbSettings, ApplicationSetting } from "./../src/config/config";
-import { EntityService } from '../src/services/entity.serv';                                                                                                                                              
+import { ApplicationDbSettings as DbSettings } from "./../src/config/config";
+import { EntityService } from '../src/services/entity.serv'; 
+import { EntityCreateService } from '../src/services/entity.create.serv'; 
 import { IEntity } from '../src/models/entity/entity';
 import { v4 } from 'uuid';
+
+console.log("******************************************************");
+console.log("ENV VARIABLE:");
+console.log(Object.keys(process.env).filter((value: string, index: number) => {
+    if (value != undefined && value != null && value.startsWith("APP_")) console.log(value.padEnd(40) + process.env[value]);
+}));
+console.log("******************************************************");
 
 describe('Entity', () => {
 
     let db: DbSettings = new DbSettings();
     db.connection();
-    db.dropDb();
-
-    let email: string = v4();
+    //db.dropDb();
+    
+    let email: string = v4() + "@gmail.com";
     
     it('Should create an entity', async () => {
         
@@ -25,7 +33,7 @@ describe('Entity', () => {
             legalType: "SARL",
             capital: 8000,
         };
-        let query: EntityService = new EntityService();
+        let query: EntityCreateService = new EntityCreateService();
         const entity = await query.create(params, { firstName: "Bruce", lastName: "Willis", email: email, emailConfirmed: false, phone: "+330123456", password: "123456", confirmPassword: "123456" });
         expect(entity.users.length).equal(1, "One role ADMIN must be present");
         expect(entity.users[0].role).equal("ADMIN", "Must be ADMIN");
@@ -56,7 +64,7 @@ describe('Entity', () => {
             legalType: "SARL",
             capital: 8000,
         };
-        let query: EntityService = new EntityService();
+        let query: EntityCreateService = new EntityCreateService();
         try {
             const entity = await query.create(params, { firstName: "Bruce", lastName: "Willis", email: email, emailConfirmed: false, phone: "+330123456", password: "123456", confirmPassword: "123456" });
             expect("").equal("EMAIL_ALREADY_EXIST", "Should already exist");
@@ -64,5 +72,10 @@ describe('Entity', () => {
         catch (ex) {
             expect(ex.message).equal("EMAIL_ALREADY_EXIST","Should already exist");
         }
-     });
+    });
+
+    /*it('Change name', async () => {
+        let query: EntityService = new EntityService();
+        await query.update("6009d8b86fae3e1c60fe0385", { name: "mmm222", updatedBy: "kmt" });
+    });*/
 });

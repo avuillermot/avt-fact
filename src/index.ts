@@ -5,8 +5,6 @@ import cors = require('cors');
 import { ApplicationDbSettings as DbSettings, ApplicationSetting } from "./../src/config/config";
 import bodyParser from 'body-parser';
 import { IItemLine } from './models/document/itemLine';
-import Parameter from './models/parameter';
-
 import contextRoutes from './api/context';
 import customerRoutes from './api/customer';
 import entityRoutes from './api/entity';
@@ -15,15 +13,17 @@ import quoteRoutes from './api/quote';
 import pdfRoutes from './api/pdf';
 
 console.log("WORKSPACE:" + __dirname);
+console.log("******************************************************");
+console.log("ENV VARIABLE:");
+console.log(Object.keys(process.env).filter((value:string, index:number) => {
+    if (value != undefined && value != null && value.startsWith("APP_")) console.log(value.padEnd(40) + process.env[value]);
+}));
+console.log("******************************************************");
+
 const options = {
     key: fs.readFileSync('./src/config/key.pem'),
     cert: fs.readFileSync('./src/config/cert.pem')
 };
-
-Parameter.findOne({ KEY: "URL_USER_SERVICES" }).then((data) => {
-    console.log("URL_USER_SERVICES:" + data);
-    ApplicationSetting.urlUserService = data.VALUE;
-});
 
 // rest of the code remains same
 const app = express();
@@ -88,6 +88,6 @@ app.get('/countries', async (req, res) => {
     res.send(countries);
 });
 
-https.createServer(options, app).listen(process.env.PORT, () => {
-    console.log('[server]: Server is running at https://localhost:%s', process.env.PORT);
+https.createServer(options, app).listen(process.env.APP_PORT, () => {
+    console.log('[server]: Server is running at https://localhost:%s', process.env.APP_PORT);
 });

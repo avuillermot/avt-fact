@@ -4,7 +4,6 @@ import { ISalesReceipt } from '../src/models/document/salesReceipt';
 import { IItemLine } from '../src/models/document/itemLine';
 import { IEntity } from '../src/models/entity/entity';
 import { ICustomer } from '../src/models/entity/customer';
-import { IPurchaseOrder } from "../src/models/document/purchaseOrder";
 
 export const EntityId: string = "5ff6388eb13f4a0dc85c8919";
 
@@ -124,7 +123,7 @@ export const SalesReceiptExample: ISalesReceipt = <ISalesReceipt>{
     ]
 }
 
-export const PurchaseOrderExample: IPurchaseOrder = <IPurchaseOrder>{
+/*export const PurchaseOrderExample: IPurchaseOrder = <IPurchaseOrder>{
     entityId: EntityId,
     seller: <IEntity>{
         name: "Green light.",
@@ -176,4 +175,4 @@ export const PurchaseOrderExample: IPurchaseOrder = <IPurchaseOrder>{
         <IItemLine>{ name: "Vidange", price: 45, quantity: 1, taxPercent: 8, entityId: EntityId },
         <IItemLine>{ name: "Contribution dechet", price: 1.42, quantity: 1, taxPercent: 8, entityId: EntityId }
     ]
-}
+}*/
