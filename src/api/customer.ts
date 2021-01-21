@@ -11,7 +11,14 @@ const router: Router = Router();
 /**
  * @api {get} /customers [Get all customers]
  * @apiDescription Return all customers by entity
- * @apiPermission authenticated
+ * @apiPermission Authenticated
+ * @apiParamExample Request-Example:
+ *      Token in http header define entity
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 500
+ * @apiSampleRequest off
  */
 router.get('/customers', Secure.authenticate, async (req, res) => {
     let token: IToken = await Secure.decrypt(req.headers.authorization);
