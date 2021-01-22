@@ -43,4 +43,4 @@ export interface IEntityCreate extends IBase {
     email: string;
     users: IRoles[];
 }
-export default model<IEntityCreate>('EntityCreate', DefaultEntityCreateSchema);
+export default model<IEntityCreate>('EntityCreate', DefaultEntityCreateSchema, 'entities');

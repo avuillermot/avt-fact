@@ -58,4 +58,4 @@ export interface IEntity extends IBase {
 }
 
 export const DefaultEntitySchema = _DefaultEntitySchema;
-export default model<IEntity>('Entity', DefaultEntitySchema);
+export default model<IEntity>('Entity', DefaultEntitySchema, 'entities');

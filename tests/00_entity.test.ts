@@ -74,8 +74,23 @@ describe('Entity', () => {
         }
     });
 
-    /*it('Change name', async () => {
-        let query: EntityService = new EntityService();
-        await query.update("6009d8b86fae3e1c60fe0385", { name: "mmm222", updatedBy: "kmt" });
-    });*/
+    it('Should create an entity uncomplete', async () => {
+        email = v4() + "@gmail.com";
+        let params: IEntity = <IEntity>{
+            name: "AVT Corp.", city: "Dijon", address1: "7 imp Heni L.", address2: "-", address3: "-",
+            country: "FRANCE", email: email, phone: "0380564789", zipCode: "21000",
+            
+        };
+        let query: EntityCreateService = new EntityCreateService();
+        const entity = await query.createUncomplete(params, { firstName: "Bruce", lastName: "Willis", email: email, emailConfirmed: false, phone: "+330123456", password: "123456", confirmPassword: "123456" });
+        expect(entity.users.length).equal(1, "One role ADMIN must be present");
+        expect(entity.users[0].role).equal("ADMIN", "Must be ADMIN");
+        expect(entity.email).equal(email, "Bad email for entity");
+        expect(entity.email).equal(entity.users[0].email, "Bad email for role");
+        expect(entity._id).not.equal(null, "id ne peu pas etre null");
+        expect(entity.created).not.equal(null, "created must be not null");
+        expect(entity.updated).not.equal(null, "updated must be not null");
+        expect(entity.createdBy).equal("create_process", "createdBy must be system");
+        expect(entity.updatedBy).equal("create_process", "updatedBy must be not system");
+    });
 });
