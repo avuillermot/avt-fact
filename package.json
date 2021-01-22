@@ -8,7 +8,7 @@
     "linux": "PORT=8080 MONGOHOST=mongodb://pc-246.home:27017/facturation nodemon src/index.ts",
     "windows": "cd src/config && setup-dev.bat && cd ../.. && nodemon src/index.ts",
     "testlinux": "MONGOHOST=mongodb://pc-246.home:27017/facturation_test mocha --timeout 5000 --exit -r ts-node/register tests/**/*.test.ts",
-    "testwindows": "cd src/config && setup-test.bat && cd ../.. && mocha --timeout 5000 --exit -r ts-node/register tests/**/*.test.ts",
+    "testwindows": "cd src/config && setup-test.bat && cd ../.. && mocha --timeout 5000 --exit -r ts-node/register tests/**/*y.test.ts",
     "start": "PORT=8000 MONGOHOST=mongodb://pc-246.home:27017/facturation ts-node src/index.ts"
   },
   "repository": {
@@ -49,7 +49,7 @@
     "https": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.27.0",
-    "mongoose": "^5.11.13",
+    "mongoose": "5.10.18",
     "mongoose-float": "^1.0.4",
     "pdfkit": "^0.11.0",
     "ts-node": "^9.1.1",
