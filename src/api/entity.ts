@@ -76,5 +76,43 @@ router.post('/entity', async (req, res) => {
     }
 
 });
+/**
+ * @api {post} /entity/uncomplete [Create entity uncomplete]
+ * @apiGroup Enity
+ * @apiDescription Create one entity uncomplete and its owner. Uncomplete means without all the information about the entity. Other information will be
+ * setting later in the process
+ * @apiParamExample Request-Example:
+ *     {
+ *      "name": "string";
+ *      "address1": "string";
+ *      "address2": "string";
+ *      "address3": "string";
+ *      "zipCode": "string";
+ *      "city": "string";
+ *      "country": "string";
+ *      "email": "string";
+ *     }
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 500
+ * @apiSampleRequest off
+ */
+router.post('/entity/uncomplete', async (req, res) => {
+    if (req.body.entity == null || req.body.entity == undefined) res.status(500).send("ENTITY is mandatory");
+    else if (req.body.owner == null || req.body.owner == undefined) res.status(500).send("OWNER is mandatory");
+    else {
+        try {
+            let srv: EntityCreateService = new EntityCreateService();
+            const entity: IEntity = await srv.create(req.body.entity, req.body.owner);
+            res.send(entity._id);
+        }
+        catch (ex) {
+            console.log(ex.message);
+            res.status(500).send(ex.message);
+        }
+    }
+
+});
 
 export default router;
