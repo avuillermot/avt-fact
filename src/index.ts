@@ -74,8 +74,8 @@ app.get('/alive', async (req, res) => {
 });
 
 app.get('/countries', async (req, res) => {
-    const countries: string[] = new Array<string>();
-    countries.push("FRANCE");
+    const countries: { code: string, label: string }[] = new Array<{ code: string, label: string }>();
+    countries.push({code: 'FR', label: 'France'});
     res.send(countries);
 });
 

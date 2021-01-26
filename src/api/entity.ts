@@ -6,6 +6,7 @@ import { IEntity } from '../models/entity/entity';
 import { Secure } from './_secure.helper';
 import { Router } from 'express';
 import { ApplicationSetting } from '../config/config';
+import { IEntityCreate } from '../models/entity/entity.create';
 
 const router:Router = Router();
 //****************************************************************************
@@ -104,7 +105,7 @@ router.post('/entity/uncomplete', async (req, res) => {
     else {
         try {
             let srv: EntityCreateService = new EntityCreateService();
-            const entity: IEntity = await srv.create(req.body.entity, req.body.owner);
+            const entity: IEntityCreate = await srv.createUncomplete(req.body.entity, req.body.owner);
             res.send(entity._id);
         }
         catch (ex) {

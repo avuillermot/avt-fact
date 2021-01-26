@@ -10,6 +10,7 @@ import { Router } from 'express';
 const router: Router = Router();
 /**
  * @api {get} /customers [Get all customers]
+ * @apiGroup Customer
  * @apiDescription Return all customers by entity
  * @apiPermission Authenticated
  * @apiParamExample Request-Example:
@@ -27,6 +28,7 @@ router.get('/customers', Secure.authenticate, async (req, res) => {
 });
 /**
  * @api {get} /customer/:id [Get one customer]
+ * @apiGroup Customer
  * @apiDescription Return one customer
  * @apiPermission authenticated
  */

@@ -1,4 +1,4 @@
- import { model, Schema } from "mongoose";
+import { model, Schema, SchemaType } from "mongoose";
 import { IBase } from "../interface.base";
 import { DefaultRoleSchema, IRoles } from './role';
 import { HookHelper } from "../hook.helper";
@@ -37,6 +37,10 @@ _DefaultEntitySchema.pre("updateOne", function (next) {
     HookHelper.onUpdateOne(this["_update"]);
     next();
 });
+_DefaultEntitySchema.path('email').validate(function (email) {
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email); // Assuming email has a text attribute
+}, 'The e-mail field must be valid.')
 
 export interface IEntity extends IBase {
     name: string;

@@ -1,5 +1,4 @@
 import { ApplicationSetting } from './../config/config';
-import moment = require("moment");
 import Entity, { IEntity } from "./../models/entity/entity";
 import EntityCreate, { IEntityCreate } from "./../models/entity/entity.create";
 import axios from 'axios';

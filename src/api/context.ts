@@ -7,6 +7,7 @@ import { Router } from 'express';
 const router: Router = Router();
 /**
  * @api {get} /context [Get data context]
+ * @apiGroup Context
  * @apiDescription Descrypt token to read context. Do on server to not share passphrase
  */
 router.get('/context', Secure.authenticate, async (req, res) => {

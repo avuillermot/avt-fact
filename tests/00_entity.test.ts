@@ -19,7 +19,29 @@ describe('Entity', () => {
     db.connection();
     //db.dropDb();
     
-    let email: string = v4() + "@gmail.com";
+    let email: string = v4() + "@gmail1.com";
+
+    it('Should create an entity with bad mail', async () => {
+
+        let params: IEntity = <IEntity>{
+            name: "AVT Corp.", city: "Dijon", address1: "7 imp Heni L.", address2: "-", address3: "-",
+            country: "FRANCE", email: "mm.com", phone: "0380564789", zipCode: "21000",
+            siren: "424 430 015 00026",
+            siret: "424 430 015 00026 001",
+            codeAPE: "4322B",
+            codeTVA: "IT1235",
+            legalType: "SARL",
+            capital: 8000,
+        };
+        let query: EntityCreateService = new EntityCreateService();
+        try {
+            const entity = await query.create(params, { firstName: "Bruce", lastName: "Willis", email: "m@m.com", emailConfirmed: false, phone: "+330123456", password: "123456", confirmPassword: "123456" });
+            expect("").equal("-","Email validation must failed.")
+        }
+        catch (ex) {
+            expect(ex.errors.email.properties.message).equal("The e-mail field must be valid.","Bad email");
+        }
+    });
     
     it('Should create an entity', async () => {
         
