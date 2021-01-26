@@ -30,6 +30,10 @@ DefaultEntityCreateSchema.pre("updateOne", function (next) {
     HookHelper.onUpdateOne(this["_update"]);
     next();
 });
+DefaultEntityCreateSchema.path('email').validate(function (email) {
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email); // Assuming email has a text attribute
+}, 'The e-mail field must be valid.')
 
 
 export interface IEntityCreate extends IBase {
