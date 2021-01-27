@@ -70,7 +70,7 @@ app.put('/document/calcul', async (req, res) => {
 });
 
 app.get('/alive', async (req, res) => {
-    res.send("OK FACT 1.0");
+    res.send("OK FACT 2.0");
 });
 
 app.get('/countries', async (req, res) => {
