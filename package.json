@@ -9,7 +9,7 @@
     "windows": "cd src/config && setup-dev.bat && cd ../.. && nodemon src/index.ts",
     "testlinux": "MONGOHOST=mongodb://pc-246.home:27017/facturation_test mocha --timeout 5000 --exit -r ts-node/register tests/**/*.test.ts",
     "testwindows": "cd src/config && setup-test.bat && cd ../.. && mocha --timeout 5000 --exit -r ts-node/register tests/**/*y.test.ts",
-    "start": "PORT=8000 MONGOHOST=mongodb://pc-246.home:27017/facturation ts-node src/index.ts"
+    "start": "APP_PORT=8000 APP_MONGOHOST=mongodb://pc-246.home:27017/facturation_start ts-node src/index.ts"
   },
   "repository": {
     "type": "git",
